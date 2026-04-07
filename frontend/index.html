@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,167 +11,221 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://bolt.new/static/og_default.png">
     <style>
-  .custom-cursor {
-    position: fixed;
-    width: 20px;
-    height: 20px;
-    background: rgba(59, 130, 246, 0.4);
-    border-radius: 50%;
-    pointer-events: none; 
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: transform 0.1s ease;
-  }
-  .ripple {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.5);
-    transform: scale(0);
-    animation: ripple-animation 0.6s linear;
-    pointer-events: none;
-  }
+        .custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: rgba(59, 130, 246, 0.4);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease;
+        }
 
-  @keyframes ripple-animation {
-    to { transform: scale(4); opacity: 0; }
-  }
-</style>
-  </head>
-  <body class="bg-white text-slate-900">
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-white text-slate-900">
     <div id="app">
-      <nav class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
-        <div class="backdrop-blur bg-white/70 border-b border-slate-200/50">
-          <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-3 group cursor-pointer">
-              <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center text-white font-bold text-lg group-hover:shadow-lg transition-all duration-300">K</div>
-              <span class="text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Knot</span>
+        <nav class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
+            <div class="backdrop-blur bg-white/70 border-b border-slate-200/50">
+                <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center gap-3 group cursor-pointer">
+                        <div
+                            class="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center text-white font-bold text-lg group-hover:shadow-lg transition-all duration-300">
+                            K</div>
+                        <span
+                            class="text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Knot</span>
+                    </div>
+
+                    <div class="hidden md:flex items-center gap-8">
+                        <a href="#features"
+                            class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Features</a>
+                        <a href="#stats"
+                            class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Impact</a>
+                        <a href="#cta"
+                            class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Get
+                            Started</a>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <a href="/login"
+                            class="hidden sm:inline-block px-4 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Login</a>
+                        <button
+                            class="px-6 py-2.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-full font-semibold text-sm hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 transform hover:scale-105">Join
+                            Now</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <header class="pt-32 pb-20 px-6 relative overflow-hidden">
+            <div class="absolute inset-0 -z-10">
+                <div
+                    class="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full filter blur-3xl opacity-30 animate-float">
+                </div>
+                <div class="absolute bottom-0 left-0 w-96 h-96 bg-cyan-100 rounded-full filter blur-3xl opacity-30 animate-float"
+                    style="animation-delay: 2s"></div>
             </div>
 
-            <div class="hidden md:flex items-center gap-8">
-              <a href="#features" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Features</a>
-              <a href="#stats" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Impact</a>
-              <a href="#cta" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Get Started</a>
+            <div class="max-w-4xl mx-auto text-center hero-content">
+                <h1 class="text-5xl md:text-7xl font-black mb-8 leading-tight">
+                    <span class="block">Untangling</span>
+                    <span
+                        class="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent">Campus
+                        Chaos</span>
+                </h1>
+                <p class="text-lg md:text-xl text-slate-600 mb-12 max-w-2xl mx-auto leading-relaxed">
+                    The unified ecosystem for I.T.S Engineering College. Book labs, find lost items, and trade
+                    resources—all in one place.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="/resources"
+                        class="px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-blue-500/40 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 inline-block">
+                        Book a Resource
+                    </a>
+                    <a href="/marketplace"
+                        class="px-8 py-4 bg-slate-100 hover:bg-slate-200 text-slate-900 rounded-2xl font-bold text-lg transition-all duration-300 border border-slate-200 inline-block">
+                        Visit Marketplace
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <section class="py-20 px-6" id="features">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-black text-center mb-16">Powerful Features Built For You</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div
+                        class="feature-card group relative bg-white border border-slate-200 rounded-2xl p-8 hover:border-blue-300 transition-all duration-300">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10">
+                        </div>
+                        <div
+                            class="w-14 h-14 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mb-6 text-white text-2xl group-hover:scale-110 transition-transform duration-300">
+                            📅</div>
+                        <h3 class="text-xl font-bold mb-3">Smart Booking</h3>
+                        <p class="text-slate-600 leading-relaxed">Real-time availability for Labs and Halls with
+                            intelligent conflict prevention and instant confirmations.</p>
+                    </div>
+
+                    <div
+                        class="feature-card group relative bg-white border border-slate-200 rounded-2xl p-8 hover:border-green-300 transition-all duration-300">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10">
+                        </div>
+                        <div
+                            class="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mb-6 text-white text-2xl group-hover:scale-110 transition-transform duration-300">
+                            🔍</div>
+                        <h3 class="text-xl font-bold mb-3">Lost & Found</h3>
+                        <p class="text-slate-600 leading-relaxed">Report lost items and discover what you've been
+                            missing with our verified campus marketplace.</p>
+                    </div>
+
+                    <div
+                        class="feature-card group relative bg-white border border-slate-200 rounded-2xl p-8 hover:border-amber-300 transition-all duration-300">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10">
+                        </div>
+                        <div
+                            class="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center mb-6 text-white text-2xl group-hover:scale-110 transition-transform duration-300">
+                            📊</div>
+                        <h3 class="text-xl font-bold mb-3">Usage Analytics</h3>
+                        <p class="text-slate-600 leading-relaxed">Data-driven insights for administration to optimize
+                            campus resource utilization and planning.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 px-6 bg-gradient-to-br from-slate-50 to-slate-100" id="stats">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-black text-center mb-16">Making Campus Better</h2>
+                <div class="grid md:grid-cols-4 gap-8">
+                    <div
+                        class="stat-card bg-white rounded-2xl p-8 border border-slate-200 text-center hover:border-blue-300 transition-all duration-300 hover:shadow-lg">
+                        <div
+                            class="text-4xl md:text-5xl font-black bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-2">
+                            <span class="stat-number" data-target="2500">0</span>
+                        </div>
+                        <p class="text-slate-600 font-semibold">Active Users</p>
+                    </div>
+
+                    <div
+                        class="stat-card bg-white rounded-2xl p-8 border border-slate-200 text-center hover:border-green-300 transition-all duration-300 hover:shadow-lg">
+                        <div
+                            class="text-4xl md:text-5xl font-black bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-2">
+                            <span class="stat-number" data-target="8500">0</span>
+                        </div>
+                        <p class="text-slate-600 font-semibold">Bookings Made</p>
+                    </div>
+
+                    <div
+                        class="stat-card bg-white rounded-2xl p-8 border border-slate-200 text-center hover:border-amber-300 transition-all duration-300 hover:shadow-lg">
+                        <div
+                            class="text-4xl md:text-5xl font-black bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent mb-2">
+                            <span class="stat-number" data-target="1200">0</span>
+                        </div>
+                        <p class="text-slate-600 font-semibold">Items Recovered</p>
+                    </div>
+
+                    <div
+                        class="stat-card bg-white rounded-2xl p-8 border border-slate-200 text-center hover:border-purple-300 transition-all duration-300 hover:shadow-lg">
+                        <div
+                            class="text-4xl md:text-5xl font-black bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-2">
+                            <span class="stat-number" data-target="98">0</span>
+                        </div>
+                        <p class="text-slate-600 font-semibold">Satisfaction</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 px-6 cta-section relative overflow-hidden" id="cta">
+            <div class="absolute inset-0 -z-10">
+                <div class="absolute bottom-0 right-0 w-96 h-96 bg-blue-200 rounded-full filter blur-3xl opacity-20 animate-float"
+                    style="animation-delay: 1s"></div>
             </div>
 
-            <div class="flex items-center gap-3">
-              <a href="#" class="hidden sm:inline-block px-4 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Login</a>
-              <button class="px-6 py-2.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-full font-semibold text-sm hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 transform hover:scale-105">Join Now</button>
+            <div
+                class="max-w-4xl mx-auto bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 rounded-3xl p-12 md:p-16 text-center text-white relative overflow-hidden">
+                <div class="relative z-10">
+                    <h2 class="text-4xl md:text-5xl font-black mb-6">Ready to Transform Campus Life?</h2>
+                    <p class="text-lg md:text-xl mb-10 text-white/90 max-w-2xl mx-auto">Join thousands of students
+                        already using Knot to streamline their campus experience.</p>
+                    <a href="/signup"
+                        class="px-10 py-4 bg-white text-blue-600 rounded-2xl font-bold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 inline-block">
+                        Get Started Free
+                    </a>
+                </div>
             </div>
-          </div>
-        </div>
-      </nav>
+        </section>
 
-      <header class="pt-32 pb-20 px-6 relative overflow-hidden">
-        <div class="absolute inset-0 -z-10">
-          <div class="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full filter blur-3xl opacity-30 animate-float"></div>
-          <div class="absolute bottom-0 left-0 w-96 h-96 bg-cyan-100 rounded-full filter blur-3xl opacity-30 animate-float" style="animation-delay: 2s"></div>
-        </div>
-
-        <div class="max-w-4xl mx-auto text-center hero-content">
-          <h1 class="text-5xl md:text-7xl font-black mb-8 leading-tight">
-            <span class="block">Untangling</span>
-            <span class="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent">Campus Chaos</span>
-          </h1>
-          <p class="text-lg md:text-xl text-slate-600 mb-12 max-w-2xl mx-auto leading-relaxed">
-            The unified ecosystem for I.T.S Engineering College. Book labs, find lost items, and trade resources—all in one place.
-          </p>
-          <div class="flex flex-col sm:flex-row justify-center gap-4">
-            <button class="px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-blue-500/40 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1">
-              Book a Resource
-            </button>
-            <button class="px-8 py-4 bg-slate-100 hover:bg-slate-200 text-slate-900 rounded-2xl font-bold text-lg transition-all duration-300 border border-slate-200">
-              Visit Marketplace
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <section class="py-20 px-6" id="features">
-        <div class="max-w-6xl mx-auto">
-          <h2 class="text-4xl md:text-5xl font-black text-center mb-16">Powerful Features Built For You</h2>
-          <div class="grid md:grid-cols-3 gap-8">
-            <div class="feature-card group relative bg-white border border-slate-200 rounded-2xl p-8 hover:border-blue-300 transition-all duration-300">
-              <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
-              <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mb-6 text-white text-2xl group-hover:scale-110 transition-transform duration-300">📅</div>
-              <h3 class="text-xl font-bold mb-3">Smart Booking</h3>
-              <p class="text-slate-600 leading-relaxed">Real-time availability for Labs and Halls with intelligent conflict prevention and instant confirmations.</p>
+        <footer class="bg-slate-900 text-slate-400 py-12 px-6 border-t border-slate-800">
+            <div class="max-w-6xl mx-auto text-center">
+                <p class="mb-4">Made with care for I.T.S Engineering College</p>
+                <p class="text-sm">&copy; 2026 Knot by Niso Ecosystem. All rights reserved.</p>
             </div>
-
-            <div class="feature-card group relative bg-white border border-slate-200 rounded-2xl p-8 hover:border-green-300 transition-all duration-300">
-              <div class="absolute inset-0 bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
-              <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mb-6 text-white text-2xl group-hover:scale-110 transition-transform duration-300">🔍</div>
-              <h3 class="text-xl font-bold mb-3">Lost & Found</h3>
-              <p class="text-slate-600 leading-relaxed">Report lost items and discover what you've been missing with our verified campus marketplace.</p>
-            </div>
-
-            <div class="feature-card group relative bg-white border border-slate-200 rounded-2xl p-8 hover:border-amber-300 transition-all duration-300">
-              <div class="absolute inset-0 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
-              <div class="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center mb-6 text-white text-2xl group-hover:scale-110 transition-transform duration-300">📊</div>
-              <h3 class="text-xl font-bold mb-3">Usage Analytics</h3>
-              <p class="text-slate-600 leading-relaxed">Data-driven insights for administration to optimize campus resource utilization and planning.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="py-20 px-6 bg-gradient-to-br from-slate-50 to-slate-100" id="stats">
-        <div class="max-w-6xl mx-auto">
-          <h2 class="text-4xl md:text-5xl font-black text-center mb-16">Making Campus Better</h2>
-          <div class="grid md:grid-cols-4 gap-8">
-            <div class="stat-card bg-white rounded-2xl p-8 border border-slate-200 text-center hover:border-blue-300 transition-all duration-300 hover:shadow-lg">
-              <div class="text-4xl md:text-5xl font-black bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-2">
-                <span class="stat-number" data-target="2500">0</span>
-              </div>
-              <p class="text-slate-600 font-semibold">Active Users</p>
-            </div>
-
-            <div class="stat-card bg-white rounded-2xl p-8 border border-slate-200 text-center hover:border-green-300 transition-all duration-300 hover:shadow-lg">
-              <div class="text-4xl md:text-5xl font-black bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-2">
-                <span class="stat-number" data-target="8500">0</span>
-              </div>
-              <p class="text-slate-600 font-semibold">Bookings Made</p>
-            </div>
-
-            <div class="stat-card bg-white rounded-2xl p-8 border border-slate-200 text-center hover:border-amber-300 transition-all duration-300 hover:shadow-lg">
-              <div class="text-4xl md:text-5xl font-black bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent mb-2">
-                <span class="stat-number" data-target="1200">0</span>
-              </div>
-              <p class="text-slate-600 font-semibold">Items Recovered</p>
-            </div>
-
-            <div class="stat-card bg-white rounded-2xl p-8 border border-slate-200 text-center hover:border-purple-300 transition-all duration-300 hover:shadow-lg">
-              <div class="text-4xl md:text-5xl font-black bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-2">
-                <span class="stat-number" data-target="98">0</span>
-              </div>
-              <p class="text-slate-600 font-semibold">Satisfaction</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="py-20 px-6 cta-section relative overflow-hidden" id="cta">
-        <div class="absolute inset-0 -z-10">
-          <div class="absolute bottom-0 right-0 w-96 h-96 bg-blue-200 rounded-full filter blur-3xl opacity-20 animate-float" style="animation-delay: 1s"></div>
-        </div>
-
-        <div class="max-w-4xl mx-auto bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 rounded-3xl p-12 md:p-16 text-center text-white relative overflow-hidden">
-          <div class="relative z-10">
-            <h2 class="text-4xl md:text-5xl font-black mb-6">Ready to Transform Campus Life?</h2>
-            <p class="text-lg md:text-xl mb-10 text-white/90 max-w-2xl mx-auto">Join thousands of students already using Knot to streamline their campus experience.</p>
-            <button class="px-10 py-4 bg-white text-blue-600 rounded-2xl font-bold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1">
-              Get Started Free
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <footer class="bg-slate-900 text-slate-400 py-12 px-6 border-t border-slate-800">
-        <div class="max-w-6xl mx-auto text-center">
-          <p class="mb-4">Made with care for I.T.S Engineering College</p>
-          <p class="text-sm">&copy; 2026 Knot by Niso Ecosystem. All rights reserved.</p>
-        </div>
-      </footer>
+        </footer>
     </div>
 
     <script src="./scriptindex.js"></script>
-  </body>
+</body>
+
 </html>
