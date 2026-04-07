@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knot Admin | Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styleadmin.css">
+</head>
+<body class="bg-slate-50 font-sans text-slate-900">
+
+    <div class="flex min-h-screen">
+        <aside class="w-64 bg-slate-900 text-white flex flex-col sticky top-0 h-screen">
+            <div class="p-6">
+                <div class="flex items-center gap-2 text-2xl font-black text-blue-400">
+                    <i class="fas fa-link"></i> KNOT <span class="text-xs bg-blue-900 px-2 py-1 rounded text-white ml-2">ADMIN</span>
+                </div>
+            </div>
+            <nav class="flex-1 px-4 space-y-2 mt-4">
+                <a href="#" class="nav-link active"><i class="fas fa-th-large mr-3"></i> Dashboard</a>
+                <a href="#approvals" class="nav-link"><i class="fas fa-check-circle mr-3"></i> Approvals</a>
+                <a href="#resources" class="nav-link"><i class="fas fa-box mr-3"></i> Inventory</a>
+                <a href="#market" class="nav-link"><i class="fas fa-shopping-bag mr-3"></i> Marketplace</a>
+            </nav>
+            <div class="p-6 border-t border-slate-800">
+                <a href="/" class="text-slate-400 hover:text-white flex items-center gap-2 transition text-sm">
+                    <i class="fas fa-sign-out-alt"></i> Back to Home
+                </a>
+            </div>
+        </aside>
+
+        <main class="flex-1 overflow-y-auto">
+            <header class="bg-white border-b border-slate-200 px-8 py-4 flex justify-between items-center sticky top-0 z-10">
+                <h2 class="text-xl font-bold">Admin Overview</h2>
+                <div class="flex items-center gap-4">
+                    <span class="text-sm text-slate-500">Welcome, <strong>Faculty Admin</strong></span>
+                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">FA</div>
+                </div>
+            </header>
+
+            <div class="p-8 space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="stat-card">
+                        <p class="label">Pending Requests</p>
+                        <h3 class="value text-red-500">12</h3>
+                    </div>
+                    <div class="stat-card">
+                        <p class="label">Total Users</p>
+                        <h3 class="value">1,240</h3>
+                    </div>
+                    <div class="stat-card">
+                        <p class="label">Active Bookings</p>
+                        <h3 class="value text-green-600">45</h3>
+                    </div>
+                    <div class="stat-card">
+                        <p class="label">Lost Items Found</p>
+                        <h3 class="value text-blue-600">89%</h3>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                        <h4 class="font-bold mb-4">Resource Utilization Heatmap</h4>
+                        <canvas id="utilizationChart" height="150"></canvas>
+                    </div>
+                    <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-xl">
+                        <h4 class="font-bold mb-4 text-blue-400">Quick Add Resource</h4>
+                        <form class="space-y-4">
+                            <input type="text" placeholder="Item Name (e.g. Lab 2)" class="input-dark">
+                            <select class="input-dark">
+                                <option>Lab</option>
+                                <option>Hall</option>
+                                <option>Equipment</option>
+                            </select>
+                            <label class="flex items-center gap-2 text-sm text-slate-400">
+                                <input type="checkbox" class="rounded"> Requires Approval
+                            </label>
+                            <button class="w-full bg-blue-600 hover:bg-blue-500 py-2 rounded-xl font-bold transition">Add to Inventory</button>
+                        </form>
+                    </div>
+                </div>
+
+                <section id="approvals" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+                        <h4 class="font-bold">Pending Booking Approvals</h4>
+                        <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded">8 NEW</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50 text-slate-400 text-xs uppercase font-bold">
+                                <tr>
+                                    <th class="px-6 py-4">Student Name</th>
+                                    <th class="px-6 py-4">Resource</th>
+                                    <th class="px-6 py-4">Date/Time</th>
+                                    <th class="px-6 py-4 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 text-sm">
+                                <tr>
+                                    <td class="px-6 py-4 font-bold">Nikhil Yadav</td>
+                                    <td class="px-6 py-4">AR/VR Lab</td>
+                                    <td class="px-6 py-4">Oct 12, 10:00 AM</td>
+                                    <td class="px-6 py-4 text-right flex justify-end gap-2">
+                                        <button class="btn-approve"><i class="fas fa-check"></i></button>
+                                        <button class="btn-reject"><i class="fas fa-times"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-bold">Aryan Raj</td>
+                                    <td class="px-6 py-4">Seminar Hall A</td>
+                                    <td class="px-6 py-4">Oct 12, 02:00 PM</td>
+                                    <td class="px-6 py-4 text-right flex justify-end gap-2">
+                                        <button class="btn-approve"><i class="fas fa-check"></i></button>
+                                        <button class="btn-reject"><i class="fas fa-times"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="scriptadmin.js"></script>
+</body>
+</html>
