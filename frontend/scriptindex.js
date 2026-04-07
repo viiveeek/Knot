@@ -114,6 +114,8 @@ document.addEventListener('mousemove', (e) => {
 });
 
 document.querySelectorAll('a, button').forEach(element => {
+    element.style.position = 'relative';
+    element.style.overflow = 'hidden';
     element.addEventListener('click', function(e) {
         const ripple = document.createElement('span');
         ripple.classList.add('ripple');
