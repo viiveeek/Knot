@@ -8,6 +8,13 @@ from functools import wraps
 import sqlite3
 import os
 
+import socket
+
+try:
+    socket.create_connection(("smtp.gmail.com", 465), timeout=10)
+    print("✅ Port 465 reachable")
+except Exception as e:
+    print("❌ Port blocked:", e)
 app = Flask(__name__)
 
 # --- CORS ---
@@ -101,7 +108,7 @@ def send_otp():
 
     # Email config
     sender = os.getenv("MAIL_USER")
-    password = os.getenv("MAIL_PASS")
+    password = "yxdc aff tmfz gwzrz"
 
     if not sender or not password:
         return jsonify({"error": "Email config missing"}), 500
