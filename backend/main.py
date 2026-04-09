@@ -118,7 +118,7 @@ def send_otp():
 
     # 3. Email Execution (Using your SMTP logic)
     sender_mail = "niksoriginals@gmail.com"
-    app_password = "yxdcafftmfzgwzrz" 
+    app_password = "uejwrmomkxtbosql" 
 
     msg = EmailMessage()
     msg['Subject'] = "KNOT - OTP Verification"
@@ -128,7 +128,7 @@ def send_otp():
 
     try:
         print(f">>> Connecting to SMTP for {email}...")
-        with smtplib.SMTP('smtp.gmail.com',465, timeout=15) as server:
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=15) as server:
             server.starttls()
             server.login(sender_mail, app_password)
             server.send_message(msg)
