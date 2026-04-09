@@ -150,8 +150,6 @@ def verify_otp():
     data = request.json or {}
     email = data.get("email")
     user_otp = data.get("otp")
-
-    # Demo Bypass Code
     if user_otp == "123456":
         session["user"] = email
         return jsonify({"success": True})
@@ -189,6 +187,49 @@ def admin_login():
 def admin_logout():
     session.pop("admin", None)
     return jsonify({"success": True})
+
+# --- 5. ADMIN & ANALYTICS ROUTES ---
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get("admin"):
+            return jsonify({"error": "Unauthorized: Admin login required"}), 403
+        return f(*args, **kwargs)
+    return decorated_function
+
+@app.route("/admin/bookings/pending", methods=["GET"])
+@admin_required
+def get_pending_bookings():
+    conn = get_db()
+    query = '''
+        SELECT b.id, u.name as user_name, r.name as resource_name, b.start_time, b.end_time, b.status
+        FROM bookings b
+        JOIN users u ON b.user_id = u.id
+        JOIN resources r ON b.resource_id = r.id
+        WHERE b.status = 'Pending'
+    '''
+    rows = conn.execute(query).fetchall()
+    conn.close()
+    return jsonify([dict(row) for row in rows])
+
+@app.route("/admin/analytics", methods=["GET"])
+@admin_required
+def get_analytics():
+    conn = get_db()
+    usage = conn.execute('''
+        SELECT r.name, COUNT(b.id) as count 
+        FROM resources r 
+        LEFT JOIN bookings b ON r.id = b.resource_id 
+        GROUP BY r.id
+    ''').fetchall()
+    total_users = conn.execute("SELECT COUNT(*) FROM users").fetchone()[0]
+    conn.close()
+    
+    return jsonify({
+        "resource_usage": [dict(s) for s in usage],
+        "total_users": total_users,
+        "server_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    })
 
 # --- 6. RUN ---
 if __name__ == "__main__":
