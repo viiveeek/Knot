@@ -55,7 +55,7 @@
         async function sendOTP() {
             const email = document.getElementById('email').value;
             if(!email.endsWith("@its.edu.in")) {
-                alert("Bhai, sirf ITS college ki email allow hai!");
+                alert("Only, ITS college email is allowed!");
                 return;
             }
 
@@ -92,9 +92,9 @@
                 });
                 
                 if(response.ok) {
-                    window.location.href = "/dashboard"; // Redirect to student dashboard
+                    window.location.href = "/dashboard";
                 } else {
-                    alert("Invalid OTP! Ek baar check kar lo.");
+                    alert("Invalid OTP! Retry.");
                 }
             } catch (err) {
                 alert("Verification Failed!");
