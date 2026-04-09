@@ -45,21 +45,36 @@ def init_db():
     conn.execute('''CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT, email TEXT UNIQUE NOT NULL,
-        role TEXT DEFAULT 'student')''')
+        role TEXT CHECK(role IN ('student', 'admin')) DEFAULT 'student',
+        department TEXT)''')
     
-    # OTP Table
+    # OTP Table (For Auth)
     conn.execute('''CREATE TABLE IF NOT EXISTS otps (
         email TEXT PRIMARY KEY,
         otp_code TEXT NOT NULL,
         expiry DATETIME NOT NULL)''')
 
-    # Resources, Bookings & Marketplace (Basic structure)
+    # Resources Table
     conn.execute('''CREATE TABLE IF NOT EXISTS resources (
-        id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, status TEXT DEFAULT 'Available')''')
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL, type TEXT NOT NULL,
+        status TEXT DEFAULT 'Available', needs_approval BOOLEAN DEFAULT 0)''')
+
+    # Bookings Table
+    conn.execute('''CREATE TABLE IF NOT EXISTS bookings (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, resource_id INTEGER,
+        start_time DATETIME, end_time DATETIME, status TEXT DEFAULT 'Pending',
+        FOREIGN KEY(user_id) REFERENCES users(id), FOREIGN KEY(resource_id) REFERENCES resources(id))''')
+
+    # Marketplace Table
+    conn.execute('''CREATE TABLE IF NOT EXISTS marketplace (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, title TEXT,
+        description TEXT, type TEXT CHECK(type IN ('Lost', 'Found', 'Sell', 'Trade')),
+        image_url TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY(user_id) REFERENCES users(id))''')
     
     conn.commit()
     conn.close()
-    print(">>> [DB] Database initialized successfully.")
 
 # Startup par table check
 @app.before_request
