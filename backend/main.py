@@ -100,8 +100,8 @@ def send_otp():
         return jsonify({"error": f"DB error: {str(e)}"}), 500
 
     # Email config
-    sender = os.getenv("GMAIL_USER")
-    password = os.getenv("GMAIL_APP_PASSWORD")
+    sender = os.getenv("MAIL_USER")
+    password = os.getenv("MAIL_PASS")
 
     if not sender or not password:
         return jsonify({"error": "Email config missing"}), 500
