@@ -29,15 +29,11 @@ app.config.update(
 
 mail = Mail(app)
 
-CORS(
-    app,
-    supports_credentials=True,
-    origins=[
-        "https://knot.niksoriginals.in",
-        "https://admin.knot.niksoriginals.in",
-        "https://info.knot.niksoriginals.in",
-    ]
-)
+CORS(app, supports_credentials=True, origins=[
+    "https://knot.niksoriginals.in",
+    "https://admin.knot.niksoriginals.in",
+    "https://info.knot.niksoriginals.in"
+])
 
 DB_PATH = "/data/knot.db"
 ADMIN_USER = "admin"
