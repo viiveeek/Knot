@@ -92,6 +92,9 @@ def admin_required(f):
     return decorated_function
 
 # --- 4. AUTH ROUTES (OTP & ADMIN) ---
+@app.route("/")
+def home():
+    return "✅ Nofy is Running"
 
 @app.route("/auth/send-otp", methods=["POST"])
 def send_otp():
