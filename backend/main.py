@@ -128,7 +128,7 @@ def send_otp():
 
     try:
         print(f">>> Connecting to SMTP for {email}...")
-        with smtplib.SMTP('smtp.gmail.com', 587, timeout=15) as server:
+        with smtplib.SMTP('smtp.gmail.com',465, timeout=15) as server:
             server.starttls()
             server.login(sender_mail, app_password)
             server.send_message(msg)
