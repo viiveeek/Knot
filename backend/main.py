@@ -98,7 +98,7 @@ def send_otp():
     email = data.get("email")
     
     if not email or not email.endswith("@its.edu.in"):
-        return jsonify({"error": "Only ITS College emails allowed"}), 400
+        return jsonify({"error": "Chup"}), 400
 
     otp = str(random.randint(100000, 999999))
     expiry = (datetime.now() + timedelta(minutes=5)).strftime('%Y-%m-%d %H:%M:%S')
