@@ -3,4 +3,4 @@ requests
 gunicorn
 flask-cors
 flask_session
-flask_mail
+smtplib
