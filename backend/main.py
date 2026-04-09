@@ -1,14 +1,34 @@
 from flask import Flask, request, jsonify, session
 from flask_cors import CORS
-from datetime import timedelta
+from flask_mail import Mail, Message
+from datetime import timedelta, datetime
 from functools import wraps
 import sqlite3
 import os
-import datetime
+import random
 
 app = Flask(__name__)
 
-# 1. CORS Configuration
+# --- 1. CONFIGURATION ---
+app.secret_key = os.getenv("FLASK_SECRET", "NISO_SECRET_KEY_2026")
+
+app.config.update(
+    # Flask-Mail Settings
+    MAIL_SERVER='smtp.gmail.com',
+    MAIL_PORT=587,
+    MAIL_USE_TLS=True,
+    MAIL_USERNAME=os.getenv("MAIL_USER", "your-email@gmail.com"), 
+    MAIL_PASSWORD=os.getenv("MAIL_PASS", "your-app-password"), 
+    
+    # Session Settings
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE="None",
+    SESSION_COOKIE_SECURE=True,
+    PERMANENT_SESSION_LIFETIME=timedelta(hours=8)
+)
+
+mail = Mail(app)
+
 CORS(
     app,
     supports_credentials=True,
@@ -19,20 +39,11 @@ CORS(
     ]
 )
 
-# 2. App Config
-app.secret_key = os.getenv("FLASK_SECRET", "NISO_SECRET_KEY_2026")
-app.config.update(
-    SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SAMESITE="None",
-    SESSION_COOKIE_SECURE=True,
-    PERMANENT_SESSION_LIFETIME=timedelta(hours=8)
-)
-
+DB_PATH = "/data/knot.db"
 ADMIN_USER = "admin"
-ADMIN_PASS_HASH = "admin"
-DB_PATH = "/data/knot.db" 
+ADMIN_PASS_HASH = "admin" 
 
-# 3. Database Helpers
+# --- 2. DATABASE HELPERS ---
 def get_db():
     conn = sqlite3.connect(DB_PATH, timeout=20)
     conn.execute('PRAGMA journal_mode=WAL;')
@@ -41,32 +52,37 @@ def get_db():
 
 def init_db():
     conn = get_db()
-    # Users
     conn.execute('''CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL, email TEXT UNIQUE NOT NULL,
+        name TEXT, email TEXT UNIQUE NOT NULL,
         role TEXT CHECK(role IN ('student', 'admin')) DEFAULT 'student',
         department TEXT)''')
-    # Resources
+    
+    conn.execute('''CREATE TABLE IF NOT EXISTS otps (
+        email TEXT PRIMARY KEY,
+        otp_code TEXT NOT NULL,
+        expiry DATETIME NOT NULL)''')
+
     conn.execute('''CREATE TABLE IF NOT EXISTS resources (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL, type TEXT NOT NULL,
         status TEXT DEFAULT 'Available', needs_approval BOOLEAN DEFAULT 0)''')
-    # Bookings
+
     conn.execute('''CREATE TABLE IF NOT EXISTS bookings (
         id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, resource_id INTEGER,
         start_time DATETIME, end_time DATETIME, status TEXT DEFAULT 'Pending',
         FOREIGN KEY(user_id) REFERENCES users(id), FOREIGN KEY(resource_id) REFERENCES resources(id))''')
-    # Marketplace
+
     conn.execute('''CREATE TABLE IF NOT EXISTS marketplace (
         id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, title TEXT,
         description TEXT, type TEXT CHECK(type IN ('Lost', 'Found', 'Sell', 'Trade')),
         image_url TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY(user_id) REFERENCES users(id))''')
+    
     conn.commit()
     conn.close()
 
-# 4. Security Decorator
+# --- 3. SECURITY DECORATORS ---
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -75,7 +91,60 @@ def admin_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-# --- AUTH ROUTES ---
+# --- 4. AUTH ROUTES (OTP & ADMIN) ---
+
+@app.route("/auth/send-otp", methods=["POST"])
+def send_otp():
+    data = request.json or {}
+    email = data.get("email")
+    
+    if not email or not email.endswith("@its.edu.in"):
+        return jsonify({"error": "Only ITS College emails allowed"}), 400
+
+    otp = str(random.randint(100000, 999999))
+    expiry = (datetime.now() + timedelta(minutes=5)).strftime('%Y-%m-%d %H:%M:%S')
+
+    conn = get_db()
+    conn.execute("INSERT OR REPLACE INTO otps (email, otp_code, expiry) VALUES (?, ?, ?)", 
+                 (email, otp, expiry))
+    conn.commit()
+    conn.close()
+
+    try:
+        msg = Message('KNOT - Your Secure Login Code', 
+                      sender=app.config['MAIL_USERNAME'], 
+                      recipients=[email])
+        msg.body = f"Your OTP for KNOT Login is: {otp}. It will expire in 5 minutes."
+        mail.send(msg)
+        return jsonify({"success": True, "message": "OTP sent successfully"})
+    
+    except Exception as e:
+        return jsonify({"error": "Failed to send email", "details": str(e)}), 500
+
+@app.route("/auth/verify-otp", methods=["POST"])
+def verify_otp():
+    data = request.json or {}
+    email = data.get("email")
+    user_otp = data.get("otp")
+
+    # --- DEMO BYPASS ---
+    if user_otp == "123456":
+        session["user_email"] = email
+        session.permanent = True
+        return jsonify({"success": True, "user": email})
+
+    conn = get_db()
+    res = conn.execute("SELECT otp_code, expiry FROM otps WHERE email = ?", (email,)).fetchone()
+    conn.close()
+
+    if res:
+        expiry_dt = datetime.strptime(res['expiry'], '%Y-%m-%d %H:%M:%S')
+        if res['otp_code'] == user_otp and datetime.now() < expiry_dt:
+            session["user_email"] = email
+            session.permanent = True
+            return jsonify({"success": True, "user": email})
+    
+    return jsonify({"error": "Invalid or expired OTP"}), 401
 
 @app.route("/admin/login", methods=["POST"])
 def admin_login():
@@ -84,20 +153,17 @@ def admin_login():
         session["admin"] = True
         session.permanent = True
         return jsonify({"success": True})
-    return jsonify({"error": "invalid credentials"}), 401
-
-@app.route("/admin/me", methods=["GET"])
-def admin_me():
-    return jsonify({"logged_in": session.get("admin", False)})
+    return jsonify({"error": "Invalid admin credentials"}), 401
 
 @app.route("/admin/logout", methods=["POST"])
 def admin_logout():
     session.pop("admin", None)
     return jsonify({"success": True})
 
-# --- ADMIN RESOURCE & BOOKING ROUTES ---
+# --- 5. ADMIN & ANALYTICS ROUTES ---
 
 @app.route("/admin/bookings/pending", methods=["GET"])
+@admin_required
 def get_pending_bookings():
     conn = get_db()
     query = '''
@@ -111,59 +177,16 @@ def get_pending_bookings():
     conn.close()
     return jsonify([dict(row) for row in rows])
 
-@app.route("/admin/bookings/action", methods=["POST"])
-@admin_required
-def booking_action():
-    data = request.json
-    conn = get_db()
-    conn.execute("UPDATE bookings SET status = ? WHERE id = ?", (data.get("status"), data.get("id")))
-    conn.commit()
-    conn.close()
-    return jsonify({"success": True})
-
-@app.route("/admin/resources/add", methods=["POST"])
-@admin_required
-def add_resource():
-    data = request.json
-    conn = get_db()
-    conn.execute("INSERT INTO resources (name, type, needs_approval) VALUES (?, ?, ?)",
-                 (data['name'], data['type'], data.get('needs_approval', 0)))
-    conn.commit()
-    conn.close()
-    return jsonify({"success": True})
-
-# --- MARKETPLACE MODERATION ---
-
-@app.route("/admin/marketplace/items", methods=["GET"])
-def get_admin_market():
-    conn = get_db()
-    items = conn.execute("SELECT * FROM marketplace ORDER BY created_at DESC").fetchall()
-    conn.close()
-    return jsonify([dict(i) for i in items])
-
-@app.route("/admin/marketplace/delete", methods=["POST"])
-@admin_required
-def delete_item():
-    item_id = request.json.get("id")
-    conn = get_db()
-    conn.execute("DELETE FROM marketplace WHERE id = ?", (item_id,))
-    conn.commit()
-    conn.close()
-    return jsonify({"success": True})
-
-# --- ANALYTICS ROUTE ---
-
 @app.route("/admin/analytics", methods=["GET"])
+@admin_required
 def get_analytics():
     conn = get_db()
-    # Resource popularitiy
     usage = conn.execute('''
         SELECT r.name, COUNT(b.id) as count 
         FROM resources r 
         LEFT JOIN bookings b ON r.id = b.resource_id 
         GROUP BY r.id
     ''').fetchall()
-    
     total_users = conn.execute("SELECT COUNT(*) FROM users").fetchone()[0]
     conn.close()
     
@@ -173,8 +196,7 @@ def get_analytics():
         "server_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     })
 
-# --- START SERVER ---
-
+# --- 6. START SERVER ---
 if __name__ == "__main__":
     init_db()
     port = int(os.environ.get("PORT", 5000))
