@@ -219,7 +219,8 @@
                 class="hidden absolute inset-0 bg-slate-950/90 backdrop-blur-xl rounded-[2.5rem] z-50 flex flex-col items-center justify-center">
                 <div class="w-10 h-10 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin">
                 </div>
-                <p class="text-[10px] text-indigo-400 mt-4 font-black uppercase tracking-[0.3em] animate-pulse">Session Handshake</p>
+                <p class="text-[10px] text-indigo-400 mt-4 font-black uppercase tracking-[0.3em] animate-pulse">Session
+                    Handshake</p>
             </div>
         </div>
     </div>
@@ -240,15 +241,15 @@
                 if (res.ok) {
                     const profData = await res.json();
                     let targetUrl = "/dashboard";
-                    
+
                     if (profData && profData.role) {
                         const role = profData.role.toLowerCase();
                         if (role === 'admin') targetUrl = "/admin";
-                        else if (role === 'hod' || role === 'dean') targetUrl = "/admin"; 
+                        else if (role === 'hod' || role === 'dean') targetUrl = "/admin";
                     }
-                    
+
                     window.location.href = targetUrl;
-                    return; 
+                    return;
                 }
             } catch (err) {
                 console.log("No existing session detected.");
@@ -305,7 +306,7 @@
                 const res = await fetch(`${API_BASE}/auth/verify-otp`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
+                    credentials: 'include', // Cookie bhej raha hai
                     body: JSON.stringify({ email, otp })
                 });
                 const data = await res.json();
@@ -314,29 +315,37 @@
                     if (data.is_new_user) {
                         showSection('name-section');
                         showToast("Identity Verified!", "success");
-                        toggleLoader(false); // Only drop loader if they need to finish setup
+                        toggleLoader(false);
                         return;
                     } else {
                         showToast("Access Granted!", "success");
-                        const profRes = await fetch(`${API_BASE}/api/user-profile`, { credentials: 'include' });
+
+                        // FIX: Yahan headers add kiye hain taaki backend ko pata chale ye wahi session hai
+                        const profRes = await fetch(`${API_BASE}/api/user-profile`, {
+                            credentials: 'include',
+                            headers: { 'Accept': 'application/json' }
+                        });
                         const profData = await profRes.json();
 
-                        let targetUrl = "/dashboard"; 
-                        const role = profData.role.toLowerCase();
+                        let targetUrl = "/dashboard";
+                        if (profData && profData.role) {
+                            const role = profData.role.toLowerCase();
+                            // Admin/HOD/Dean sabko Admin panel bhejo
+                            if (['admin', 'hod', 'dean'].includes(role)) {
+                                targetUrl = "/admin";
+                            }
+                        }
 
-                        if (role === 'admin') targetUrl = "/admin";
-                        else if (role === 'hod' || role === 'dean') targetUrl = "/admin";
-
-                        setTimeout(() => window.location.href = targetUrl, 500);
-                        return; // Keep loader active during redirect
+                        setTimeout(() => window.location.href = targetUrl, 800);
                     }
                 } else {
                     showToast(data.error || "Invalid Code", "error");
+                    toggleLoader(false);
                 }
             } catch (err) {
                 showToast("Backend connection failed.", "error");
+                toggleLoader(false);
             }
-            toggleLoader(false);
         }
 
         async function updateProfile() {
@@ -356,26 +365,26 @@
                 if (res.ok) {
                     showToast("Profile Initialized!", "success");
 
-                    const profRes = await fetch(`${API_BASE}/api/user-profile`, { credentials: 'include' });
+                    // FIX: Role-based redirect logic with proper credentials
+                    const profRes = await fetch(`${API_BASE}/api/user-profile`, {
+                        credentials: 'include',
+                        headers: { 'Accept': 'application/json' }
+                    });
                     const profData = await profRes.json();
 
                     let targetUrl = "/dashboard";
                     const role = profData.role.toLowerCase();
+                    if (['admin', 'hod', 'dean'].includes(role)) targetUrl = "/admin";
 
-                    if (role === 'admin') targetUrl = "/admin";
-                    else if (role === 'hod' || role === 'dean') targetUrl = "/management";
-
-                    setTimeout(() => {
-                        window.location.href = targetUrl;
-                    }, 1000);
-                    return; // Keep loader active during redirect
+                    setTimeout(() => { window.location.href = targetUrl; }, 1000);
                 } else {
                     showToast("Update failed", "error");
+                    toggleLoader(false);
                 }
             } catch (err) {
                 showToast("Sync failed.", "error");
+                toggleLoader(false);
             }
-            toggleLoader(false);
         }
 
         function startTimer() {
