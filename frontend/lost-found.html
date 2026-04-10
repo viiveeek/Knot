@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,21 +9,44 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; color: #f8fafc; }
-        .glass-panel { background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .post-card { transition: all 0.3s ease; }
-        .post-card:hover { border-color: #3b82f6; transform: translateY(-2px); }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #020617;
+            color: #f8fafc;
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .post-card {
+            transition: all 0.3s ease;
+        }
+
+        .post-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
+
 <body class="min-h-screen">
 
     <nav class="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-white/5 px-8 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-4 cursor-pointer" onclick="location.href='/dashboard'">
-                <div class="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg text-white font-bold italic">K</div>
-                <span class="text-xl font-black tracking-tighter uppercase italic">KNOT <span class="text-indigo-500 text-sm">Ledger</span></span>
+                <div
+                    class="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg text-white font-bold italic">
+                    K</div>
+                <span class="text-xl font-black tracking-tighter uppercase italic">KNOT <span
+                        class="text-indigo-500 text-sm">Ledger</span></span>
             </div>
-            <button onclick="openPostModal()" class="bg-indigo-600 hover:bg-indigo-500 px-5 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all">Report Item</button>
+            <button onclick="openPostModal()"
+                class="bg-indigo-600 hover:bg-indigo-500 px-5 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all">Report
+                Item</button>
         </div>
     </nav>
 
@@ -37,28 +61,35 @@
         </div>
     </main>
 
-    <div id="post-modal" class="fixed inset-0 bg-black/90 backdrop-blur-sm hidden flex items-center justify-center z-[100] p-6">
+    <div id="post-modal"
+        class="fixed inset-0 bg-black/90 backdrop-blur-sm hidden flex items-center justify-center z-[100] p-6">
         <div class="glass-panel p-8 w-full max-w-md rounded-[2.5rem] border-t-2 border-indigo-500">
             <h3 class="text-2xl font-black mb-6 uppercase italic">Report New Entry</h3>
             <div class="space-y-4">
                 <div>
                     <label class="text-[9px] font-black uppercase text-slate-500 ml-1">Entry Type</label>
-                    <select id="post-type" class="w-full bg-slate-900 border border-white/10 p-4 rounded-2xl text-white outline-none focus:border-indigo-500 mt-1">
+                    <select id="post-type"
+                        class="w-full bg-slate-900 border border-white/10 p-4 rounded-2xl text-white outline-none focus:border-indigo-500 mt-1">
                         <option value="Lost">I Lost Something</option>
                         <option value="Found">I Found Something</option>
                     </select>
                 </div>
                 <div>
                     <label class="text-[9px] font-black uppercase text-slate-500 ml-1">Item Title</label>
-                    <input type="text" id="post-title" placeholder="Ex: Blue Water Bottle" class="w-full bg-slate-900 border border-white/10 p-4 rounded-2xl text-white outline-none focus:border-indigo-500 mt-1">
+                    <input type="text" id="post-title" placeholder="Ex: Blue Water Bottle"
+                        class="w-full bg-slate-900 border border-white/10 p-4 rounded-2xl text-white outline-none focus:border-indigo-500 mt-1">
                 </div>
                 <div>
                     <label class="text-[9px] font-black uppercase text-slate-500 ml-1">Description / Location</label>
-                    <textarea id="post-desc" rows="3" placeholder="Where did you see it? Contact details?" class="w-full bg-slate-900 border border-white/10 p-4 rounded-2xl text-white outline-none focus:border-indigo-500 mt-1"></textarea>
+                    <textarea id="post-desc" rows="3" placeholder="Where did you see it? Contact details?"
+                        class="w-full bg-slate-900 border border-white/10 p-4 rounded-2xl text-white outline-none focus:border-indigo-500 mt-1"></textarea>
                 </div>
                 <div class="flex gap-3 pt-4">
-                    <button onclick="closePostModal()" class="flex-1 text-slate-500 font-bold uppercase text-[10px]">Cancel</button>
-                    <button onclick="submitPost()" class="flex-[2] bg-indigo-600 py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-indigo-600/20">Broadcast Entry</button>
+                    <button onclick="closePostModal()"
+                        class="flex-1 text-slate-500 font-bold uppercase text-[10px]">Cancel</button>
+                    <button onclick="submitPost()"
+                        class="flex-[2] bg-indigo-600 py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-indigo-600/20">Broadcast
+                        Entry</button>
                 </div>
             </div>
         </div>
@@ -80,7 +111,7 @@
 
         function renderFeed(items) {
             const feed = document.getElementById('marketplace-feed');
-            if(items.length === 0) {
+            if (items.length === 0) {
                 feed.innerHTML = `<div class="p-20 text-center text-slate-600 italic">No entries found in the ledger.</div>`;
                 return;
             }
@@ -110,16 +141,16 @@
             const desc = document.getElementById('post-desc').value;
             const type = document.getElementById('post-type').value;
 
-            if(!title || !desc) return alert("All fields are mandatory.");
+            if (!title || !desc) return alert("All fields are mandatory.");
 
             const res = await fetch(`${API_BASE}/api/marketplace/add`, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
                 body: JSON.stringify({ title, description: desc, type })
             });
 
-            if(res.ok) {
+            if (res.ok) {
                 location.reload();
             } else {
                 alert("Broadcast Failure.");
@@ -129,4 +160,5 @@
         window.onload = fetchFeed;
     </script>
 </body>
+
 </html>
