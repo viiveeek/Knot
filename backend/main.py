@@ -448,43 +448,7 @@ def check_status(res_id):
         print(f"!!! [SQL ERROR] {e}")
         return jsonify({"error": "Internal Server Error"}), 500
 
-@app.route("/api/admin/setup-demo", methods=["GET"])
-def setup_demo_data():
-    try:
-        conn = get_db()
-        
-        # 1. Create a Super Admin (Apni email yahan daal dena)
-        admin_email = "nikhilyadavrny_cse25@its.edu.in" # <--- Yahan apni college email daalo
-        conn.execute('''
-            INSERT OR REPLACE INTO users (name, email, role, department) 
-            VALUES (?, ?, ?, ?)
-        ''', ("Nikhil Yadav", admin_email, "admin", "CSE"))
 
-        # 2. Add some Demo Resources
-        demo_resources = [
-            ("Computer Lab B1", "Lab", "Available", 0),
-            ("Seminar Hall 1", "Hall", "Available", 1),
-            ("Innovation Center", "Studio", "Available", 0),
-            ("IOT Lab", "Lab", "Available", 0)
-        ]
-        conn.executemany('''
-            INSERT OR IGNORE INTO resources (name, type, status, needs_approval) 
-            VALUES (?, ?, ?, ?)
-        ''', demo_resources)
-
-        # 3. Add a Demo Marketplace item
-        # Admin ID humein pata honi chahiye, pehli entry usually 1 hoti hai
-        conn.execute('''
-            INSERT OR IGNORE INTO marketplace (user_id, title, description, type) 
-            VALUES (1, 'Data Structures Book', 'Standard textbook for 2nd year', 'Sell')
-        ''')
-
-        conn.commit()
-        conn.close()
-        return jsonify({"success": True, "message": f"Admin created for {admin_email}. Demo resources added."})
-    
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
 #------------------------------------------------------------------------------------
 @app.route("/")
 def home():
