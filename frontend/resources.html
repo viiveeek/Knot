@@ -1,127 +1,150 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Knot | Campus Resources</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KNOT | Resource Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; color: #f8fafc; }
+        .glass-panel { background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .res-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .res-card:hover { border-color: #3b82f6; transform: translateY(-4px); }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-900">
+<body class="min-h-screen">
 
-    <nav class="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50 px-6 py-4">
+    <nav class="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-white/5 px-8 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <a href="/" class="flex items-center gap-2 text-xl font-bold text-blue-600">
-                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-sm">K</div>
-                Knot
-            </a>
-            <div class="flex gap-6 items-center font-medium text-slate-600">
-                <a href="/marketplace" class="hover:text-blue-600 transition">Marketplace</a>
-                <div class="h-6 w-[1px] bg-slate-300"></div>
-                <span class="text-sm bg-blue-50 text-blue-700 px-3 py-1 rounded-full">Nikhil Yadav</span>
+            <div class="flex items-center gap-4 cursor-pointer" onclick="location.href='/dashboard'">
+                <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20 text-white font-bold italic">K</div>
+                <span class="text-xl font-black tracking-tighter uppercase italic">KNOT <span class="text-blue-500 text-sm">Hub</span></span>
             </div>
+            <button onclick="location.href='/dashboard'" class="text-xs font-bold text-slate-500 hover:text-white transition-all uppercase tracking-widest"><i class="fas fa-arrow-left mr-2"></i> Dashboard</button>
         </div>
     </nav>
 
-    <header class="max-w-7xl mx-auto px-6 py-12">
-        <h1 class="text-4xl font-black mb-4">Campus <span class="text-blue-600">Resources</span></h1>
-        <p class="text-slate-500">Real-time availability of labs, halls, and technical equipment.</p>
-    </header>
+    <main class="max-w-7xl mx-auto px-8 py-12">
+        <header class="mb-12">
+            <h1 class="text-4xl font-black text-white tracking-tight leading-none mb-4">Infrastructure Nodes</h1>
+            <p class="text-slate-500 font-medium italic">Live tracking and reservation system for campus facilities.</p>
+        </header>
 
-    <main class="max-w-7xl mx-auto px-6 pb-20">
-        <div class="grid md:grid-cols-3 gap-8">
-            
-            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl">
-                        <i class="fas fa-microchip"></i>
-                    </div>
-                    <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full">AVAILABLE</span>
-                </div>
-                <h3 class="text-xl font-bold mb-1">AR/VR Lab</h3>
-                <p class="text-slate-500 text-sm mb-6">Equipped with Meta Quest 3 and High-end PCs.</p>
-                <button onclick="openBookingModal('AR/VR Lab')" class="w-full py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition">
-                    Book Now
-                </button>
+        <div class="flex flex-col md:flex-row gap-4 mb-10">
+            <div class="relative flex-1">
+                <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+                <input type="text" id="res-search" onkeyup="filterResources()" placeholder="Search Lab, Hall or Project Room..." 
+                    class="w-full bg-slate-900 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-sm font-medium outline-none focus:border-blue-500 transition-all">
             </div>
+        </div>
 
-            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-xl">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <span class="px-3 py-1 bg-amber-100 text-amber-700 text-xs font-bold rounded-full">PENDING APPROVAL</span>
-                </div>
-                <h3 class="text-xl font-bold mb-1">Seminar Hall A</h3>
-                <p class="text-slate-500 text-sm mb-6">Capacity: 120 People. Surround Sound System.</p>
-                <button class="w-full py-3 bg-slate-200 text-slate-500 rounded-xl font-bold cursor-not-allowed">
-                    Slot Taken
-                </button>
-            </div>
-
-            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center text-xl">
-                        <i class="fas fa-camera"></i>
-                    </div>
-                    <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full">AVAILABLE</span>
-                </div>
-                <h3 class="text-xl font-bold mb-1">DSLR Camera Kit</h3>
-                <p class="text-slate-500 text-sm mb-6">Sony Alpha 7IV with 24-70mm Lens.</p>
-                <button onclick="openBookingModal('DSLR Camera Kit')" class="w-full py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition">
-                    Book Now
-                </button>
-            </div>
-
+        <div id="resource-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="h-40 glass-panel rounded-3xl animate-pulse"></div>
+            <div class="h-40 glass-panel rounded-3xl animate-pulse"></div>
+            <div class="h-40 glass-panel rounded-3xl animate-pulse"></div>
         </div>
     </main>
 
-    <div id="bookingModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center z-[100] p-6">
-        <div class="bg-white w-full max-w-md rounded-3xl p-8 shadow-2xl scale-95 transition-transform duration-300">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold">Book <span id="modalResourceName" class="text-blue-600">Resource</span></h2>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i class="fas fa-times text-xl"></i></button>
-            </div>
+    <div id="booking-modal" class="fixed inset-0 bg-black/90 backdrop-blur-sm hidden flex items-center justify-center z-[100] p-6">
+        <div class="glass-panel p-8 w-full max-w-md rounded-[2.5rem] shadow-2xl relative border-t-2 border-blue-500">
+            <button onclick="closeModal()" class="absolute top-6 right-6 text-slate-500 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+            <h3 class="text-2xl font-black mb-2 uppercase italic tracking-tighter">Reserve Slot</h3>
+            <p id="modal-res-name" class="text-blue-400 font-bold mb-8 uppercase tracking-widest text-[10px]"></p>
             
-            <form action="/api/book" method="POST" class="space-y-4">
+            <div class="space-y-4">
                 <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Date</label>
-                    <input type="date" required class="w-full p-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none">
+                    <label class="text-[9px] font-black uppercase text-slate-500 ml-1">Start Time</label>
+                    <input type="datetime-local" id="book-start" class="w-full bg-slate-900 border border-white/10 p-4 rounded-2xl text-white outline-none focus:border-blue-500 mt-1">
                 </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">Start Time</label>
-                        <input type="time" required class="w-full p-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">End Time</label>
-                        <input type="time" required class="w-full p-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none">
-                    </div>
+                <div>
+                    <label class="text-[9px] font-black uppercase text-slate-500 ml-1">End Time</label>
+                    <input type="datetime-local" id="book-end" class="w-full bg-slate-900 border border-white/10 p-4 rounded-2xl text-white outline-none focus:border-blue-500 mt-1">
                 </div>
-                <button type="submit" class="w-full py-4 bg-blue-600 text-white rounded-2xl font-bold shadow-lg shadow-blue-500/30 hover:bg-blue-700 transition transform hover:scale-[1.02]">
-                    Confirm Booking
-                </button>
-            </form>
+                <button onclick="confirmBooking()" class="w-full bg-blue-600 hover:bg-blue-500 py-4 rounded-2xl font-black text-xs uppercase tracking-widest mt-6 transition-all shadow-xl shadow-blue-600/20">Confirm Reservation</button>
+            </div>
         </div>
     </div>
 
     <script>
-        function openBookingModal(name) {
-            const modal = document.getElementById('bookingModal');
-            document.getElementById('modalResourceName').innerText = name;
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => { modal.firstElementChild.classList.remove('scale-95'); }, 10);
+        const API_BASE = "https://apiknot.niksoriginals.in";
+        let activeResId = null;
+
+        async function fetchResources() {
+            try {
+                const res = await fetch(`${API_BASE}/api/resources`, { credentials: 'include' });
+                const data = await res.json();
+                renderGrid(data);
+            } catch (e) { console.error(e); }
+        }
+
+        function renderGrid(resources) {
+            const grid = document.getElementById('resource-grid');
+            grid.innerHTML = resources.map(r => `
+                <div class="res-card glass-panel p-6 rounded-[2rem] flex flex-col gap-6" data-name="${r.name.toLowerCase()}">
+                    <div class="flex justify-between items-start">
+                        <div class="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-blue-500 border border-white/5">
+                            <i class="fas ${r.type === 'Lab' ? 'fa-microchip' : 'fa-landmark-dome'} text-xl"></i>
+                        </div>
+                        <span class="badge px-3 py-1 bg-white/5 rounded-full text-[9px] font-black uppercase tracking-widest ${r.status === 'Available' ? 'text-emerald-400' : 'text-rose-400'}">
+                            <span class="status-dot ${r.status === 'Available' ? 'bg-emerald-400' : 'bg-rose-400'} mr-2"></span>${r.status}
+                        </span>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold uppercase tracking-tighter">${r.name}</h3>
+                        <p class="text-[10px] text-slate-500 font-black uppercase tracking-[0.2em] mt-1">${r.type} Node</p>
+                    </div>
+                    <button onclick="${r.status === 'Available' ? `openBooking(${r.id}, '${r.name}')` : ''}" 
+                        class="w-full py-3 rounded-xl font-black text-[10px] uppercase tracking-[0.2em] transition-all 
+                        ${r.status === 'Available' ? 'bg-blue-600/10 text-blue-400 border border-blue-500/20 hover:bg-blue-600 hover:text-white' : 'bg-slate-900 text-slate-600 border border-white/5 cursor-not-allowed'}">
+                        ${r.status === 'Available' ? 'Secure Reservation' : 'System Busy'}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function openBooking(id, name) {
+            activeResId = id;
+            document.getElementById('modal-res-name').innerText = name;
+            document.getElementById('booking-modal').classList.remove('hidden');
         }
 
         function closeModal() {
-            const modal = document.getElementById('bookingModal');
-            modal.firstElementChild.classList.add('scale-95');
-            setTimeout(() => { 
-                modal.classList.add('hidden'); 
-                modal.classList.remove('flex');
-            }, 200);
+            document.getElementById('booking-modal').classList.add('hidden');
         }
+
+        async function confirmBooking() {
+            const start = document.getElementById('book-start').value;
+            const end = document.getElementById('book-end').value;
+
+            if(!start || !end) return alert("Define time-window first.");
+
+            const res = await fetch(`${API_BASE}/api/resources/book`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                credentials: 'include',
+                body: JSON.stringify({ resource_id: activeResId, start_time: start, end_time: end })
+            });
+            const data = await res.json();
+            if(data.success) {
+                alert("Node Successfully Reserved.");
+                location.reload();
+            } else {
+                alert(data.error);
+            }
+        }
+
+        function filterResources() {
+            const query = document.getElementById('res-search').value.toLowerCase();
+            document.querySelectorAll('.res-card').forEach(card => {
+                const name = card.getAttribute('data-name');
+                card.style.display = name.includes(query) ? 'flex' : 'none';
+            });
+        }
+
+        window.onload = fetchResources;
     </script>
 </body>
 </html>
