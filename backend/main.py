@@ -473,19 +473,18 @@ def admin_delete_market(item_id):
 # --- MARKETPLACE: FETCH (Filtered for Lost/Found) ---
 @app.route("/api/marketplace", methods=["GET"])
 def get_marketplace():
-    category = request.args.get("category") # 'lostfound' or 'market'
+    category = request.args.get("category")
     try:
         with get_db() as conn:
+            # Join users to get poster name
             query = '''
                 SELECT m.*, u.name as owner_name 
                 FROM marketplace m 
                 JOIN users u ON m.user_id = u.id
             '''
-            
+            # Agar hum lost-found page par hain, toh Sell/Trade ko hide kar do
             if category == 'lostfound':
                 query += " WHERE m.type IN ('Lost', 'Found')"
-            elif category == 'market':
-                query += " WHERE m.type IN ('Sell', 'Trade')"
             
             query += " ORDER BY m.id DESC"
             items = conn.execute(query).fetchall()
