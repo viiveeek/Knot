@@ -17,16 +17,16 @@ app.secret_key = os.getenv("FLASK_SECRET", "NISO_KNOT_2026_SECURE")
 
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SAMESITE="None",
-    SESSION_COOKIE_SECURE=True,
-    PERMANENT_SESSION_LIFETIME=timedelta(hours=8)
+    SESSION_COOKIE_SAMESITE="None", 
+    SESSION_COOKIE_SECURE=True,    
+    PERMANENT_SESSION_LIFETIME=timedelta(hours=8),
+    SESSION_COOKIE_DOMAIN=".niksoriginals.in" 
 )
 
-# CORS Configuration
+
 CORS(app, supports_credentials=True, origins=[
     "https://knot.niksoriginals.in",
-    "https://admin.knot.niksoriginals.in",
-    "https://info.knot.niksoriginals.in"
+    "https://admin.niksoriginals.in"
 ])
 
 # Database Path (Using your mounted volume)
