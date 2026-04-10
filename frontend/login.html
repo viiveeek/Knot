@@ -193,7 +193,7 @@
                             Name</label>
                         <div class="input-group flex items-center rounded-2xl p-4">
                             <i class="far fa-user text-slate-500 mr-4"></i>
-                            <input type="text" id="fullname" placeholder="Name"
+                            <input type="text" id="fullname" placeholder="John Doe"
                                 class="bg-transparent w-full outline-none text-white">
                         </div>
                     </div>
@@ -229,33 +229,6 @@
         const API_BASE = "https://apiknot.niksoriginals.in";
         const DASHBOARD_URL = "/dashboard";
         let timerInterval;
-
-        // --- SESSION VERIFICATION ON LOAD ---
-        window.addEventListener('DOMContentLoaded', checkSession);
-
-        async function checkSession() {
-            toggleLoader(true);
-            try {
-                const res = await fetch(`${API_BASE}/api/user-profile`, { credentials: 'include' });
-                // If response is good, the user's session cookie is valid
-                if (res.ok) {
-                    const profData = await res.json();
-                    let targetUrl = "/dashboard";
-
-                    if (profData && profData.role) {
-                        const role = profData.role.toLowerCase();
-                        if (role === 'admin') targetUrl = "/admin";
-                        else if (role === 'hod' || role === 'dean') targetUrl = "/admin";
-                    }
-
-                    window.location.href = targetUrl;
-                    return;
-                }
-            } catch (err) {
-                console.log("No existing session detected.");
-            }
-            toggleLoader(false);
-        }
 
         // --- TOAST SYSTEM ---
         function showToast(msg, type = 'info') {
@@ -306,7 +279,7 @@
                 const res = await fetch(`${API_BASE}/auth/verify-otp`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include', // Cookie bhej raha hai
+                    credentials: 'include',
                     body: JSON.stringify({ email, otp })
                 });
                 const data = await res.json();
@@ -315,37 +288,26 @@
                     if (data.is_new_user) {
                         showSection('name-section');
                         showToast("Identity Verified!", "success");
-                        toggleLoader(false);
-                        return;
                     } else {
                         showToast("Access Granted!", "success");
-
-                        // FIX: Yahan headers add kiye hain taaki backend ko pata chale ye wahi session hai
-                        const profRes = await fetch(`${API_BASE}/api/user-profile`, {
-                            credentials: 'include',
-                            headers: { 'Accept': 'application/json' }
-                        });
+                        const profRes = await fetch(`${API_BASE}/api/user-profile`, { credentials: 'include' });
                         const profData = await profRes.json();
 
-                        let targetUrl = "/dashboard";
-                        if (profData && profData.role) {
-                            const role = profData.role.toLowerCase();
-                            // Admin/HOD/Dean sabko Admin panel bhejo
-                            if (['admin', 'hod', 'dean'].includes(role)) {
-                                targetUrl = "/admin";
-                            }
-                        }
+                        let targetUrl = "/dashboard"; 
+                        const role = profData.role.toLowerCase();
 
-                        setTimeout(() => window.location.href = targetUrl, 800);
+                        if (role === 'admin') targetUrl = "/admin";
+                        else if (role === 'hod' || role === 'dean') targetUrl = "/admin";
+
+                        setTimeout(() => window.location.href = targetUrl, 500);
                     }
                 } else {
                     showToast(data.error || "Invalid Code", "error");
-                    toggleLoader(false);
                 }
             } catch (err) {
                 showToast("Backend connection failed.", "error");
-                toggleLoader(false);
             }
+            toggleLoader(false);
         }
 
         async function updateProfile() {
@@ -363,45 +325,44 @@
                 });
 
                 if (res.ok) {
-                    if (data.is_new_user) {
-                        showSection('name-section');
-                        showToast("Identity Verified!", "success");
-                        toggleLoader(false);
-                    } else {
-                        showToast("Access Granted!", "success");
-                        setTimeout(async () => {
-                            const profRes = await fetch(`${API_BASE}/api/user-profile`, {
-                                credentials: 'include',
-                                headers: { 'Accept': 'application/json' }
-                            });
-                            const profData = await profRes.json();
+                    showToast("Profile Initialized!", "success");
 
-                            let targetUrl = "/dashboard";
-                            if (profData && profData.role) {
-                                const role = profData.role.toLowerCase();
-                                if (['admin', 'hod', 'dean'].includes(role)) targetUrl = "/admin";
-                            }
+                    
+                    const profRes = await fetch(`${API_BASE}/api/user-profile`, { credentials: 'include' });
+                    const profData = await profRes.json();
 
-                            // Final redirection
-                            window.location.href = targetUrl;
-                        }, 500);
-                    }
-                }
+                    let targetUrl = "/dashboard";
+                    const role = profData.role.toLowerCase();
 
-                function startTimer() {
-                    let s = 59;
-                    const el = document.getElementById('resend-timer');
-                    el.classList.add('pointer-events-none', 'opacity-50');
-                    clearInterval(timerInterval);
-                    timerInterval = setInterval(() => {
-                        s--;
-                        el.innerText = `Resend 00:${s < 10 ? '0' : ''}${s}`;
-                        if (s <= 0) { clearInterval(timerInterval); el.innerText = "Resend Code"; el.classList.remove('pointer-events-none', 'opacity-50'); }
+                    if (role === 'admin') targetUrl = "/admin";
+                    else if (role === 'hod' || role === 'dean') targetUrl = "/management";
+
+                    setTimeout(() => {
+                        window.location.href = targetUrl;
                     }, 1000);
+                } else {
+                    showToast("Update failed", "error");
                 }
+            } catch (err) {
+                showToast("Sync failed.", "error");
+            }
+            toggleLoader(false);
+        }
 
-                function toggleLoader(show) { document.getElementById('loader').classList.toggle('hidden', !show); }
-                function resetFlow() { showSection('email-section'); clearInterval(timerInterval); }
+        function startTimer() {
+            let s = 59;
+            const el = document.getElementById('resend-timer');
+            el.classList.add('pointer-events-none', 'opacity-50');
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                s--;
+                el.innerText = `Resend 00:${s < 10 ? '0' : ''}${s}`;
+                if (s <= 0) { clearInterval(timerInterval); el.innerText = "Resend Code"; el.classList.remove('pointer-events-none', 'opacity-50'); }
+            }, 1000);
+        }
+
+        function toggleLoader(show) { document.getElementById('loader').classList.toggle('hidden', !show); }
+        function resetFlow() { showSection('email-section'); clearInterval(timerInterval); }
     </script>
 </body>
 
