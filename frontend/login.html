@@ -10,8 +10,6 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .section-fade { animation: fadeIn 0.4s ease-out forwards; }
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        
-        /* Modern Dropdown Styling */
         select {
             appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236366f1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
@@ -43,33 +41,26 @@
                     <label class="text-xs font-bold text-gray-500 uppercase tracking-widest ml-1">College Email</label>
                     <div class="flex items-center bg-gray-950/50 rounded-2xl border border-gray-800 px-4 py-4 focus-within:border-indigo-500 transition-all">
                         <i class="fas fa-envelope text-gray-600 mr-3"></i>
-                        <input type="email" id="email" placeholder="name@its.edu.in" 
-                            class="bg-transparent w-full outline-none text-white placeholder-gray-700">
+                        <input type="email" id="email" placeholder="name@its.edu.in" class="bg-transparent w-full outline-none text-white placeholder-gray-700">
                     </div>
                 </div>
-                <button onclick="sendOTP()" id="send-btn"
-                    class="w-full bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-indigo-600/20 flex items-center justify-center gap-2">
-                    <span>Get Secure Code</span>
-                    <i class="fas fa-paper-plane text-xs"></i>
+                <button onclick="sendOTP()" id="send-btn" class="w-full bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-indigo-600/20 flex items-center justify-center gap-2">
+                    <span>Get Secure Code</span> <i class="fas fa-paper-plane text-xs"></i>
                 </button>
             </div>
 
             <div id="otp-section" class="hidden section-fade space-y-6">
                 <div class="text-center">
-                    <p class="text-gray-400 text-sm">Enter the code sent to <br><span id="display-email" class="text-indigo-400 font-bold"></span></p>
+                    <p class="text-gray-400 text-sm">Enter code sent to <br><span id="display-email" class="text-indigo-400 font-bold"></span></p>
                 </div>
                 <div class="space-y-3">
-                    <input type="text" id="otp" maxlength="6" placeholder="000000" 
-                        class="bg-gray-950/50 w-full text-center text-4xl tracking-[1rem] font-black py-5 rounded-2xl border border-gray-800 outline-none focus:border-indigo-500 text-indigo-400">
+                    <input type="text" id="otp" maxlength="6" placeholder="000000" class="bg-gray-950/50 w-full text-center text-4xl tracking-[1rem] font-black py-5 rounded-2xl border border-gray-800 outline-none focus:border-indigo-500 text-indigo-400">
                     <div class="flex justify-between items-center px-1">
                         <button onclick="resetFlow()" class="text-xs text-gray-500 hover:text-white underline">Edit Email</button>
                         <p id="resend-timer" class="text-xs text-indigo-400 font-medium cursor-pointer" onclick="handleResend()">Resend in 00:59</p>
                     </div>
                 </div>
-                <button onclick="verifyOTP()"
-                    class="w-full bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold py-4 rounded-2xl transition-all">
-                    Verify Identity
-                </button>
+                <button onclick="verifyOTP()" class="w-full bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold py-4 rounded-2xl transition-all">Verify Identity</button>
             </div>
 
             <div id="name-section" class="hidden section-fade space-y-6">
@@ -87,50 +78,41 @@
                     </div>
                     <div>
                         <label class="text-xs font-bold text-gray-500 uppercase tracking-widest ml-1">Department</label>
-                        <div class="relative mt-2">
-                             <select id="dept-select" class="w-full bg-gray-950/50 rounded-2xl border border-gray-800 px-5 py-4 outline-none focus:border-indigo-500 text-gray-300 font-medium transition-all">
-                                <option value="" disabled selected>Select Branch</option>
-                                <option value="CSE">Computer Science (CSE)</option>
-                                <option value="IT">Information Technology (IT)</option>
-                                <option value="ECE">Electronics (ECE)</option>
-                                <option value="ME">Mechanical (ME)</option>
-                                <option value="CE">Civil (CE)</option>
-                            </select>
-                        </div>
+                        <select id="dept-select" class="w-full bg-gray-950/50 rounded-2xl border border-gray-800 px-5 py-4 outline-none focus:border-indigo-500 text-gray-300 font-medium transition-all mt-2">
+                            <option value="" disabled selected>Select Branch</option>
+                            <option value="CSE">Computer Science (CSE)</option>
+                            <option value="IT">Information Technology (IT)</option>
+                            <option value="ECE">Electronics (ECE)</option>
+                            <option value="ME">Mechanical (ME)</option>
+                            <option value="CE">Civil (CE)</option>
+                        </select>
                     </div>
                 </div>
-                <button onclick="updateProfile()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-2xl transition-all shadow-xl shadow-indigo-600/20">
-                    Enter Dashboard
-                </button>
+                <button onclick="updateProfile()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-2xl transition-all shadow-xl shadow-indigo-600/20">Enter Dashboard</button>
             </div>
 
             <div id="loader" class="hidden absolute inset-0 bg-slate-950/80 backdrop-blur-md rounded-[2.5rem] z-50 flex flex-col items-center justify-center">
                 <div class="relative w-12 h-12">
-                    <div class="absolute inset-0 border-4 border-indigo-500/20 rounded-full"></div>
-                    <div class="absolute inset-0 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+                    <div class="absolute inset-0 border-4 border-indigo-500/20 rounded-full animate-spin"></div>
                 </div>
-                <p class="text-xs text-indigo-400 mt-4 font-black uppercase tracking-[0.3em] animate-pulse">Authenticating</p>
+                <p class="text-xs text-indigo-400 mt-4 font-black uppercase tracking-[0.3em] animate-pulse">Processing</p>
             </div>
         </div>
     </div>
 
     <script>
-        // PATH CONFIGURATION
         const API_BASE = "https://apiknot.niksoriginals.in";
-        const DASHBOARD_URL = "/dashboard"; // Change this if your dashboard file name is different (e.g., dashboard.html)
-
+        const DASHBOARD_URL = "/dashboard";
         let timerInterval;
 
         function showSection(id) {
             ['email-section', 'otp-section', 'name-section'].forEach(s => document.getElementById(s).classList.add('hidden'));
-            const target = document.getElementById(id);
-            target.classList.remove('hidden');
+            document.getElementById(id).classList.remove('hidden');
         }
 
         async function sendOTP() {
             const email = document.getElementById('email').value;
-            if (!email.endsWith("@its.edu.in")) return alert("Only @its.edu.in emails are permitted.");
-
+            if (!email.endsWith("@its.edu.in")) return alert("Only @its.edu.in emails allowed.");
             toggleLoader(true);
             try {
                 const res = await fetch(`${API_BASE}/auth/send-otp`, {
@@ -142,7 +124,7 @@
                     document.getElementById('display-email').innerText = email;
                     showSection('otp-section');
                     startTimer();
-                } else { alert("Could not send OTP. Try again."); }
+                } else { alert("Failed to send code."); }
             } catch (err) { alert("Backend Unreachable."); }
             toggleLoader(false);
         }
@@ -150,25 +132,19 @@
         async function verifyOTP() {
             const email = document.getElementById('email').value;
             const otp = document.getElementById('otp').value;
-            if (otp.length < 6) return alert("Enter 6-digit code.");
-
             toggleLoader(true);
             try {
                 const res = await fetch(`${API_BASE}/auth/verify-otp`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include', // <--- IMPORTANT: Verify OTP must save the cookie!
                     body: JSON.stringify({ email, otp })
                 });
                 const data = await res.json();
-                
                 if (res.ok) {
-                    // YAHAN REDIRECT LOGIC HAI
-                    if (data.is_new_user) {
-                        showSection('name-section');
-                    } else {
-                        window.location.href = DASHBOARD_URL;
-                    }
-                } else { alert(data.error || "Wrong OTP."); }
+                    if (data.is_new_user) showSection('name-section');
+                    else window.location.href = DASHBOARD_URL;
+                } else { alert(data.error || "Verification failed."); }
             } catch (err) { alert("Network Error."); }
             toggleLoader(false);
         }
@@ -176,24 +152,21 @@
         async function updateProfile() {
             const name = document.getElementById('fullname').value;
             const dept = document.getElementById('dept-select').value;
-            if (!name || !dept) return alert("Please fill all fields.");
-
+            if (!name || !dept) return alert("Fill all fields.");
             toggleLoader(true);
             try {
                 const res = await fetch(`${API_BASE}/api/update-profile`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
+                    credentials: 'include', // <--- IMPORTANT: Must send the cookie!
                     body: JSON.stringify({ name, department: dept })
                 });
-                if (res.ok) {
-                    window.location.href = DASHBOARD_URL;
-                } else { alert("Failed to save profile."); }
+                if (res.ok) window.location.href = DASHBOARD_URL;
+                else alert("Unauthorized: " + (await res.json()).error);
             } catch (err) { alert("Sync Error."); }
             toggleLoader(false);
         }
 
-        // Timer & Utility Functions
         function startTimer() {
             let s = 59;
             const el = document.getElementById('resend-timer');
@@ -202,11 +175,7 @@
             timerInterval = setInterval(() => {
                 s--;
                 el.innerText = `Resend in 00:${s < 10 ? '0' : ''}${s}`;
-                if (s <= 0) {
-                    clearInterval(timerInterval);
-                    el.innerText = "Resend Code";
-                    el.classList.remove('pointer-events-none', 'opacity-50');
-                }
+                if (s <= 0) { clearInterval(timerInterval); el.innerText = "Resend Code"; el.classList.remove('pointer-events-none', 'opacity-50'); }
             }, 1000);
         }
 
