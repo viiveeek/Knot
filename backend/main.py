@@ -454,7 +454,7 @@ def setup_demo_data():
         conn = get_db()
         
         # 1. Create a Super Admin (Apni email yahan daal dena)
-        admin_email = "nikhil@its.edu.in" # <--- Yahan apni college email daalo
+        admin_email = "nikhilyadavrny_cse25@its.edu.in" # <--- Yahan apni college email daalo
         conn.execute('''
             INSERT OR REPLACE INTO users (name, email, role, department) 
             VALUES (?, ?, ?, ?)
