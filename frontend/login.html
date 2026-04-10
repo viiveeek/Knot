@@ -301,25 +301,34 @@
         }
 
         async function updateProfile() {
-            const name = document.getElementById('fullname').value;
-            const dept = document.getElementById('dept-select').value;
-            if (!name || !dept) return showToast("Please fill all fields", "error");
+    const name = document.getElementById('fullname').value;
+    const dept = document.getElementById('dept-select').value;
+    if (!name || !dept) return showToast("Please fill all fields", "error");
 
-            toggleLoader(true);
-            try {
-                const res = await fetch(`${API_BASE}/api/update-profile`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({ name, department: dept })
-                });
-                if (res.ok) {
-                    showToast("Profile Initialized!", "success");
-                    setTimeout(() => window.location.href = DASHBOARD_URL, 800);
-                } else { showToast("Session expired. Login again.", "error"); }
-            } catch (err) { showToast("Sync failed.", "error"); }
-            toggleLoader(false);
+    toggleLoader(true);
+    try {
+        const res = await fetch(`${API_BASE}/api/update-profile`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ name, department: dept })
+        });
+        
+        const data = await res.json();
+        
+        if (res.ok) {
+            showToast("Profile Initialized!", "success");
+            setTimeout(() => {
+                window.location.href = DASHBOARD_URL;
+            }, 1000);
+        } else {
+            showToast(data.error || "Update failed", "error");
         }
+    } catch (err) {
+        showToast("Sync failed. Check connection.", "error");
+    }
+    toggleLoader(false);
+}
 
         function startTimer() {
             let s = 59;
