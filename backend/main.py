@@ -247,6 +247,7 @@ def get_user_profile():
         })
     return jsonify({"error": "User not found"}), 404
 
+
 @app.route("/auth/logout", methods=["POST"])
 def logout():
     session.clear()
