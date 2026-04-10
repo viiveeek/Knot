@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,27 +7,56 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap');
+
+        :root {
+            --bg-base: #030712; /* Slate-950 */
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-highlight: rgba(255, 255, 255, 0.15);
+            --accent-brand: #3b82f6; /* Blue-500 */
+        }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #020617;
+            background-color: var(--bg-base);
             color: #f8fafc;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 85% 10%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 15% 90%, rgba(6, 182, 212, 0.08) 0%, transparent 40%);
+            background-attachment: fixed;
         }
 
-        .glass-panel {
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        /* Glassmorphism Classes */
+        .glass-panel { 
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(24px); 
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border); 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
         }
 
-        .res-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--glass-highlight), transparent);
+            opacity: 0.5;
         }
 
-        .res-card:hover {
-            border-color: #3b82f6;
-            transform: translateY(-4px);
+        /* Resource Cards */
+        .res-card { 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            transform-origin: center bottom;
+        }
+        
+        .res-card:hover { 
+            transform: translateY(-8px) scale(1.02); 
+            border-color: rgba(59, 130, 246, 0.4); 
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5),
+                        0 0 20px rgba(59, 130, 246, 0.15);
         }
 
         .status-dot {
@@ -36,86 +64,190 @@
             height: 8px;
             border-radius: 50%;
             display: inline-block;
+            box-shadow: 0 0 8px currentColor;
+        }
+
+        /* Animated Button */
+        .btn-glow {
+            position: relative;
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.5);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.4), transparent);
+            transition: left 0.5s ease;
+            z-index: -1;
+        }
+
+        .btn-glow:hover {
+            background: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-glow:hover::before {
+            left: 100%;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-base); }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+
+        /* Input Styles */
+        .premium-input {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+        .premium-input:focus {
+            border-color: var(--accent-brand);
+            background: rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
+        }
+        
+        .shimmer {
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        @keyframes fade-in-up {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.6s ease forwards; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .animate-shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+        
+        /* Webkit Date/Time pickers custom styling */
+        input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+            filter: invert(1) opacity(0.7);
+            cursor: pointer;
         }
     </style>
 </head>
 
-<body class="min-h-screen">
+<body class="min-h-screen flex flex-col selection:bg-blue-500/30 selection:text-white">
 
-    <nav class="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-white/5 px-8 py-4">
+    <!-- Ambient Glows behind everything -->
+    <div class="fixed top-[-20%] left-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none z-[-1]"></div>
+    <div class="fixed bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-cyan-600/10 rounded-full blur-[120px] pointer-events-none z-[-1]"></div>
+
+    <nav class="sticky top-0 z-50 bg-slate-950/60 backdrop-blur-xl border-b border-white/10 px-6 py-4 lg:px-12 transition-all">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-4 cursor-pointer" onclick="location.href='/dashboard'">
-                <div
-                    class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20 text-white font-bold italic">
-                    K</div>
-                <span class="text-xl font-black tracking-tighter uppercase italic">KNOT <span
-                        class="text-blue-500 text-sm">Hub</span></span>
+            <div class="flex items-center gap-4 cursor-pointer group" onclick="location.href='/dashboard'">
+                <div class="relative w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-blue-500 to-cyan-600 shadow-lg shadow-blue-500/30 group-hover:shadow-blue-500/50 transition-all duration-300">
+                    <span class="text-white font-black italic text-lg z-10">K</span>
+                    <div class="absolute inset-0 bg-white/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                </div>
+                <span class="text-xl font-black tracking-tighter uppercase italic bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+                    KNOT <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-400 text-sm ml-1">Hub</span>
+                </span>
             </div>
-            <button onclick="location.href='/dashboard'"
-                class="text-xs font-bold text-slate-500 hover:text-white transition-all uppercase tracking-widest"><i
-                    class="fas fa-arrow-left mr-2"></i> Dashboard</button>
+            <button onclick="location.href='/dashboard'" class="px-5 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white hover:bg-white/5 transition-all uppercase tracking-widest flex items-center gap-2">
+                <i class="fas fa-arrow-left text-[10px]"></i> Dashboard
+            </button>
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto px-8 py-12">
-        <header class="mb-12">
-            <h1 class="text-4xl font-black text-white tracking-tight leading-none mb-4">Infrastructure Nodes</h1>
-            <p class="text-slate-500 font-medium italic">Live tracking and reservation system for campus facilities.</p>
+    <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-16 lg:px-12 lg:py-20 relative z-10">
+        <header class="mb-12 animate-fade-in-up">
+            <div class="inline-block px-3 py-1 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-300 text-[10px] font-bold uppercase tracking-widest mb-6">
+                Operations Ledger
+            </div>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-none mb-4 drop-shadow-sm">
+                Infrastructure <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 italic">Nodes</span>
+            </h1>
+            <p class="text-slate-400 font-medium text-lg max-w-2xl">
+                Live tracking and reservation system for all campus facilities, laboratories, and collective project zones.
+            </p>
         </header>
 
-        <div class="flex flex-col md:flex-row gap-4 mb-10">
-            <div class="relative flex-1">
-                <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                <input type="text" id="res-search" onkeyup="filterResources()"
-                    placeholder="Search Lab, Hall or Project Room..."
-                    class="w-full bg-slate-900 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-sm font-medium outline-none focus:border-blue-500 transition-all">
+        <div class="flex flex-col md:flex-row gap-4 mb-12 animate-fade-in-up" style="animation-delay: 0.1s;">
+            <div class="relative flex-1 group">
+                <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-400 transition-colors"></i>
+                <input type="text" id="res-search" onkeyup="filterResources()" placeholder="Search Lab, Hall, or Project Room..." class="w-full bg-black/40 border border-white/10 rounded-2xl py-4 flex-1 pl-14 pr-4 font-medium text-white placeholder-slate-500 outline-none focus:border-blue-500 focus:bg-black/60 shadow-inner transition-all">
             </div>
         </div>
 
-        <div id="resource-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div class="h-40 glass-panel rounded-3xl animate-pulse"></div>
-            <div class="h-40 glass-panel rounded-3xl animate-pulse"></div>
-            <div class="h-40 glass-panel rounded-3xl animate-pulse"></div>
+        <div id="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Skeleton Loaders -->
+            <div class="h-[280px] glass-panel rounded-3xl shimmer"></div>
+            <div class="h-[280px] glass-panel rounded-3xl shimmer hidden md:block"></div>
+            <div class="h-[280px] glass-panel rounded-3xl shimmer hidden lg:block"></div>
+        </div>
+
+        <div id="resource-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+            <!-- Dynamic Injection -->
         </div>
     </main>
 
     <!-- [ MODAL FRAMEWORK ] -->
-    <div id="booking-modal"
-        class="fixed inset-0 bg-black/90 backdrop-blur-sm hidden flex items-center justify-center z-[100] p-6">
-        <div class="glass-panel p-8 w-full max-w-md rounded-[2.5rem] shadow-2xl relative border-t-2 border-blue-500">
-            <button onclick="closeModal()" class="absolute top-6 right-6 text-slate-500 hover:text-white"><i
-                    class="fas fa-times text-xl"></i></button>
-            <h3 class="text-2xl font-black mb-2 uppercase italic tracking-tighter">Reserve Slot</h3>
-            <p id="modal-res-name" class="text-blue-400 font-bold mb-8 uppercase tracking-widest text-[10px]"></p>
+    <div id="booking-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden z-[100] transition-opacity duration-300 opacity-0 overflow-y-auto">
+        <div class="min-h-screen flex items-center justify-center p-4">
+            <div class="fixed inset-0" onclick="closeModal()"></div>
+            
+            <div class="modal-content glass-panel p-8 md:p-10 w-full max-w-lg rounded-[2.5rem] shadow-2xl relative transform scale-95 transition-all duration-300 z-10 border-t border-t-blue-500/50">
+                
+                <div class="absolute -top-4 -right-4 w-24 h-24 bg-blue-500/20 blur-2xl rounded-full pointer-events-none"></div>
 
-            <div class="space-y-4">
-                <div>
-                    <label class="text-[9px] font-black uppercase text-slate-500 ml-1">Start Time</label>
-                    <input type="datetime-local" id="book-start"
-                        class="w-full bg-slate-900 border border-white/10 p-4 rounded-2xl text-white outline-none focus:border-blue-500 mt-1">
+                <div class="flex justify-between items-center mb-8">
+                    <div>
+                        <h3 class="text-2xl md:text-3xl font-black uppercase italic bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-300">Reserve Slot</h3>
+                        <p id="modal-res-name" class="text-blue-400 font-bold uppercase tracking-widest text-[11px] mt-1 flex items-center gap-2">
+                            <i class="fas fa-map-marker-alt"></i> <span></span>
+                        </p>
+                    </div>
+                    <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-colors">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
-                <div>
-                    <label class="text-[9px] font-black uppercase text-slate-500 ml-1">End Time</label>
-                    <input type="datetime-local" id="book-end"
-                        class="w-full bg-slate-900 border border-white/10 p-4 rounded-2xl text-white outline-none focus:border-blue-500 mt-1">
+
+                <div class="space-y-5">
+                    <div>
+                        <label class="text-[10px] font-black uppercase tracking-widest text-blue-400 ml-1 block mb-2">Window Start</label>
+                        <input type="datetime-local" id="book-start" class="w-full premium-input p-4 rounded-2xl text-white outline-none">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black uppercase tracking-widest text-blue-400 ml-1 block mb-2">Window End</label>
+                        <input type="datetime-local" id="book-end" class="w-full premium-input p-4 rounded-2xl text-white outline-none">
+                    </div>
+                    
+                    <div class="pt-6">
+                        <button id="confirm-btn" onclick="confirmBooking()" class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 py-4 rounded-2xl font-black text-xs uppercase tracking-widest text-white shadow-lg shadow-blue-500/25 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center">
+                            Authorize Reservation
+                        </button>
+                    </div>
                 </div>
-                <!-- Prevented multiple clicks by assigning an ID for manipulation -->
-                <button id="confirm-btn" onclick="confirmBooking()"
-                    class="w-full bg-blue-600 hover:bg-blue-500 py-4 rounded-2xl font-black text-xs uppercase tracking-widest mt-6 transition-all shadow-xl shadow-blue-600/20 flex items-center justify-center">
-                    Confirm Reservation
-                </button>
             </div>
         </div>
     </div>
 
     <!-- [ NOTIFICATION SYSTEM ] -->
-    <div id="notification-container" class="fixed bottom-6 right-6 z-[200] flex flex-col gap-3 pointer-events-none">
-    </div>
+    <div id="notification-container" class="fixed bottom-6 right-6 z-[200] flex flex-col gap-3 pointer-events-none"></div>
 
     <script>
         const API_BASE = "https://apiknot.niksoriginals.in";
         let activeResId = null;
-        let isBooking = false; // State lock to prevent spam clicking
+        let isBooking = false; 
 
         // --- NOTIFICATION ENGINE ---
         function showNotification(message, type = 'info') {
@@ -125,24 +257,27 @@
             let borderStyle = 'border-blue-500/30';
             let icon = '<i class="fas fa-info-circle text-blue-400 text-lg"></i>';
             let bgStyle = 'bg-blue-500/10';
+            let shadowStyle = 'shadow-blue-500/10';
 
             if (type === 'error') {
                 borderStyle = 'border-rose-500/30';
                 icon = '<i class="fas fa-exclamation-triangle text-rose-400 text-lg"></i>';
                 bgStyle = 'bg-rose-500/10';
+                shadowStyle = 'shadow-rose-500/10';
             } else if (type === 'success') {
                 borderStyle = 'border-emerald-500/30';
                 icon = '<i class="fas fa-check-circle text-emerald-400 text-lg"></i>';
                 bgStyle = 'bg-emerald-500/10';
+                shadowStyle = 'shadow-emerald-500/10';
             }
 
-            notif.className = `glass-panel p-4 pr-6 flex items-center gap-4 ${bgStyle} border ${borderStyle} rounded-2xl transform translate-x-[120%] opacity-0 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-auto shadow-[0_10px_40px_rgba(0,0,0,0.5)]`;
+            notif.className = `glass-panel p-4 pr-6 flex items-center gap-4 ${bgStyle} border ${borderStyle} rounded-2xl transform translate-x-[120%] opacity-0 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-auto shadow-lg ${shadowStyle}`;
 
             notif.innerHTML = `
-                <div class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-black/30 border border-white/5">${icon}</div>
-                <div class="text-[11px] font-bold tracking-wider text-white">${message}</div>
-                <button onclick="this.parentElement.style.opacity='0'; this.parentElement.style.transform='translateX(120%)'; setTimeout(() => this.parentElement.remove(), 500);" class="ml-2 text-slate-400 hover:text-white transition-colors focus:outline-none">
-                    <i class="fas fa-times"></i>
+                <div class="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-black/40 border border-white/5">${icon}</div>
+                <div class="text-xs font-bold tracking-wide text-white leading-tight flex-1">${message}</div>
+                <button onclick="this.parentElement.style.opacity='0'; this.parentElement.style.transform='translateX(120%)'; setTimeout(() => this.parentElement.remove(), 500);" class="ml-2 w-8 h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors focus:outline-none">
+                    <i class="fas fa-times text-xs"></i>
                 </button>
             `;
 
@@ -168,85 +303,124 @@
             try {
                 const res = await fetch(`${API_BASE}/api/resources`, { credentials: 'include' });
                 const data = await res.json();
+                
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('resource-grid').classList.remove('hidden');
+                
                 renderGrid(data);
-            } catch (e) { console.error(e); }
+            } catch (e) { 
+                console.error(e); 
+                document.getElementById('loading').innerHTML = `<div class="col-span-full p-12 text-center text-red-400 bg-red-400/10 rounded-3xl border border-red-500/20 font-bold uppercase tracking-wide text-sm">Failed to sync infrastructure array.</div>`;
+            }
         }
 
         function renderGrid(resources) {
             const grid = document.getElementById('resource-grid');
-            grid.innerHTML = resources.map(r => {
-                // Time format clean karne ke liye (T hata kar space dalo)
+            if(!resources || resources.length === 0) {
+                grid.classList.remove('grid', 'grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-3');
+                grid.innerHTML = `
+                    <div class="col-span-full py-24 text-center glass-panel rounded-[2.5rem] flex flex-col items-center justify-center">
+                        <div class="w-16 h-16 bg-slate-800/50 rounded-full flex items-center justify-center mb-4 text-slate-500 shadow-inner">
+                            <i class="fas fa-satellite-dish text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-black text-white mb-2 tracking-tight">No Nodes Detected</h3>
+                        <p class="text-slate-500 text-sm max-w-sm mx-auto font-medium">Infrastructure array returned zero active resources.</p>
+                    </div>`;
+                return;
+            }
+
+            grid.innerHTML = resources.map((r, index) => {
                 let timeLabel = r.busy_until ? r.busy_until.replace('T', ' ') : "";
+                const isAvailable = r.status === 'Available';
+                const statusColor = isAvailable ? 'text-emerald-400' : 'text-rose-400';
+                const dotColor = isAvailable ? 'bg-emerald-400 shadow-emerald-400' : 'bg-rose-400 shadow-rose-400';
+                const bgStatusColor = isAvailable ? 'bg-emerald-500/10 border-emerald-500/20' : 'bg-rose-500/10 border-rose-500/20';
+                const borderHovClass = isAvailable ? 'hover:border-emerald-500/40' : 'hover:border-rose-500/40';
+                const delay = index * 0.1;
 
                 return `
-            <div class="res-card glass-panel p-6 rounded-[2rem] flex flex-col gap-6" data-name="${r.name.toLowerCase()}">
-                <div class="flex justify-between items-start">
-                    <div class="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-blue-500 border border-white/5">
-                        <i class="fas ${r.type === 'Lab' ? 'fa-microchip' : 'fa-landmark-dome'} text-xl"></i>
+            <div class="res-card glass-panel p-7 rounded-[2rem] flex flex-col gap-6 opacity-0 animate-fade-in-up group relative ${borderHovClass}" style="animation-delay: ${delay}s" data-name="${r.name.toLowerCase()}">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-white/[0.02] rounded-full blur-2xl group-hover:bg-white/[0.04] transition-colors pointer-events-none"></div>
+                
+                <div class="flex justify-between items-start z-10">
+                    <div class="w-14 h-14 bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl flex items-center justify-center text-blue-500 border border-white/5 shadow-inner">
+                        <i class="fas ${r.type === 'Lab' ? 'fa-microchip' : 'fa-landmark-dome'} text-2xl group-hover:scale-110 transition-transform duration-300"></i>
                     </div>
                     <div class="flex flex-col items-end gap-2">
-                        <span class="badge px-3 py-1 bg-white/5 rounded-full text-[9px] font-black uppercase tracking-widest ${r.status === 'Available' ? 'text-emerald-400' : 'text-rose-400'}">
-                            <span class="status-dot ${r.status === 'Available' ? 'bg-emerald-400' : 'bg-rose-400'} mr-2"></span>${r.status}
+                        <span class="px-3 py-1.5 border rounded-lg text-[9px] font-black uppercase tracking-widest ${statusColor} ${bgStatusColor} shadow-inner">
+                            <span class="status-dot ${dotColor} mr-2"></span>${r.status}
                         </span>
                     </div>
                 </div>
-                <div>
-                    <h3 class="text-xl font-bold uppercase tracking-tighter">${r.name}</h3>
+                <div class="flex-1 z-10">
+                    <h3 class="text-2xl font-bold uppercase tracking-tighter text-white group-hover:text-blue-200 transition-colors">${r.name}</h3>
                     <p class="text-[10px] text-slate-500 font-black uppercase tracking-[0.2em] mt-1">${r.type} Node</p>
                     
-                    ${r.status === 'Occupied' && r.busy_until ? `
-                        <div class="mt-4 flex items-center gap-2 text-rose-400/80 bg-rose-500/5 p-2 rounded-xl border border-rose-500/10 w-fit">
-                            <i class="far fa-clock text-[10px]"></i>
-                            <span class="text-[9px] font-black uppercase tracking-tighter">Busy Until: ${timeLabel}</span>
+                    ${!isAvailable && r.busy_until ? `
+                        <div class="mt-5 flex items-center gap-2 text-rose-300 bg-rose-500/10 px-4 py-3 rounded-xl border border-rose-500/20 w-fit">
+                            <i class="far fa-clock text-xs"></i>
+                            <span class="text-[10px] font-black uppercase tracking-wider">Busy Until: ${timeLabel}</span>
                         </div>
                     ` : ''}
                 </div>
-                <button onclick="${r.status === 'Available' ? `openBooking(${r.id}, '${r.name}')` : ''}" 
-                    class="w-full py-3 rounded-xl font-black text-[10px] uppercase tracking-[0.2em] transition-all 
-                    ${r.status === 'Available' ? 'bg-blue-600/10 text-blue-400 border border-blue-500/20 hover:bg-blue-600 hover:text-white' : 'bg-slate-900 text-slate-600 border border-white/5 cursor-not-allowed'}">
-                    ${r.status === 'Available' ? (r.needs_approval ? 'Request Access' : 'Secure Reservation') : 'Occupied'}
-                </button>
+                
+                <div class="pt-4 border-t border-white/5 z-10">
+                    <button onclick="${isAvailable ? `openBooking(${r.id}, '${r.name}')` : ''}" 
+                        class="w-full py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest transition-all 
+                        ${isAvailable ? 'bg-gradient-to-r from-blue-600/20 to-cyan-600/20 text-blue-400 border border-blue-500/30 hover:from-blue-600 hover:to-cyan-600 hover:text-white hover:border-transparent hover:shadow-lg hover:shadow-blue-500/25' : 'bg-slate-900/50 text-slate-600 border border-white/5 cursor-not-allowed'}">
+                        ${isAvailable ? (r.needs_approval ? 'Request Access' : 'Secure Reservation') : 'Array Locked'}
+                    </button>
+                </div>
             </div>
         `;
             }).join('');
         }
 
+        const modal = document.getElementById('booking-modal');
+        const modalContent = modal.querySelector('.modal-content');
+
         function openBooking(id, name) {
             activeResId = id;
-            document.getElementById('modal-res-name').innerText = name;
+            document.getElementById('modal-res-name').querySelector('span').innerText = name;
 
-            // Reset modal state to default (clearing past data and unlocking button)
             document.getElementById('book-start').value = '';
             document.getElementById('book-end').value = '';
 
             isBooking = false;
             const btn = document.getElementById('confirm-btn');
-            btn.innerHTML = "Confirm Reservation";
+            btn.innerHTML = "Authorize Reservation";
             btn.classList.remove('opacity-50', 'cursor-not-allowed', 'pointer-events-none');
 
-            document.getElementById('booking-modal').classList.remove('hidden');
+            modal.classList.remove('hidden');
+            void modal.offsetWidth; // force reflow
+            modal.classList.remove('opacity-0');
+            modalContent.classList.remove('scale-95');
+            modalContent.classList.add('scale-100');
         }
 
         function closeModal() {
-            document.getElementById('booking-modal').classList.add('hidden');
+            modal.classList.add('opacity-0');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => modal.classList.add('hidden'), 300);
         }
 
         async function confirmBooking() {
-            // Guard clause to drop subsequent clicks if already booking
             if (isBooking) return;
 
             const start = document.getElementById('book-start').value;
             const end = document.getElementById('book-end').value;
 
             if (!start || !end) {
-                showNotification("Define time-window first.", "error");
+                modalContent.classList.add('animate-shake');
+                setTimeout(() => modalContent.classList.remove('animate-shake'), 500);
+                showNotification("Define parameters for time-window first.", "error");
                 return;
             }
 
-            // Immediately lock state and modify button appearance
             isBooking = true;
             const btn = document.getElementById('confirm-btn');
-            btn.innerHTML = `<i class="fas fa-circle-notch fa-spin mr-2"></i> Processing...`;
+            btn.innerHTML = `<i class="fas fa-circle-notch fa-spin mr-2"></i> Processing Array...`;
             btn.classList.add('opacity-50', 'cursor-not-allowed', 'pointer-events-none');
 
             try {
@@ -261,23 +435,18 @@
 
                 if (data.success) {
                     showNotification(data.message, "success");
-                    // Minor delay before reload so the user sees the success toast
                     setTimeout(() => location.reload(), 1500);
                 } else {
                     showNotification(data.error, "error");
-
-                    // Unlock button if it failed so user can edit and re-try
                     isBooking = false;
-                    btn.innerHTML = "Confirm Reservation";
+                    btn.innerHTML = "Authorize Reservation";
                     btn.classList.remove('opacity-50', 'cursor-not-allowed', 'pointer-events-none');
                 }
             } catch (e) {
                 console.error(e);
-                showNotification("Network Error: Action Failed", "error");
-
-                // Unlock button on catch error
+                showNotification("Network Error: Authorization Failed", "error");
                 isBooking = false;
-                btn.innerHTML = "Confirm Reservation";
+                btn.innerHTML = "Authorize Reservation";
                 btn.classList.remove('opacity-50', 'cursor-not-allowed', 'pointer-events-none');
             }
         }
@@ -286,12 +455,20 @@
             const query = document.getElementById('res-search').value.toLowerCase();
             document.querySelectorAll('.res-card').forEach(card => {
                 const name = card.getAttribute('data-name');
-                card.style.display = name.includes(query) ? 'flex' : 'none';
+                if(name.includes(query)) {
+                    card.style.display = 'flex';
+                    // Optional: reset animation if making visible again
+                    card.style.animation = 'none';
+                    card.offsetHeight; // trigger reflow
+                    card.style.animation = null; 
+                } else {
+                    card.style.display = 'none';
+                }
             });
         }
 
-        window.onload = fetchResources;
+        // Initialize natively
+        window.addEventListener('DOMContentLoaded', fetchResources);
     </script>
 </body>
-
 </html>
