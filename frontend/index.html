@@ -1,168 +1,196 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KNOT | Professional Campus Portal</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Knot | Campus Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
         
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-
-        .mesh-gradient {
-            background-color: #0a0a0c;
+        /* Premium Background Animation */
+        .mesh-bg {
+            background-color: #ffffff;
             background-image: 
-                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
-                radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
-                radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+                radial-gradient(at 0% 0%, hsla(210,100%,95%,1) 0, transparent 50%), 
+                radial-gradient(at 100% 100%, hsla(190,100%,95%,1) 0, transparent 50%);
         }
 
-        .pro-glass {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        .hero-gradient {
+            background: linear-gradient(135deg, #2563eb 0%, #0891b2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .input-gradient {
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
-        .input-gradient:focus-within {
-            border-color: #818cf8;
-            background: rgba(0, 0, 0, 0.4);
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px -5px rgba(139, 92, 246, 0.5);
-        }
-
-        /* Smooth tab transition */
-        .fade-in { animation: fadeIn 0.5s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+        .nav-blur { backdrop-filter: blur(12px); background: rgba(255, 255, 255, 0.8); }
+        
+        /* Floating Animation for UI elements */
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-20px); } 100% { transform: translateY(0px); } }
+        .animate-float { animation: float 6s ease-in-out infinite; }
     </style>
 </head>
-<body class="mesh-gradient min-h-screen flex flex-col items-center justify-center p-4">
 
-    <div class="mb-12 text-center fade-in">
-        <div class="inline-block p-4 rounded-3xl bg-white/5 border border-white/10 mb-6">
-            <i class="fas fa-knot text-4xl bg-gradient-to-br from-indigo-400 to-purple-500 bg-clip-text text-transparent"></i>
-        </div>
-        <h1 class="text-5xl font-extrabold tracking-tight text-white mb-2">KNOT<span class="text-indigo-500">.</span></h1>
-        <p class="text-gray-400 text-lg font-light italic">The Smart Campus OS</p>
-    </div>
-
-    <div class="max-w-[420px] w-full pro-glass rounded-[40px] p-10 fade-in">
-        
-        <div id="auth-container">
-            <div id="email-step" class="space-y-8">
-                <div class="space-y-2">
-                    <h2 class="text-2xl font-bold text-white">Welcome back</h2>
-                    <p class="text-gray-400 text-sm">Sign in with your institutional ID</p>
-                </div>
-
-                <div class="space-y-4">
-                    <div class="input-gradient flex items-center rounded-2xl p-4 group">
-                        <i class="far fa-envelope text-gray-500 group-focus-within:text-indigo-400 mr-4 transition-colors"></i>
-                        <input type="email" id="email" placeholder="Email Address" 
-                            class="bg-transparent w-full outline-none text-white text-base placeholder-gray-600">
-                    </div>
-                    <button onclick="handleSendOTP()" id="send-btn" class="btn-primary w-full py-4 rounded-2xl text-white font-bold text-lg tracking-wide">
-                        Continue
-                    </button>
-                </div>
+<body class="mesh-bg text-slate-900 overflow-x-hidden">
+    <nav class="fixed top-0 w-full z-50 nav-blur border-b border-slate-200/50" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3 group cursor-pointer">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg group-hover:rotate-12 transition-all">K</div>
+                <span class="text-2xl font-black tracking-tighter text-slate-800">KNOT<span class="text-blue-600">.</span></span>
             </div>
 
-            <div id="otp-step" class="hidden space-y-8">
-                <div class="space-y-2">
-                    <h2 class="text-2xl font-bold text-white">Verify identity</h2>
-                    <p class="text-gray-400 text-sm">We've sent a 6-digit code to your inbox</p>
-                </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#features" class="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors">Ecosystem</a>
+                <a href="#impact" class="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors">Live Impact</a>
+                <a href="/marketplace" class="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors">Marketplace</a>
+            </div>
 
-                <div class="space-y-6">
-                    <div class="input-gradient rounded-2xl p-4">
-                        <input type="text" id="otp" maxlength="6" placeholder="······" 
-                            class="bg-transparent w-full text-center text-4xl tracking-[1.2rem] font-bold text-indigo-400 outline-none placeholder-gray-800">
-                    </div>
-                    
-                    <button onclick="handleVerifyOTP()" class="btn-primary w-full py-4 rounded-2xl text-white font-bold text-lg">
-                        Verify & Login
-                    </button>
+            <div class="flex items-center gap-4">
+                <a href="/login" class="px-5 py-2 text-sm font-bold text-slate-700 hover:bg-slate-100 rounded-xl transition-all">Login</a>
+                <button class="px-6 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-sm shadow-xl shadow-blue-600/20 hover:scale-105 active:scale-95 transition-all">Join Portal</button>
+            </div>
+        </div>
+    </nav>
 
-                    <div class="flex justify-between items-center text-sm px-2">
-                        <button onclick="toggleSteps(false)" class="text-gray-500 hover:text-white transition-colors">Change email</button>
-                        <button id="resend-btn" class="text-indigo-400 font-semibold hover:text-indigo-300">Resend Code</button>
-                    </div>
-                </div>
+    <header class="relative pt-48 pb-32 px-6 overflow-hidden">
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <div class="inline-block px-4 py-1.5 mb-6 bg-blue-50 border border-blue-100 rounded-full">
+                <span class="text-blue-600 text-xs font-bold tracking-widest uppercase">Platform v2.0 is Live</span>
+            </div>
+            <h1 class="text-6xl md:text-8xl font-black text-slate-900 mb-8 tracking-tighter leading-none">
+                Untangling <br/>
+                <span class="hero-gradient">Campus Chaos</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-500 mb-12 max-w-2xl mx-auto leading-relaxed font-medium">
+                The definitive operating system for I.T.S Engineering College. 
+                Manage resources, trade items, and verify status in real-time.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-6">
+                <a href="/resources" class="group px-10 py-5 bg-slate-900 text-white rounded-2xl font-bold text-lg shadow-2xl hover:bg-blue-600 transition-all flex items-center justify-center">
+                    Reserve a Resource 
+                    <i class="fas fa-arrow-right ml-3 group-hover:translate-x-2 transition-transform"></i>
+                </a>
+                <a href="/marketplace" class="px-10 py-5 bg-white text-slate-900 border border-slate-200 rounded-2xl font-bold text-lg hover:bg-slate-50 transition-all">
+                    Browse Marketplace
+                </a>
             </div>
         </div>
 
-        <div id="loader" class="hidden py-10 flex flex-col items-center space-y-4">
-            <div class="w-12 h-12 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin"></div>
-            <p class="text-gray-400 text-xs animate-pulse">Establishing secure session...</p>
-        </div>
-    </div>
+        <div class="absolute top-1/2 left-10 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl animate-float"></div>
+        <div class="absolute top-1/4 right-10 w-80 h-80 bg-cyan-400/10 rounded-full blur-3xl animate-float" style="animation-delay: 2s"></div>
+    </header>
 
-    <div class="mt-12 flex space-x-8 text-xs text-gray-600 font-medium">
-        <a href="#" class="hover:text-gray-400 transition-colors uppercase tracking-widest">Support</a>
-        <a href="#" class="hover:text-gray-400 transition-colors uppercase tracking-widest">Security</a>
-        <a href="#" class="hover:text-gray-400 transition-colors uppercase tracking-widest">About ITS</a>
-    </div>
+    <section class="py-32 px-6" id="features">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-6">
+                <div class="max-w-xl">
+                    <h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight">One Link. <br/>All Campus Tools.</h2>
+                    <p class="text-slate-500 font-medium">Humne campus ki problems ko features mein badal diya hai.</p>
+                </div>
+                <div class="text-blue-600 font-bold flex items-center gap-2 cursor-pointer group">
+                    View System Architecture <i class="fas fa-chevron-right group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="reveal bg-white p-10 rounded-[40px] border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-blue-500/10 transition-all group">
+                    <div class="w-16 h-16 bg-blue-600 text-white rounded-3xl flex items-center justify-center text-2xl mb-8 group-hover:rotate-6 transition-transform">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Smart QR Look-up</h3>
+                    <p class="text-slate-500 leading-relaxed font-medium">Scan any lab or hall to instantly see the real-time occupancy status and next available slot.</p>
+                </div>
+
+                <div class="reveal bg-white p-10 rounded-[40px] border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-green-500/10 transition-all group" style="transition-delay: 0.2s">
+                    <div class="w-16 h-16 bg-emerald-500 text-white rounded-3xl flex items-center justify-center text-2xl mb-8 group-hover:rotate-6 transition-transform">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Verified Trade</h3>
+                    <p class="text-slate-500 leading-relaxed font-medium">A closed-loop marketplace for students. Buy, sell, or recover lost items with institutional trust.</p>
+                </div>
+
+                <div class="reveal bg-white p-10 rounded-[40px] border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-purple-500/10 transition-all group" style="transition-delay: 0.4s">
+                    <div class="w-16 h-16 bg-indigo-600 text-white rounded-3xl flex items-center justify-center text-2xl mb-8 group-hover:rotate-6 transition-transform">
+                        <i class="fas fa-shield-halved"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">DMARC Auth</h3>
+                    <p class="text-slate-500 leading-relaxed font-medium">Enterprise-grade security using Resend API to ensure only verified @its.edu.in users gain access.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-slate-900 text-white" id="impact">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+                <div class="reveal">
+                    <div class="text-5xl font-black mb-2 text-blue-400 counter" data-target="2500">0</div>
+                    <p class="text-slate-400 text-sm font-bold uppercase tracking-widest">Active Minds</p>
+                </div>
+                <div class="reveal" style="transition-delay: 0.1s">
+                    <div class="text-5xl font-black mb-2 text-blue-400 counter" data-target="850">0</div>
+                    <p class="text-slate-400 text-sm font-bold uppercase tracking-widest">Live Bookings</p>
+                </div>
+                <div class="reveal" style="transition-delay: 0.2s">
+                    <div class="text-5xl font-black mb-2 text-blue-400 counter" data-target="120">0</div>
+                    <p class="text-slate-400 text-sm font-bold uppercase tracking-widest">Items Reunited</p>
+                </div>
+                <div class="reveal" style="transition-delay: 0.3s">
+                    <div class="text-5xl font-black mb-2 text-blue-400 counter" data-target="99">0</div>
+                    <p class="text-slate-400 text-sm font-bold uppercase tracking-widest">System Uptime %</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-20 px-6 border-t border-slate-100">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-slate-900 text-white rounded-lg flex items-center justify-center font-bold">K</div>
+                <span class="text-xl font-bold tracking-tighter">KNOT<span class="text-blue-600">.</span></span>
+            </div>
+            <p class="text-slate-400 text-sm font-medium">Built with ❤️ for I.T.S Engineering College by Niso Ecosystem</p>
+            <div class="flex gap-6 text-slate-400">
+                <i class="fab fa-github cursor-pointer hover:text-slate-900 transition-colors"></i>
+                <i class="fab fa-linkedin cursor-pointer hover:text-slate-900 transition-colors"></i>
+            </div>
+        </div>
+    </footer>
 
     <script>
-        const API_BASE = "https://apiknot.niksoriginals.in";
-
-        async function sendOTP() {
-            const emailInput = document.getElementById('email');
-            const email = emailInput.value;
-            
-            if(!email.endsWith("@its.edu.in")) {
-                emailInput.parentElement.classList.add('border-red-500');
-                return alert("Please use your college email ID!");
-            }
-
-            toggleLoader(true);
-            try {
-                const response = await fetch(`${API_BASE}/auth/send-otp`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ email })
-                });
-                
-                if(response.ok) {
-                    document.getElementById('display-email').innerText = email;
-                    document.getElementById('email-section').classList.add('hidden');
-                    document.getElementById('otp-section').classList.remove('hidden');
-                } else {
-                    alert("Error sending code. Try again.");
+        // Scroll Reveal Logic
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    if(entry.target.classList.contains('counter')) startCounter(entry.target);
                 }
-            } catch (err) {
-                alert("Server Unreachable!");
-            }
-            toggleLoader(false);
-        }
+            });
+        }, observerOptions);
 
-        // verifyOTP and resetFlow functions same as before but UI updated
-        function toggleLoader(show) {
-            document.getElementById('loader').classList.toggle('hidden', !show);
-            document.getElementById('email-section').classList.toggle('opacity-50', show);
-            document.getElementById('send-btn').disabled = show;
-        }
+        document.querySelectorAll('.reveal, .counter').forEach(el => observer.observe(el));
 
-        function resetFlow() {
-            document.getElementById('email-section').classList.remove('hidden');
-            document.getElementById('otp-section').classList.add('hidden');
+        // Counter Animation
+        function startCounter(el) {
+            const target = +el.getAttribute('data-target');
+            let count = 0;
+            const speed = target / 50;
+            const update = () => {
+                count += speed;
+                if (count < target) {
+                    el.innerText = Math.floor(count);
+                    setTimeout(update, 20);
+                } else {
+                    el.innerText = target + (target === 99 ? "" : "+");
+                }
+            };
+            update();
         }
     </script>
 </body>
