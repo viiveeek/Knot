@@ -567,6 +567,7 @@
         }
 
         // --- 5. APPROVALS ---
+        // --- 5. APPROVALS LOGIC (FULLY LINKED) ---
         async function fetchApprovals() {
             try {
                 const res = await fetch(`${API_BASE}/admin/bookings/pending`, { credentials: 'include' });
@@ -594,14 +595,36 @@
                 </div>
                 
                 <div class="flex gap-3 w-full sm:w-auto relative z-10">
-                    <!-- Note: Add your backend onClick functions for Authorize/Deny when you build the routes -->
-                    <button class="flex-1 sm:flex-none px-6 py-2.5 bg-emerald-600/10 text-emerald-400 border border-emerald-500/20 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-500 hover:text-white transition-all shadow-md">Authorize</button>
-                    <button class="flex-1 sm:flex-none px-6 py-2.5 bg-rose-600/10 text-rose-400 border border-rose-500/20 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-rose-500 hover:text-white transition-all shadow-md">Deny</button>
+                    <button onclick="handleApproval(${b.id}, 'approve')" class="flex-1 sm:flex-none px-6 py-2.5 bg-emerald-600/10 text-emerald-400 border border-emerald-500/20 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-500 hover:text-white transition-all shadow-md">Authorize</button>
+                    <button onclick="handleApproval(${b.id}, 'deny')" class="flex-1 sm:flex-none px-6 py-2.5 bg-rose-600/10 text-rose-400 border border-rose-500/20 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-rose-500 hover:text-white transition-all shadow-md">Deny</button>
                 </div>
             </div>
         `).join('');
             } catch (err) {
                 console.error("Approval Sync Failure:", err);
+            }
+        }
+
+        // Naya function jo backend hit karega
+        async function handleApproval(bookingId, action) {
+            try {
+                const res = await fetch(`${API_BASE}/admin/bookings/action`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ booking_id: bookingId, action: action })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    alert(data.message);
+                    fetchApprovals(); // Refresh the list immediately
+                    fetchAnalytics(); // Update stats in background
+                } else {
+                    alert("Security Alert: " + data.error);
+                }
+            } catch (e) {
+                alert("Ecosystem Link Failure");
             }
         }
 

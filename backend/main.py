@@ -499,7 +499,38 @@ def book_resource():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# --- ADMIN: APPROVE/DENY BOOKINGS ---
+@app.route("/admin/bookings/action", methods=["POST"])
+@admin_required
+def admin_booking_action():
+    data = request.json
+    booking_id = data.get("booking_id")
+    action = data.get("action") # 'approve' or 'deny'
 
+    try:
+        with get_db() as conn:
+            # 1. Pehle booking details nikal lo
+            booking = conn.execute("SELECT resource_id FROM bookings WHERE id = ?", (booking_id,)).fetchone()
+            if not booking:
+                return jsonify({"error": "Booking record not found"}), 404
+            
+            res_id = booking['resource_id']
+
+            if action == 'approve':
+                # Update booking to Confirmed
+                conn.execute("UPDATE bookings SET status = 'Confirmed' WHERE id = ?", (booking_id,))
+                # Update resource to Occupied
+                conn.execute("UPDATE resources SET status = 'Occupied' WHERE id = ?", (res_id,))
+                msg = "Protocol Authorized. Node status updated to OCCUPIED."
+            else:
+                # Update booking to Denied
+                conn.execute("UPDATE bookings SET status = 'Denied' WHERE id = ?", (booking_id,))
+                msg = "Protocol Denied. Node remains AVAILABLE."
+
+            conn.commit()
+            return jsonify({"success": True, "message": msg})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 #------------------------------------------------------------------------------------
 #Main Backend
