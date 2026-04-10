@@ -1,73 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KNOT | System Administration Node</title>
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
         /* Modern Premium Tech Font */
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800;900&display=swap');
-        
+
         :root {
             --glass-bg: rgba(9, 14, 25, 0.4);
             --glass-border: rgba(255, 255, 255, 0.08);
         }
 
-        body { 
-            font-family: 'Outfit', sans-serif; 
+        body {
+            font-family: 'Outfit', sans-serif;
             background-color: #02040a;
-            color: #f8fafc; 
+            color: #f8fafc;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
         /* Ambient Orbs Animation */
         @keyframes pulse-slow {
-            0%, 100% { opacity: 0.15; transform: scale(1); }
-            50% { opacity: 0.25; transform: scale(1.05); }
+
+            0%,
+            100% {
+                opacity: 0.15;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.25;
+                transform: scale(1.05);
+            }
         }
+
         @keyframes pulse-slower {
-            0%, 100% { opacity: 0.1; transform: scale(1); }
-            50% { opacity: 0.2; transform: scale(1.1); }
+
+            0%,
+            100% {
+                opacity: 0.1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.2;
+                transform: scale(1.1);
+            }
         }
-        .animate-pulse-slow { animation: pulse-slow 10s ease-in-out infinite; }
-        .animate-pulse-slower { animation: pulse-slower 15s ease-in-out infinite; }
+
+        .animate-pulse-slow {
+            animation: pulse-slow 10s ease-in-out infinite;
+        }
+
+        .animate-pulse-slower {
+            animation: pulse-slower 15s ease-in-out infinite;
+        }
 
         /* Custom OS Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
 
         /* Sidebar Glass Effect */
         .sidebar-glass {
             background: linear-gradient(90deg, rgba(3, 6, 16, 0.95) 0%, rgba(3, 6, 16, 0.7) 100%);
-            backdrop-filter: blur(24px); 
+            backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
-            border-right: 1px solid rgba(255, 255, 255, 0.05); 
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .sidebar-item { 
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
-            color: #64748b; 
+        .sidebar-item {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            color: #64748b;
         }
+
         .sidebar-item:hover {
             color: #f8fafc;
-            background: rgba(255,255,255,0.03);
+            background: rgba(255, 255, 255, 0.03);
             transform: translateX(4px);
         }
-        
+
         /* Active View indicator */
-        .sidebar-item.active { 
-            background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, transparent 100%); 
-            border-left: 3px solid #3b82f6; 
-            color: #60a5fa; 
+        .sidebar-item.active {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, transparent 100%);
+            border-left: 3px solid #3b82f6;
+            color: #60a5fa;
             text-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
             transform: translateX(4px);
         }
@@ -78,11 +117,11 @@
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             border-radius: 1.5rem;
-            border: 1px solid rgba(255,255,255,0.06);
-            box-shadow: 0 4px 40px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255,255,255,0.05);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 4px 40px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05);
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        
+
         .admin-card:hover {
             transform: translateY(-4px);
             background: rgba(18, 25, 43, 0.6);
@@ -91,73 +130,119 @@
         }
 
         /* Glass Input Fields */
-        .input-dark { 
-            background: rgba(3, 7, 18, 0.6); 
-            border: 1px solid rgba(255,255,255,0.08); 
-            outline: none; 
-            transition: all 0.3s ease; 
+        .input-dark {
+            background: rgba(3, 7, 18, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            outline: none;
+            transition: all 0.3s ease;
             backdrop-filter: blur(12px);
             color: white;
         }
-        .input-dark:focus { 
-            border-color: #3b82f6; 
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2), inset 0 0 0 1px rgba(59, 130, 246, 0.4) ; 
+
+        .input-dark:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2), inset 0 0 0 1px rgba(59, 130, 246, 0.4);
             background: rgba(3, 7, 18, 0.9);
         }
-        
+
         /* Modal Aesthetics */
-        .modal-glass { background: rgba(2, 4, 10, 0.85); backdrop-filter: blur(30px); }
-        #resource-modal-box { transform: translateY(20px) scale(0.95); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .modal-glass {
+            background: rgba(2, 4, 10, 0.85);
+            backdrop-filter: blur(30px);
+        }
+
+        #resource-modal-box {
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
         /* Render Fade Engine */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px) scale(0.98); filter: blur(5px); }
-            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0px); }
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.98);
+                filter: blur(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0px);
+            }
         }
-        .tab-view:not(.hidden) { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        .tab-view:not(.hidden) {
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
     </style>
 </head>
+
 <body class="min-h-screen flex selection:bg-blue-500/30 selection:text-white">
 
     <!-- Unified Telemetry Background -->
     <div class="fixed inset-0 z-[-10] bg-[#02050f]">
         <!-- Tech Grid System -->
-        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:48px_48px]"></div>
+        <div
+            class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:48px_48px]">
+        </div>
         <!-- Aura Orbs -->
-        <div class="absolute top-0 left-[10%] w-[50vw] h-[50vw] rounded-full bg-blue-600/10 blur-[150px] animate-pulse-slow mix-blend-screen pointer-events-none"></div>
-        <div class="absolute bottom-0 right-[5%] w-[40vw] h-[40vw] rounded-full bg-indigo-600/10 blur-[140px] animate-pulse-slower mix-blend-screen pointer-events-none"></div>
+        <div
+            class="absolute top-0 left-[10%] w-[50vw] h-[50vw] rounded-full bg-blue-600/10 blur-[150px] animate-pulse-slow mix-blend-screen pointer-events-none">
+        </div>
+        <div
+            class="absolute bottom-0 right-[5%] w-[40vw] h-[40vw] rounded-full bg-indigo-600/10 blur-[140px] animate-pulse-slower mix-blend-screen pointer-events-none">
+        </div>
     </div>
 
     <!-- Edge Sidebar Interface -->
     <aside class="w-72 sidebar-glass flex flex-col sticky top-0 h-screen z-40 relative">
         <!-- Dashboard Identity -->
         <div class="p-8 border-b border-white/5 flex items-center gap-4 relative z-10">
-            <div class="w-11 h-11 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center font-black italic shadow-[0_0_20px_rgba(59,130,246,0.25)] border border-white/10 text-white text-xl">K</div>
+            <div
+                class="w-11 h-11 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center font-black italic shadow-[0_0_20px_rgba(59,130,246,0.25)] border border-white/10 text-white text-xl">
+                K</div>
             <div class="flex flex-col">
                 <span class="text-2xl font-black tracking-tighter uppercase leading-none drop-shadow-md">Admin</span>
-                <span class="text-[0.6rem] font-bold text-emerald-400 uppercase tracking-[0.2em] mt-1 flex items-center gap-1.5"><div class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></div> System Live</span>
+                <span
+                    class="text-[0.6rem] font-bold text-emerald-400 uppercase tracking-[0.2em] mt-1 flex items-center gap-1.5">
+                    <div class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></div> System Live
+                </span>
             </div>
         </div>
-        
+
         <!-- Navigation Routing -->
         <nav class="flex-1 p-5 space-y-2 flex flex-col mt-4 relative z-10">
-            <button onclick="switchTab('analytics', this)" class="sidebar-item active w-full flex items-center justify-between p-4 rounded-xl text-sm font-bold border-l-0 text-left">
-                <div class="flex items-center gap-4"><i class="fas fa-chart-pie w-5 text-center"></i> Ecosystem Stats</div>
+            <button onclick="switchTab('analytics', this)"
+                class="sidebar-item active w-full flex items-center justify-between p-4 rounded-xl text-sm font-bold border-l-0 text-left">
+                <div class="flex items-center gap-4"><i class="fas fa-chart-pie w-5 text-center"></i> Ecosystem Stats
+                </div>
             </button>
-            <button onclick="switchTab('users', this)" class="sidebar-item w-full flex items-center justify-between p-4 rounded-xl text-sm font-bold border-l-0 text-left">
-                <div class="flex items-center gap-4"><i class="fas fa-user-shield w-5 text-center"></i> User Authority</div>
+            <button onclick="switchTab('users', this)"
+                class="sidebar-item w-full flex items-center justify-between p-4 rounded-xl text-sm font-bold border-l-0 text-left">
+                <div class="flex items-center gap-4"><i class="fas fa-user-shield w-5 text-center"></i> User Authority
+                </div>
             </button>
-            <button onclick="switchTab('resources', this)" class="sidebar-item w-full flex items-center justify-between p-4 rounded-xl text-sm font-bold border-l-0 text-left">
-                <div class="flex items-center gap-4"><i class="fas fa-microchip w-5 text-center"></i> Manage Resource</div>
+            <button onclick="switchTab('approvals', this)"
+                class="sidebar-item w-full flex items-center justify-between p-4 rounded-xl text-sm font-bold border-l-0 text-left">
+                <div class="flex items-center gap-4"><i class="fas fa-file-signature w-5 text-center"></i> Approval
+                    Requested</div>
             </button>
-            <button onclick="switchTab('marketplace', this)" class="sidebar-item w-full flex items-center justify-between p-4 rounded-xl text-sm font-bold border-l-0 text-left">
-                <div class="flex items-center gap-4"><i class="fas fa-dumpster-fire w-5 text-center"></i> Marketplace Mod</div>
+            <button onclick="switchTab('resources', this)"
+                class="sidebar-item w-full flex items-center justify-between p-4 rounded-xl text-sm font-bold border-l-0 text-left">
+                <div class="flex items-center gap-4"><i class="fas fa-microchip w-5 text-center"></i> Manage Resource
+                </div>
+            </button>
+            <button onclick="switchTab('marketplace', this)"
+                class="sidebar-item w-full flex items-center justify-between p-4 rounded-xl text-sm font-bold border-l-0 text-left">
+                <div class="flex items-center gap-4"><i class="fas fa-dumpster-fire w-5 text-center"></i> Marketplace
+                    Mod</div>
             </button>
         </nav>
-        
+
         <!-- Breakout Logic -->
         <div class="p-6 border-t border-white/5 relative z-10 mb-2">
-            <button onclick="location.href='/dashboard'" class="w-full flex items-center justify-center gap-3 p-4 bg-white/[0.03] border border-white/10 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-rose-500/10 hover:text-rose-400 hover:border-rose-500/30 transition-all text-slate-400">
+            <button onclick="location.href='/dashboard'"
+                class="w-full flex items-center justify-center gap-3 p-4 bg-white/[0.03] border border-white/10 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-rose-500/10 hover:text-rose-400 hover:border-rose-500/30 transition-all text-slate-400">
                 <i class="fas fa-power-off"></i> KNOT Ecosystem
             </button>
         </div>
@@ -165,16 +250,20 @@
 
     <!-- OS Work Area -->
     <main class="flex-1 overflow-y-auto p-8 md:p-12 relative z-10 scroll-smooth">
-        
+
         <!-- [ VIEW: ANALYTICS ] -->
         <section id="tab-analytics" class="tab-view space-y-12">
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
-                    <h2 class="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 drop-shadow-sm pb-2">Live Analytics</h2>
-                    <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1 ml-1">Real-time telemetry and resource usage</p>
+                    <h2
+                        class="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 drop-shadow-sm pb-2">
+                        Live Analytics</h2>
+                    <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1 ml-1">Real-time
+                        telemetry and resource usage</p>
                 </div>
                 <!-- Status Badge -->
-                <div class="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 text-emerald-400 rounded-lg text-[9px] font-black uppercase tracking-[0.2em] border border-emerald-500/20 backdrop-blur-md shadow-[0_0_15px_rgba(16,185,129,0.15)]">
+                <div
+                    class="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 text-emerald-400 rounded-lg text-[9px] font-black uppercase tracking-[0.2em] border border-emerald-500/20 backdrop-blur-md shadow-[0_0_15px_rgba(16,185,129,0.15)]">
                     <div class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></div> Network Sync Normal
                 </div>
             </div>
@@ -182,29 +271,47 @@
             <!-- Analytics Data Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="stats-grid">
                 <div class="admin-card p-8 flex flex-col relative overflow-hidden group">
-                    <div class="absolute top-0 right-0 p-6 opacity-[0.05] group-hover:opacity-[0.1] transition-opacity"><i class="fas fa-globe text-6xl text-white"></i></div>
-                    <p class="text-[9px] text-slate-400 font-black uppercase tracking-[0.2em] relative z-10">Global Users</p>
+                    <div class="absolute top-0 right-0 p-6 opacity-[0.05] group-hover:opacity-[0.1] transition-opacity">
+                        <i class="fas fa-globe text-6xl text-white"></i>
+                    </div>
+                    <p class="text-[9px] text-slate-400 font-black uppercase tracking-[0.2em] relative z-10">Global
+                        Users</p>
                     <p id="count-users" class="text-6xl font-black mt-4 text-white drop-shadow-md relative z-10">0</p>
                 </div>
                 <div class="admin-card p-8 flex flex-col relative overflow-hidden group border-t border-t-blue-500/30">
-                    <div class="absolute top-0 right-0 p-6 opacity-[0.05] group-hover:opacity-[0.1] transition-opacity"><i class="fas fa-calendar-check text-6xl text-blue-500"></i></div>
-                    <p class="text-[9px] text-blue-400 font-black uppercase tracking-[0.2em] relative z-10">Active Bookings</p>
-                    <p id="count-bookings" class="text-6xl font-black mt-4 text-white drop-shadow-md relative z-10">0</p>
+                    <div class="absolute top-0 right-0 p-6 opacity-[0.05] group-hover:opacity-[0.1] transition-opacity">
+                        <i class="fas fa-calendar-check text-6xl text-blue-500"></i>
+                    </div>
+                    <p class="text-[9px] text-blue-400 font-black uppercase tracking-[0.2em] relative z-10">Active
+                        Bookings</p>
+                    <p id="count-bookings" class="text-6xl font-black mt-4 text-white drop-shadow-md relative z-10">0
+                    </p>
                 </div>
-                <div class="admin-card p-8 flex flex-col relative overflow-hidden group border-t border-t-purple-500/30">
-                    <div class="absolute top-0 right-0 p-6 opacity-[0.05] group-hover:opacity-[0.1] transition-opacity"><i class="fas fa-network-wired text-6xl text-purple-500"></i></div>
-                    <p class="text-[9px] text-purple-400 font-black uppercase tracking-[0.2em] relative z-10">Total Nodes</p>
-                    <p id="count-resources" class="text-6xl font-black mt-4 text-white drop-shadow-md relative z-10">0</p>
+                <div
+                    class="admin-card p-8 flex flex-col relative overflow-hidden group border-t border-t-purple-500/30">
+                    <div class="absolute top-0 right-0 p-6 opacity-[0.05] group-hover:opacity-[0.1] transition-opacity">
+                        <i class="fas fa-network-wired text-6xl text-purple-500"></i>
+                    </div>
+                    <p class="text-[9px] text-purple-400 font-black uppercase tracking-[0.2em] relative z-10">Total
+                        Nodes</p>
+                    <p id="count-resources" class="text-6xl font-black mt-4 text-white drop-shadow-md relative z-10">0
+                    </p>
                 </div>
-                <div class="admin-card p-8 flex flex-col relative overflow-hidden group border-t border-t-emerald-500/30">
-                    <div class="absolute top-0 right-0 p-6 opacity-[0.05] group-hover:opacity-[0.1] transition-opacity"><i class="fas fa-shopping-basket text-6xl text-emerald-500"></i></div>
-                    <p class="text-[9px] text-emerald-400 font-black uppercase tracking-[0.2em] relative z-10">Market Listings</p>
+                <div
+                    class="admin-card p-8 flex flex-col relative overflow-hidden group border-t border-t-emerald-500/30">
+                    <div class="absolute top-0 right-0 p-6 opacity-[0.05] group-hover:opacity-[0.1] transition-opacity">
+                        <i class="fas fa-shopping-basket text-6xl text-emerald-500"></i>
+                    </div>
+                    <p class="text-[9px] text-emerald-400 font-black uppercase tracking-[0.2em] relative z-10">Market
+                        Listings</p>
                     <p id="count-market" class="text-6xl font-black mt-4 text-white drop-shadow-md relative z-10">0</p>
                 </div>
             </div>
 
             <div class="admin-card p-10 relative">
-                <h3 class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-8 border-b border-white/5 pb-5">Node Utilization Frequency Matrix</h3>
+                <h3
+                    class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-8 border-b border-white/5 pb-5">
+                    Node Utilization Frequency Matrix</h3>
                 <div id="usage-chart" class="space-y-6"></div>
             </div>
         </section>
@@ -213,20 +320,37 @@
         <section id="tab-users" class="tab-view hidden space-y-10">
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
-                    <h2 class="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 pb-2">Authority Control</h2>
-                    <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1 ml-1">Manage global security clearances</p>
+                    <h2
+                        class="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 pb-2">
+                        Authority Control</h2>
+                    <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1 ml-1">Manage global
+                        security clearances</p>
                 </div>
                 <div class="relative w-full max-w-md group">
-                    <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors"></i>
-                    <input type="text" id="user-search" onkeyup="searchUsers()" placeholder="Search node identity or credential..." 
+                    <i
+                        class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors"></i>
+                    <input type="text" id="user-search" onkeyup="searchUsers()"
+                        placeholder="Search node identity or credential..."
                         class="input-dark w-full rounded-2xl py-4 pl-14 pr-4 text-sm font-bold shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
                 </div>
             </div>
-            
+            <section id="tab-approvals" class="tab-view hidden space-y-10">
+                <div>
+                    <h2
+                        class="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 pb-2">
+                        Pending Approvals</h2>
+                    <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1 ml-1">Consent required
+                        for Resource reservations</p>
+                </div>
+                <div id="approvals-list" class="grid grid-cols-1 gap-4">
+                </div>
+            </section>
+
             <!-- Safe scroll overflow logic for tables -->
             <div class="admin-card overflow-x-auto">
                 <table class="w-full text-left border-collapse min-w-[700px]">
-                    <thead class="bg-white/[0.02] text-slate-500 uppercase text-[9px] font-black tracking-[0.25em] border-b border-white/10">
+                    <thead
+                        class="bg-white/[0.02] text-slate-500 uppercase text-[9px] font-black tracking-[0.25em] border-b border-white/10">
                         <tr>
                             <th class="p-6">Identity Matrix</th>
                             <th class="p-6">Affiliation Node</th>
@@ -243,10 +367,14 @@
         <section id="tab-resources" class="tab-view hidden space-y-10">
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
-                    <h2 class="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 pb-2">Resources</h2>
-                    <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1 ml-1">Configure ecosystem components</p>
+                    <h2
+                        class="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 pb-2">
+                        Resources</h2>
+                    <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1 ml-1">Configure
+                        ecosystem components</p>
                 </div>
-                <button onclick="openResourceModal()" class="bg-blue-600 hover:bg-blue-500 text-white font-black py-4 px-8 rounded-2xl text-[10px] uppercase tracking-[0.2em] transition-all shadow-[0_10px_30px_rgba(37,99,235,0.3)] hover:shadow-[0_10px_40px_rgba(59,130,246,0.5)] hover:-translate-y-1 flex items-center gap-3">
+                <button onclick="openResourceModal()"
+                    class="bg-blue-600 hover:bg-blue-500 text-white font-black py-4 px-8 rounded-2xl text-[10px] uppercase tracking-[0.2em] transition-all shadow-[0_10px_30px_rgba(37,99,235,0.3)] hover:shadow-[0_10px_40px_rgba(59,130,246,0.5)] hover:-translate-y-1 flex items-center gap-3">
                     <i class="fas fa-plus bg-white/20 p-1.5 rounded-md"></i> Deploy New Node
                 </button>
             </div>
@@ -256,8 +384,11 @@
         <!-- [ VIEW: MARKETPLACE ] -->
         <section id="tab-marketplace" class="tab-view hidden space-y-10">
             <div>
-                <h2 class="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 pb-2">Ecosystem Moderation</h2>
-                <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1 ml-1">Filter peer-to-peer ledger</p>
+                <h2
+                    class="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 pb-2">
+                    Ecosystem Moderation</h2>
+                <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1 ml-1">Filter peer-to-peer
+                    ledger</p>
             </div>
             <div id="market-list" class="grid grid-cols-1 gap-4"></div>
         </section>
@@ -265,41 +396,55 @@
     </main>
 
     <!-- [ MODAL FRAMEWORK ] -->
-    <div id="resource-modal" class="fixed inset-0 modal-glass hidden flex items-center justify-center z-[100] p-6 opacity-0 transition-opacity duration-300">
-        <div class="admin-card p-10 w-full max-w-lg shadow-[0_40px_100px_rgba(0,0,0,0.8)] relative border-t-2 border-t-blue-500/50" id="resource-modal-box">
+    <div id="resource-modal"
+        class="fixed inset-0 modal-glass hidden flex items-center justify-center z-[100] p-6 opacity-0 transition-opacity duration-300">
+        <div class="admin-card p-10 w-full max-w-lg shadow-[0_40px_100px_rgba(0,0,0,0.8)] relative border-t-2 border-t-blue-500/50"
+            id="resource-modal-box">
             <!-- Close Button -->
-            <button onclick="closeResourceModal()" class="absolute top-6 right-6 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-all">
+            <button onclick="closeResourceModal()"
+                class="absolute top-6 right-6 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-all">
                 <i class="fas fa-times"></i>
             </button>
-            
+
             <h3 class="text-3xl font-black mb-8 tracking-tighter text-white">Deploy Engine Node</h3>
-            
+
             <div class="space-y-6">
                 <div>
-                    <label class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Node Identifier Name</label>
-                    <input type="text" id="res-name" placeholder="Ex: Advanced Robotics Lab" class="input-dark w-full p-4 rounded-xl mt-2 text-sm font-bold placeholder:text-slate-600">
+                    <label class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Node Identifier
+                        Name</label>
+                    <input type="text" id="res-name" placeholder="Ex: Advanced Robotics Lab"
+                        class="input-dark w-full p-4 rounded-xl mt-2 text-sm font-bold placeholder:text-slate-600">
                 </div>
                 <div>
-                    <label class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Structural Classification</label>
+                    <label class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Structural
+                        Classification</label>
                     <div class="relative">
-                        <select id="res-type" class="input-dark w-full p-4 rounded-xl mt-2 appearance-none text-sm font-bold text-slate-300 cursor-pointer">
+                        <select id="res-type"
+                            class="input-dark w-full p-4 rounded-xl mt-2 appearance-none text-sm font-bold text-slate-300 cursor-pointer">
                             <option value="Lab">Research / Computer Laboratory</option>
                             <option value="Hall">Seminar / Audit Hall Space</option>
                             <option value="Studio">Creative Design Studio</option>
                         </select>
-                        <i class="fas fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none mt-1"></i>
+                        <i
+                            class="fas fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none mt-1"></i>
                     </div>
                 </div>
-                
-                <div class="flex items-center gap-4 bg-white/[0.02] p-5 rounded-xl border border-white/5 hover:border-white/10 transition-colors shadow-inner cursor-pointer" onclick="document.getElementById('res-approval').click()">
-                    <input type="checkbox" id="res-approval" class="w-5 h-5 rounded accent-blue-500 cursor-pointer flex-shrink-0" onclick="event.stopPropagation()">
-                    <span class="text-[11px] font-black text-slate-300 uppercase tracking-widest select-none">Require Admin / HOD Consent Level</span>
+
+                <div class="flex items-center gap-4 bg-white/[0.02] p-5 rounded-xl border border-white/5 hover:border-white/10 transition-colors shadow-inner cursor-pointer"
+                    onclick="document.getElementById('res-approval').click()">
+                    <input type="checkbox" id="res-approval"
+                        class="w-5 h-5 rounded accent-blue-500 cursor-pointer flex-shrink-0"
+                        onclick="event.stopPropagation()">
+                    <span class="text-[11px] font-black text-slate-300 uppercase tracking-widest select-none">Require
+                        Admin / HOD Consent Level</span>
                 </div>
             </div>
-            
+
             <div class="flex gap-4 mt-10">
-                <button onclick="closeResourceModal()" class="flex-1 py-4 font-black text-[10px] uppercase tracking-widest text-slate-500 hover:text-white hover:bg-white/5 rounded-xl transition-all">Abort</button>
-                <button onclick="saveNewResource()" class="flex-[2] bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 rounded-xl font-black text-[11px] uppercase tracking-[0.15em] py-4 transition-all shadow-[0_10px_30px_rgba(37,99,235,0.3)] flex items-center justify-center gap-3">
+                <button onclick="closeResourceModal()"
+                    class="flex-1 py-4 font-black text-[10px] uppercase tracking-widest text-slate-500 hover:text-white hover:bg-white/5 rounded-xl transition-all">Abort</button>
+                <button onclick="saveNewResource()"
+                    class="flex-[2] bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 rounded-xl font-black text-[11px] uppercase tracking-[0.15em] py-4 transition-all shadow-[0_10px_30px_rgba(37,99,235,0.3)] flex items-center justify-center gap-3">
                     <i class="fas fa-satellite-dish"></i> Broadcast Deployment
                 </button>
             </div>
@@ -308,7 +453,7 @@
 
     <script>
         const API_BASE = "https://apiknot.niksoriginals.in";
-        function openResourceModal() { 
+        function openResourceModal() {
             const m = document.getElementById('resource-modal');
             m.classList.remove('hidden');
             setTimeout(() => {
@@ -316,7 +461,7 @@
                 document.getElementById('resource-modal-box').style.transform = 'translateY(0) scale(1)';
             }, 10);
         }
-        function closeResourceModal() { 
+        function closeResourceModal() {
             const m = document.getElementById('resource-modal');
             m.classList.add('opacity-0');
             document.getElementById('resource-modal-box').style.transform = 'translateY(20px) scale(0.95)';
@@ -329,18 +474,18 @@
             document.getElementById(`tab-${id}`).classList.remove('hidden');
             document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
             btn.classList.add('active');
-            
-            if(id === 'analytics') fetchAnalytics();
-            if(id === 'users') searchUsers();
-            if(id === 'resources') fetchResources();
-            if(id === 'marketplace') fetchMarketItems();
+
+            if (id === 'analytics') fetchAnalytics();
+            if (id === 'users') searchUsers();
+            if (id === 'resources') fetchResources();
+            if (id === 'marketplace') fetchMarketItems();
         }
 
         // --- 1. ANALYTICS ---
         async function fetchAnalytics() {
             const res = await fetch(`${API_BASE}/api/admin/stats`, { credentials: 'include' });
             const data = await res.json();
-            
+
             document.getElementById('count-users').innerText = data.counts.users;
             document.getElementById('count-bookings').innerText = data.counts.bookings;
             document.getElementById('count-resources').innerText = data.counts.resources;
@@ -367,7 +512,7 @@
             const q = document.getElementById('user-search').value;
             const res = await fetch(`${API_BASE}/admin/users/search?q=${q}`, { credentials: 'include' });
             const users = await res.json();
-            
+
             // Replaced raw HTML mapping with premium layout maintaining data bindings
             document.getElementById('user-table-body').innerHTML = users.map(u => `
                 <tr class="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
@@ -383,10 +528,10 @@
                     </td>
                     <td class="p-6 text-right">
                         <select onchange="escalateUser(${u.id}, this.value)" class="bg-slate-900/80 border border-white/10 rounded-xl text-[10px] py-2 px-3 outline-none cursor-pointer font-black uppercase tracking-widest text-slate-300 hover:border-blue-500 focus:border-blue-500 transition-colors appearance-none text-right shadow-[0_5px_15px_rgba(0,0,0,0.5)]">
-                            <option value="student" ${u.role==='student'?'selected':''}>Operative (Student)</option>
-                            <option value="hod" ${u.role==='hod'?'selected':''}>Commander (HOD)</option>
-                            <option value="dean" ${u.role==='dean'?'selected':''}>Director (Dean)</option>
-                            <option value="admin" ${u.role==='admin'?'selected':''}>Superuser (Admin)</option>
+                            <option value="student" ${u.role === 'student' ? 'selected' : ''}>Operative (Student)</option>
+                            <option value="hod" ${u.role === 'hod' ? 'selected' : ''}>Commander (HOD)</option>
+                            <option value="dean" ${u.role === 'dean' ? 'selected' : ''}>Director (Dean)</option>
+                            <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>Superuser (Admin)</option>
                         </select>
                     </td>
                 </tr>
@@ -396,18 +541,18 @@
         async function escalateUser(userId, role) {
             const res = await fetch(`${API_BASE}/admin/users/update-role`, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
                 body: JSON.stringify({ user_id: userId, role: role })
             });
-            if(res.ok) alert("Security Clearance Priority Re-Routed Successfully!");
+            if (res.ok) alert("Security Clearance Priority Re-Routed Successfully!");
         }
 
         // --- 3. RESOURCES ---
         async function fetchResources() {
             const res = await fetch(`${API_BASE}/admin/resources`, { credentials: 'include' });
             const data = await res.json();
-            
+
             // Re-skinned resource cards string mappings
             document.getElementById('resource-list').innerHTML = data.map(r => `
                 <div class="admin-card p-8 flex justify-between items-center group relative overflow-hidden border-l-2 border-l-transparent hover:border-l-blue-500">
@@ -430,10 +575,10 @@
             const name = document.getElementById('res-name').value;
             const type = document.getElementById('res-type').value;
             const appr = document.getElementById('res-approval').checked ? 1 : 0;
-            
+
             await fetch(`${API_BASE}/admin/resources/add`, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
                 body: JSON.stringify({ name, type, needs_approval: appr })
             });
@@ -442,7 +587,7 @@
         }
 
         async function decommissionNode(id) {
-            if(!confirm("CRITICAL WARNING: This Node's ledger will be purged permanently! Proceed?")) return;
+            if (!confirm("CRITICAL WARNING: This Node's ledger will be purged permanently! Proceed?")) return;
             await fetch(`${API_BASE}/admin/resources/delete/${id}`, { method: 'DELETE', credentials: 'include' });
             fetchResources();
         }
@@ -451,7 +596,7 @@
         async function fetchMarketItems() {
             const res = await fetch(`${API_BASE}/admin/marketplace/items`, { credentials: 'include' });
             const items = await res.json();
-            
+
             // Cyber layout string mapping for market
             document.getElementById('market-list').innerHTML = items.map(i => `
                 <div class="admin-card p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 relative overflow-hidden border-l-[3px] border-l-emerald-500 group">
@@ -477,7 +622,7 @@
         }
 
         async function purgeAd(id) {
-            if(!confirm("Execute order to terminate this ledger entry?")) return;
+            if (!confirm("Execute order to terminate this ledger entry?")) return;
             await fetch(`${API_BASE}/admin/marketplace/delete/${id}`, { method: 'DELETE', credentials: 'include' });
             fetchMarketItems();
         }
@@ -485,4 +630,5 @@
         window.onload = () => fetchAnalytics();
     </script>
 </body>
+
 </html>
