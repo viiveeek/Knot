@@ -313,7 +313,7 @@ def admin_required(f):
             conn = get_db()
             user = conn.execute("SELECT role FROM users WHERE email = ?", (user_email,)).fetchone()
             conn.close()
-            if not user or user['role'].lower() != 'admin':
+            if not user or user['role'].lower() != 'admin' or user['role'].lower() != 'hod' or user['role'].lower() != 'dean':
                 return jsonify({"error": "Access Denied: Admin clearance required"}), 403
                 
             return f(*args, **kwargs)
