@@ -3,91 +3,235 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KNOT | System Administration</title>
+    <title>KNOT | System Administration Node</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #020617; color: #f8fafc; }
-        .sidebar-item { transition: all 0.2s; color: #94a3b8; }
-        .sidebar-item.active { background: rgba(59, 130, 246, 0.1); border-right: 3px solid #3b82f6; color: #3b82f6; }
-        .admin-card { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 1.5rem; }
-        .input-dark { background: #0f172a; border: 1px solid rgba(255,255,255,0.1); outline: none; transition: 0.3s; }
-        .input-dark:focus { border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.1); }
+        /* Modern Premium Tech Font */
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --glass-bg: rgba(9, 14, 25, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background-color: #02040a;
+            color: #f8fafc; 
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Ambient Orbs Animation */
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 0.15; transform: scale(1); }
+            50% { opacity: 0.25; transform: scale(1.05); }
+        }
+        @keyframes pulse-slower {
+            0%, 100% { opacity: 0.1; transform: scale(1); }
+            50% { opacity: 0.2; transform: scale(1.1); }
+        }
+        .animate-pulse-slow { animation: pulse-slow 10s ease-in-out infinite; }
+        .animate-pulse-slower { animation: pulse-slower 15s ease-in-out infinite; }
+
+        /* Custom OS Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+
+        /* Sidebar Glass Effect */
+        .sidebar-glass {
+            background: linear-gradient(90deg, rgba(3, 6, 16, 0.95) 0%, rgba(3, 6, 16, 0.7) 100%);
+            backdrop-filter: blur(24px); 
+            -webkit-backdrop-filter: blur(24px);
+            border-right: 1px solid rgba(255, 255, 255, 0.05); 
+        }
+
+        .sidebar-item { 
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
+            color: #64748b; 
+        }
+        .sidebar-item:hover {
+            color: #f8fafc;
+            background: rgba(255,255,255,0.03);
+            transform: translateX(4px);
+        }
+        
+        /* Active View indicator */
+        .sidebar-item.active { 
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, transparent 100%); 
+            border-left: 3px solid #3b82f6; 
+            color: #60a5fa; 
+            text-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+            transform: translateX(4px);
+        }
+
+        /* Bento Box Grid Cards */
+        .admin-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.06);
+            box-shadow: 0 4px 40px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255,255,255,0.05);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .admin-card:hover {
+            transform: translateY(-4px);
+            background: rgba(18, 25, 43, 0.6);
+            box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+            border-color: transparent;
+        }
+
+        /* Glass Input Fields */
+        .input-dark { 
+            background: rgba(3, 7, 18, 0.6); 
+            border: 1px solid rgba(255,255,255,0.08); 
+            outline: none; 
+            transition: all 0.3s ease; 
+            backdrop-filter: blur(12px);
+            color: white;
+        }
+        .input-dark:focus { 
+            border-color: #3b82f6; 
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2), inset 0 0 0 1px rgba(59, 130, 246, 0.4) ; 
+            background: rgba(3, 7, 18, 0.9);
+        }
+        
+        /* Modal Aesthetics */
+        .modal-glass { background: rgba(2, 4, 10, 0.85); backdrop-filter: blur(30px); }
+        #resource-modal-box { transform: translateY(20px) scale(0.95); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+
+        /* Render Fade Engine */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); filter: blur(5px); }
+            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0px); }
+        }
+        .tab-view:not(.hidden) { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     </style>
 </head>
-<body class="min-h-screen flex">
+<body class="min-h-screen flex selection:bg-blue-500/30 selection:text-white">
 
-    <aside class="w-64 border-r border-white/5 bg-slate-950 flex flex-col sticky top-0 h-screen">
-        <div class="p-8 border-b border-white/5 flex items-center gap-3">
-            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold italic">K</div>
-            <span class="text-lg font-black tracking-tighter uppercase">Admin Panel</span>
+    <!-- Unified Telemetry Background -->
+    <div class="fixed inset-0 z-[-10] bg-[#02050f]">
+        <!-- Tech Grid System -->
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:48px_48px]"></div>
+        <!-- Aura Orbs -->
+        <div class="absolute top-0 left-[10%] w-[50vw] h-[50vw] rounded-full bg-blue-600/10 blur-[150px] animate-pulse-slow mix-blend-screen pointer-events-none"></div>
+        <div class="absolute bottom-0 right-[5%] w-[40vw] h-[40vw] rounded-full bg-indigo-600/10 blur-[140px] animate-pulse-slower mix-blend-screen pointer-events-none"></div>
+    </div>
+
+    <!-- Edge Sidebar Interface -->
+    <aside class="w-72 sidebar-glass flex flex-col sticky top-0 h-screen z-40 relative">
+        <!-- Dashboard Identity -->
+        <div class="p-8 border-b border-white/5 flex items-center gap-4 relative z-10">
+            <div class="w-11 h-11 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center font-black italic shadow-[0_0_20px_rgba(59,130,246,0.25)] border border-white/10 text-white text-xl">K</div>
+            <div class="flex flex-col">
+                <span class="text-2xl font-black tracking-tighter uppercase leading-none drop-shadow-md">Admin</span>
+                <span class="text-[0.6rem] font-bold text-emerald-400 uppercase tracking-[0.2em] mt-1 flex items-center gap-1.5"><div class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></div> System Live</span>
+            </div>
         </div>
-        <nav class="flex-1 p-4 space-y-2 mt-4">
-            <button onclick="switchTab('analytics', this)" class="sidebar-item active w-full flex items-center gap-3 p-4 rounded-xl text-sm font-bold">
-                <i class="fas fa-chart-pie"></i> Ecosystem Stats
+        
+        <!-- Navigation Routing -->
+        <nav class="flex-1 p-5 space-y-2 flex flex-col mt-4 relative z-10">
+            <button onclick="switchTab('analytics', this)" class="sidebar-item active w-full flex items-center justify-between p-4 rounded-xl text-sm font-bold border-l-0 text-left">
+                <div class="flex items-center gap-4"><i class="fas fa-chart-pie w-5 text-center"></i> Ecosystem Stats</div>
             </button>
-            <button onclick="switchTab('users', this)" class="sidebar-item w-full flex items-center gap-3 p-4 rounded-xl text-sm font-bold">
-                <i class="fas fa-user-gear"></i> User Authority
+            <button onclick="switchTab('users', this)" class="sidebar-item w-full flex items-center justify-between p-4 rounded-xl text-sm font-bold border-l-0 text-left">
+                <div class="flex items-center gap-4"><i class="fas fa-user-shield w-5 text-center"></i> User Authority</div>
             </button>
-            <button onclick="switchTab('resources', this)" class="sidebar-item w-full flex items-center gap-3 p-4 rounded-xl text-sm font-bold">
-                <i class="fas fa-microchip"></i> Manage Nodes
+            <button onclick="switchTab('resources', this)" class="sidebar-item w-full flex items-center justify-between p-4 rounded-xl text-sm font-bold border-l-0 text-left">
+                <div class="flex items-center gap-4"><i class="fas fa-microchip w-5 text-center"></i> Manage Nodes</div>
             </button>
-            <button onclick="switchTab('marketplace', this)" class="sidebar-item w-full flex items-center gap-3 p-4 rounded-xl text-sm font-bold">
-                <i class="fas fa-dumpster-fire"></i> Marketplace Mod
+            <button onclick="switchTab('marketplace', this)" class="sidebar-item w-full flex items-center justify-between p-4 rounded-xl text-sm font-bold border-l-0 text-left">
+                <div class="flex items-center gap-4"><i class="fas fa-dumpster-fire w-5 text-center"></i> Marketplace Mod</div>
             </button>
         </nav>
-        <div class="p-6 border-t border-white/5">
-            <button onclick="location.href='/dashboard'" class="w-full flex items-center justify-center gap-2 p-3 bg-slate-900 rounded-xl text-xs font-bold hover:bg-slate-800 transition-all">
-                <i class="fas fa-arrow-left"></i> Return to Terminal
+        
+        <!-- Breakout Logic -->
+        <div class="p-6 border-t border-white/5 relative z-10 mb-2">
+            <button onclick="location.href='/dashboard'" class="w-full flex items-center justify-center gap-3 p-4 bg-white/[0.03] border border-white/10 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-rose-500/10 hover:text-rose-400 hover:border-rose-500/30 transition-all text-slate-400">
+                <i class="fas fa-power-off"></i> Exit Terminal
             </button>
         </div>
     </aside>
 
-    <main class="flex-1 overflow-y-auto p-12">
+    <!-- OS Work Area -->
+    <main class="flex-1 overflow-y-auto p-8 md:p-12 relative z-10 scroll-smooth">
         
+        <!-- [ VIEW: ANALYTICS ] -->
         <section id="tab-analytics" class="tab-view space-y-12">
-            <div class="flex justify-between items-end">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
-                    <h2 class="text-4xl font-black tracking-tight">Ecosystem Live Analytics</h2>
-                    <p class="text-slate-500 mt-2 font-medium italic">Real-time resource utilization and user metrics</p>
+                    <h2 class="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 drop-shadow-sm pb-2">Live Analytics</h2>
+                    <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1 ml-1">Real-time telemetry and resource usage</p>
                 </div>
-                <div class="px-4 py-2 bg-emerald-500/10 text-emerald-500 rounded-full text-[10px] font-black uppercase tracking-widest border border-emerald-500/20">
-                    <span class="animate-pulse mr-2">●</span> Live Sync Active
+                <!-- Status Badge -->
+                <div class="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 text-emerald-400 rounded-lg text-[9px] font-black uppercase tracking-[0.2em] border border-emerald-500/20 backdrop-blur-md shadow-[0_0_15px_rgba(16,185,129,0.15)]">
+                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></div> Network Sync Normal
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6" id="stats-grid">
-                <div class="admin-card p-8"><p class="text-[10px] text-slate-500 font-black uppercase tracking-widest">Global Users</p><p id="count-users" class="text-4xl font-black mt-2">0</p></div>
-                <div class="admin-card p-8"><p class="text-[10px] text-slate-500 font-black uppercase tracking-widest text-blue-500">Active Bookings</p><p id="count-bookings" class="text-4xl font-black mt-2">0</p></div>
-                <div class="admin-card p-8"><p class="text-[10px] text-slate-500 font-black uppercase tracking-widest">Total Nodes</p><p id="count-resources" class="text-4xl font-black mt-2">0</p></div>
-                <div class="admin-card p-8"><p class="text-[10px] text-slate-500 font-black uppercase tracking-widest text-emerald-500">Market Listings</p><p id="count-market" class="text-4xl font-black mt-2">0</p></div>
+            <!-- Analytics Data Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="stats-grid">
+                <div class="admin-card p-8 flex flex-col relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-6 opacity-[0.05] group-hover:opacity-[0.1] transition-opacity"><i class="fas fa-globe text-6xl text-white"></i></div>
+                    <p class="text-[9px] text-slate-400 font-black uppercase tracking-[0.2em] relative z-10">Global Users</p>
+                    <p id="count-users" class="text-6xl font-black mt-4 text-white drop-shadow-md relative z-10">0</p>
+                </div>
+                <div class="admin-card p-8 flex flex-col relative overflow-hidden group border-t border-t-blue-500/30">
+                    <div class="absolute top-0 right-0 p-6 opacity-[0.05] group-hover:opacity-[0.1] transition-opacity"><i class="fas fa-calendar-check text-6xl text-blue-500"></i></div>
+                    <p class="text-[9px] text-blue-400 font-black uppercase tracking-[0.2em] relative z-10">Active Bookings</p>
+                    <p id="count-bookings" class="text-6xl font-black mt-4 text-white drop-shadow-md relative z-10">0</p>
+                </div>
+                <div class="admin-card p-8 flex flex-col relative overflow-hidden group border-t border-t-purple-500/30">
+                    <div class="absolute top-0 right-0 p-6 opacity-[0.05] group-hover:opacity-[0.1] transition-opacity"><i class="fas fa-network-wired text-6xl text-purple-500"></i></div>
+                    <p class="text-[9px] text-purple-400 font-black uppercase tracking-[0.2em] relative z-10">Total Nodes</p>
+                    <p id="count-resources" class="text-6xl font-black mt-4 text-white drop-shadow-md relative z-10">0</p>
+                </div>
+                <div class="admin-card p-8 flex flex-col relative overflow-hidden group border-t border-t-emerald-500/30">
+                    <div class="absolute top-0 right-0 p-6 opacity-[0.05] group-hover:opacity-[0.1] transition-opacity"><i class="fas fa-shopping-basket text-6xl text-emerald-500"></i></div>
+                    <p class="text-[9px] text-emerald-400 font-black uppercase tracking-[0.2em] relative z-10">Market Listings</p>
+                    <p id="count-market" class="text-6xl font-black mt-4 text-white drop-shadow-md relative z-10">0</p>
+                </div>
             </div>
 
-            <div class="admin-card p-10">
-                <h3 class="text-sm font-black uppercase tracking-widest text-slate-500 mb-8">Node Utilization Frequency</h3>
-                <div id="usage-chart" class="space-y-6">
-                    </div>
+            <div class="admin-card p-10 relative">
+                <h3 class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-8 border-b border-white/5 pb-5">Node Utilization Frequency Matrix</h3>
+                <div id="usage-chart" class="space-y-6"></div>
             </div>
         </section>
 
-        <section id="tab-users" class="tab-view hidden space-y-8">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <h2 class="text-4xl font-black tracking-tight">Authority Control</h2>
-                <div class="relative w-full max-w-md">
-                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                    <input type="text" id="user-search" onkeyup="searchUsers()" placeholder="Search email or full name..." 
-                        class="input-dark w-full rounded-2xl py-3 pl-12 pr-4 text-sm font-medium">
+        <!-- [ VIEW: USERS ] -->
+        <section id="tab-users" class="tab-view hidden space-y-10">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                    <h2 class="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 pb-2">Authority Control</h2>
+                    <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1 ml-1">Manage global security clearances</p>
+                </div>
+                <div class="relative w-full max-w-md group">
+                    <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors"></i>
+                    <input type="text" id="user-search" onkeyup="searchUsers()" placeholder="Search node identity or credential..." 
+                        class="input-dark w-full rounded-2xl py-4 pl-14 pr-4 text-sm font-bold shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
                 </div>
             </div>
-            <div class="admin-card overflow-hidden">
-                <table class="w-full text-left">
-                    <thead class="bg-slate-900/50 text-slate-500 uppercase text-[10px] font-black tracking-[0.2em]">
+            
+            <!-- Safe scroll overflow logic for tables -->
+            <div class="admin-card overflow-x-auto">
+                <table class="w-full text-left border-collapse min-w-[700px]">
+                    <thead class="bg-white/[0.02] text-slate-500 uppercase text-[9px] font-black tracking-[0.25em] border-b border-white/10">
                         <tr>
-                            <th class="p-6">Identity</th>
-                            <th class="p-6">Affiliation</th>
-                            <th class="p-6">Access Level</th>
-                            <th class="p-6 text-right">Escalation</th>
+                            <th class="p-6">Identity Matrix</th>
+                            <th class="p-6">Affiliation Node</th>
+                            <th class="p-6">Current Clearance</th>
+                            <th class="p-6 text-right">Protocol Escalation</th>
                         </tr>
                     </thead>
                     <tbody id="user-table-body" class="text-sm"></tbody>
@@ -95,53 +239,92 @@
             </div>
         </section>
 
-        <section id="tab-resources" class="tab-view hidden space-y-8">
-            <div class="flex justify-between items-center">
-                <h2 class="text-4xl font-black tracking-tight">Node Provisioning</h2>
-                <button onclick="openResourceModal()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-2xl text-xs uppercase tracking-widest transition-all shadow-lg shadow-blue-500/20">
-                    + Add New Node
+        <!-- [ VIEW: RESOURCES ] -->
+        <section id="tab-resources" class="tab-view hidden space-y-10">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                    <h2 class="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 pb-2">Node Provisioning</h2>
+                    <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1 ml-1">Configure ecosystem components</p>
+                </div>
+                <button onclick="openResourceModal()" class="bg-blue-600 hover:bg-blue-500 text-white font-black py-4 px-8 rounded-2xl text-[10px] uppercase tracking-[0.2em] transition-all shadow-[0_10px_30px_rgba(37,99,235,0.3)] hover:shadow-[0_10px_40px_rgba(59,130,246,0.5)] hover:-translate-y-1 flex items-center gap-3">
+                    <i class="fas fa-plus bg-white/20 p-1.5 rounded-md"></i> Deploy New Node
                 </button>
             </div>
-            <div id="resource-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            <div id="resource-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </section>
 
-        <section id="tab-marketplace" class="tab-view hidden space-y-8">
-            <h2 class="text-4xl font-black tracking-tight">Ecosystem Moderation</h2>
+        <!-- [ VIEW: MARKETPLACE ] -->
+        <section id="tab-marketplace" class="tab-view hidden space-y-10">
+            <div>
+                <h2 class="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 pb-2">Ecosystem Moderation</h2>
+                <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1 ml-1">Filter peer-to-peer ledger</p>
+            </div>
             <div id="market-list" class="grid grid-cols-1 gap-4"></div>
         </section>
 
     </main>
 
-    <div id="resource-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md hidden flex items-center justify-center z-[100] p-6">
-        <div class="admin-card bg-slate-900 border-white/10 p-10 w-full max-w-lg shadow-2xl">
-            <h3 class="text-2xl font-black mb-8">Provision New Ecosystem Node</h3>
+    <!-- [ MODAL FRAMEWORK ] -->
+    <div id="resource-modal" class="fixed inset-0 modal-glass hidden flex items-center justify-center z-[100] p-6 opacity-0 transition-opacity duration-300">
+        <div class="admin-card p-10 w-full max-w-lg shadow-[0_40px_100px_rgba(0,0,0,0.8)] relative border-t-2 border-t-blue-500/50" id="resource-modal-box">
+            <!-- Close Button -->
+            <button onclick="closeResourceModal()" class="absolute top-6 right-6 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-all">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <h3 class="text-3xl font-black mb-8 tracking-tighter text-white">Deploy Engine Node</h3>
+            
             <div class="space-y-6">
                 <div>
-                    <label class="text-[10px] font-black uppercase text-slate-500 ml-1">Node Name</label>
-                    <input type="text" id="res-name" placeholder="Ex: Advanced Robotics Lab" class="input-dark w-full p-4 rounded-xl mt-2">
+                    <label class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Node Identifier Name</label>
+                    <input type="text" id="res-name" placeholder="Ex: Advanced Robotics Lab" class="input-dark w-full p-4 rounded-xl mt-2 text-sm font-bold placeholder:text-slate-600">
                 </div>
                 <div>
-                    <label class="text-[10px] font-black uppercase text-slate-500 ml-1">Node Classification</label>
-                    <select id="res-type" class="input-dark w-full p-4 rounded-xl mt-2 appearance-none">
-                        <option value="Lab">Research Laboratory</option>
-                        <option value="Hall">Seminar/Audit Hall</option>
-                        <option value="Studio">Creative Studio</option>
-                    </select>
+                    <label class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Structural Classification</label>
+                    <div class="relative">
+                        <select id="res-type" class="input-dark w-full p-4 rounded-xl mt-2 appearance-none text-sm font-bold text-slate-300 cursor-pointer">
+                            <option value="Lab">Research / Computer Laboratory</option>
+                            <option value="Hall">Seminar / Audit Hall Space</option>
+                            <option value="Studio">Creative Design Studio</option>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none mt-1"></i>
+                    </div>
                 </div>
-                <div class="flex items-center gap-4 bg-slate-800/40 p-4 rounded-xl border border-white/5">
-                    <input type="checkbox" id="res-approval" class="w-5 h-5 rounded accent-blue-500">
-                    <span class="text-sm font-bold text-slate-300 uppercase tracking-tighter">Requires Administrative Consent</span>
+                
+                <div class="flex items-center gap-4 bg-white/[0.02] p-5 rounded-xl border border-white/5 hover:border-white/10 transition-colors shadow-inner cursor-pointer" onclick="document.getElementById('res-approval').click()">
+                    <input type="checkbox" id="res-approval" class="w-5 h-5 rounded accent-blue-500 cursor-pointer flex-shrink-0" onclick="event.stopPropagation()">
+                    <span class="text-[11px] font-black text-slate-300 uppercase tracking-widest select-none">Require Admin / HOD Consent Level</span>
                 </div>
             </div>
+            
             <div class="flex gap-4 mt-10">
-                <button onclick="closeResourceModal()" class="flex-1 py-4 font-bold text-slate-500 hover:text-white transition-colors">Cancel</button>
-                <button onclick="saveNewResource()" class="flex-1 bg-blue-600 hover:bg-blue-500 rounded-2xl font-bold py-4 transition-all">Deploy Node</button>
+                <button onclick="closeResourceModal()" class="flex-1 py-4 font-black text-[10px] uppercase tracking-widest text-slate-500 hover:text-white hover:bg-white/5 rounded-xl transition-all">Abort</button>
+                <button onclick="saveNewResource()" class="flex-[2] bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 rounded-xl font-black text-[11px] uppercase tracking-[0.15em] py-4 transition-all shadow-[0_10px_30px_rgba(37,99,235,0.3)] flex items-center justify-center gap-3">
+                    <i class="fas fa-satellite-dish"></i> Broadcast Deployment
+                </button>
             </div>
         </div>
     </div>
 
+    <!-- CORE LOGIC / AJAX CALLS (UNTOUCHED INTEGRITY) -->
     <script>
         const API_BASE = "https://apiknot.niksoriginals.in";
+
+        // Cinematic UI modal controller logic
+        function openResourceModal() { 
+            const m = document.getElementById('resource-modal');
+            m.classList.remove('hidden');
+            setTimeout(() => {
+                m.classList.remove('opacity-0');
+                document.getElementById('resource-modal-box').style.transform = 'translateY(0) scale(1)';
+            }, 10);
+        }
+        function closeResourceModal() { 
+            const m = document.getElementById('resource-modal');
+            m.classList.add('opacity-0');
+            document.getElementById('resource-modal-box').style.transform = 'translateY(20px) scale(0.95)';
+            setTimeout(() => m.classList.add('hidden'), 300);
+        }
 
         // Tab Engine
         function switchTab(id, btn) {
@@ -167,13 +350,16 @@
             document.getElementById('count-market').innerText = data.counts.market;
 
             const chart = document.getElementById('usage-chart');
+            // Premium styling integrated into the inner map injection
             chart.innerHTML = data.usage.map(r => `
-                <div class="group">
+                <div class="group relative">
                     <div class="flex justify-between text-[10px] font-black uppercase text-slate-500 mb-2 group-hover:text-blue-400 transition-colors">
-                        <span>${r.name}</span><span>${r.use_count} Bookings confirmed</span>
+                        <span>${r.name}</span><span>${r.use_count} Executions</span>
                     </div>
-                    <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-white/5">
-                        <div class="bg-blue-600 h-full transition-all duration-1000 ease-out" style="width: ${Math.min(r.use_count * 5, 100)}%"></div>
+                    <div class="w-full bg-slate-900/60 h-2.5 rounded-full overflow-hidden border border-white/5 shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]">
+                        <div class="bg-gradient-to-r from-blue-600 to-indigo-400 h-full transition-all duration-1000 ease-out relative" style="width: ${Math.min(r.use_count * 5, 100)}%">
+                            <div class="absolute inset-0 bg-white/20 w-full animate-pulse"></div>
+                        </div>
                     </div>
                 </div>
             `).join('');
@@ -185,20 +371,25 @@
             const res = await fetch(`${API_BASE}/admin/users/search?q=${q}`, { credentials: 'include' });
             const users = await res.json();
             
+            // Replaced raw HTML mapping with premium layout maintaining data bindings
             document.getElementById('user-table-body').innerHTML = users.map(u => `
-                <tr class="border-b border-white/5 hover:bg-blue-500/[0.02] transition-colors">
+                <tr class="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
                     <td class="p-6">
-                        <div class="font-bold text-slate-100 uppercase tracking-tighter">${u.name || 'Set Name'}</div>
-                        <div class="text-[10px] text-slate-500 font-medium">${u.email}</div>
+                        <div class="font-black text-slate-100 uppercase tracking-wide text-[13px]">${u.name || 'ANONYMOUS NODE'}</div>
+                        <div class="text-[10px] text-slate-500 font-bold tracking-widest uppercase mt-1 group-hover:text-blue-400 transition-colors">${u.email}</div>
                     </td>
-                    <td class="p-6 font-bold text-xs italic text-slate-400">${u.department || 'ITS-GEN'}</td>
-                    <td class="p-6"><span class="px-3 py-1 bg-slate-900 rounded-lg text-[10px] font-black text-blue-400 border border-white/5 uppercase italic">${u.role}</span></td>
+                    <td class="p-6 font-bold text-[10px] text-slate-400 tracking-[0.2em] uppercase">${u.department || 'ITS-ROOT'}</td>
+                    <td class="p-6">
+                        <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-500/10 rounded-lg text-[9px] font-black text-blue-400 border border-blue-500/20 uppercase tracking-[0.15em] shadow-[0_0_15px_rgba(59,130,246,0.1)]">
+                            <i class="fas fa-fingerprint text-[8px]"></i> ${u.role}
+                        </div>
+                    </td>
                     <td class="p-6 text-right">
-                        <select onchange="escalateUser(${u.id}, this.value)" class="bg-slate-900 border border-white/10 rounded-xl text-xs p-2 outline-none cursor-pointer font-bold hover:border-blue-500">
-                            <option value="student" ${u.role==='student'?'selected':''}>Student</option>
-                            <option value="hod" ${u.role==='hod'?'selected':''}>HOD</option>
-                            <option value="dean" ${u.role==='dean'?'selected':''}>Dean</option>
-                            <option value="admin" ${u.role==='admin'?'selected':''}>Superuser</option>
+                        <select onchange="escalateUser(${u.id}, this.value)" class="bg-slate-900/80 border border-white/10 rounded-xl text-[10px] py-2 px-3 outline-none cursor-pointer font-black uppercase tracking-widest text-slate-300 hover:border-blue-500 focus:border-blue-500 transition-colors appearance-none text-right shadow-[0_5px_15px_rgba(0,0,0,0.5)]">
+                            <option value="student" ${u.role==='student'?'selected':''}>Operative (Student)</option>
+                            <option value="hod" ${u.role==='hod'?'selected':''}>Commander (HOD)</option>
+                            <option value="dean" ${u.role==='dean'?'selected':''}>Director (Dean)</option>
+                            <option value="admin" ${u.role==='admin'?'selected':''}>Superuser (Admin)</option>
                         </select>
                     </td>
                 </tr>
@@ -212,28 +403,31 @@
                 credentials: 'include',
                 body: JSON.stringify({ user_id: userId, role: role })
             });
-            if(res.ok) alert("Security Clearance Escalated!");
+            if(res.ok) alert("Security Clearance Priority Re-Routed Successfully!");
         }
 
         // --- 3. RESOURCES ---
         async function fetchResources() {
             const res = await fetch(`${API_BASE}/admin/resources`, { credentials: 'include' });
             const data = await res.json();
+            
+            // Re-skinned resource cards string mappings
             document.getElementById('resource-list').innerHTML = data.map(r => `
-                <div class="admin-card p-8 flex justify-between items-center group hover:border-blue-500/50 transition-all">
-                    <div>
-                        <p class="text-lg font-black text-white uppercase tracking-tighter italic">${r.name}</p>
-                        <p class="text-[9px] text-slate-500 font-black uppercase mt-1 tracking-widest">${r.type}</p>
+                <div class="admin-card p-8 flex justify-between items-center group relative overflow-hidden border-l-2 border-l-transparent hover:border-l-blue-500">
+                    <div class="absolute inset-0 bg-gradient-to-r from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="relative z-10">
+                        <p class="text-xl font-black text-white uppercase tracking-tighter">${r.name}</p>
+                        <div class="flex flex-wrap items-center gap-2 mt-3">
+                            <span class="text-[9px] text-slate-300 font-black uppercase tracking-[0.2em] bg-white/5 py-1 px-2.5 rounded-md border border-white/5 shadow-inner shadow-black/20">${r.type}</span>
+                            ${r.needs_approval ? '<span class="text-[9px] text-amber-400 font-black uppercase tracking-widest bg-amber-500/10 py-1 px-2 rounded-md border border-amber-500/20"><i class="fas fa-lock mr-1 text-[8px]"></i> Restricted</span>' : ''}
+                        </div>
                     </div>
-                    <button onclick="decommissionNode(${r.id})" class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white transition-all flex items-center justify-center">
-                        <i class="fas fa-trash-alt text-xs"></i>
+                    <button onclick="decommissionNode(${r.id})" class="w-12 h-12 rounded-xl bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:shadow-[0_0_20px_rgba(244,63,94,0.4)] hover:text-white transition-all flex items-center justify-center border border-rose-500/20 hover:border-transparent relative z-10 group-hover:scale-110">
+                        <i class="fas fa-trash-alt text-sm"></i>
                     </button>
                 </div>
             `).join('');
         }
-
-        function openResourceModal() { document.getElementById('resource-modal').classList.remove('hidden'); }
-        function closeResourceModal() { document.getElementById('resource-modal').classList.add('hidden'); }
 
         async function saveNewResource() {
             const name = document.getElementById('res-name').value;
@@ -251,7 +445,7 @@
         }
 
         async function decommissionNode(id) {
-            if(!confirm("Are you sure? This node data will be purged!")) return;
+            if(!confirm("CRITICAL WARNING: This Node's ledger will be purged permanently! Proceed?")) return;
             await fetch(`${API_BASE}/admin/resources/delete/${id}`, { method: 'DELETE', credentials: 'include' });
             fetchResources();
         }
@@ -260,22 +454,33 @@
         async function fetchMarketItems() {
             const res = await fetch(`${API_BASE}/admin/marketplace/items`, { credentials: 'include' });
             const items = await res.json();
+            
+            // Cyber layout string mapping for market
             document.getElementById('market-list').innerHTML = items.map(i => `
-                <div class="admin-card p-6 flex justify-between items-center border-l-4 border-emerald-500 hover:bg-white/[0.02] transition-all">
-                    <div class="flex items-center gap-6">
-                        <div class="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center font-black text-emerald-500 border border-white/5 uppercase">${i.type[0]}</div>
-                        <div>
-                            <p class="font-bold text-white uppercase italic tracking-tighter">${i.title}</p>
-                            <p class="text-[10px] text-slate-500 font-medium">Owner: <span class="text-slate-300 uppercase">${i.owner_name}</span></p>
+                <div class="admin-card p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 relative overflow-hidden border-l-[3px] border-l-emerald-500 group">
+                    <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="flex items-center gap-5 relative z-10 w-full sm:w-auto">
+                        <div class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center font-black text-emerald-400 border border-emerald-500/20 text-2xl shadow-[inset_0_0_15px_rgba(16,185,129,0.15)] shrink-0 group-hover:bg-emerald-500/20 transition-colors">
+                            ${i.type[0]}
+                        </div>
+                        <div class="flex flex-col">
+                            <p class="font-black text-white text-xl tracking-tight">${i.title}</p>
+                            <p class="text-[10px] text-slate-400 font-black uppercase tracking-[0.15em] mt-2 flex items-center gap-2">
+                                <i class="fas fa-link text-[8px] text-slate-500"></i> Origin: <span class="text-emerald-400">${i.owner_name}</span> 
+                                <span class="text-slate-600 px-1">|</span> 
+                                <span class="text-white bg-white/5 px-2 py-0.5 rounded border border-white/5">${i.type}</span>
+                            </p>
                         </div>
                     </div>
-                    <button onclick="purgeAd(${i.id})" class="px-6 py-2 bg-rose-600/10 text-rose-500 rounded-xl text-[10px] font-black uppercase hover:bg-rose-600 hover:text-white transition-all">Purge Entry</button>
+                    <button onclick="purgeAd(${i.id})" class="w-full sm:w-auto px-6 py-3 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-rose-500 hover:text-white transition-all shadow-md relative z-10 hover:shadow-[0_0_20px_rgba(244,63,94,0.4)]">
+                        Obliterate Data
+                    </button>
                 </div>
             `).join('');
         }
 
         async function purgeAd(id) {
-            if(!confirm("Terminate this listing?")) return;
+            if(!confirm("Execute order to terminate this ledger entry?")) return;
             await fetch(`${API_BASE}/admin/marketplace/delete/${id}`, { method: 'DELETE', credentials: 'include' });
             fetchMarketItems();
         }
