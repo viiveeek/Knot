@@ -230,6 +230,30 @@
         const DASHBOARD_URL = "/dashboard";
         let timerInterval;
 
+        // --- AUTO REDIRECT IF ALREADY LOGGED IN ---
+        async function checkExistingSession() {
+            try {
+                const res = await fetch(`${API_BASE}/api/user-profile`, { credentials: 'include' });
+                if (res.ok) {
+                    const data = await res.json();
+                    const role = data.role.toLowerCase();
+                    
+                    if (role === 'admin') {
+                        window.location.href = "/admin";
+                    } else if (role === 'hod' || role === 'dean') {
+                        window.location.href = "/management";
+                    } else {
+                        window.location.href = "/dashboard";
+                    }
+                }
+            } catch (err) {
+                console.log("No existing session");
+            }
+        }
+        
+        // Check session on page load
+        window.addEventListener('load', checkExistingSession);
+
         // --- TOAST SYSTEM ---
         function showToast(msg, type = 'info') {
             const container = document.getElementById('toast-container');
