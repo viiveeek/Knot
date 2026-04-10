@@ -389,51 +389,7 @@ def update_user_role():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route("/api/admin/mega-setup", methods=["GET"])
-def mega_setup():
-    try:
-        with get_db() as conn:
-            # 1. Clean existing data (just in case)
-            conn.execute("DELETE FROM users")
-            conn.execute("DELETE FROM resources")
-            conn.execute("DELETE FROM marketplace")
-            conn.execute("DELETE FROM bookings")
 
-            # 2. Re-insert USERS (IDs exactly as per your JSON)
-            users = [
-                (2, 'YASHVEER', 'yashveerrajpoot@its.edu.in', 'student', 'CSE'),
-                (3, 'Nikhil Yadav', 'nikhilyadavrny_cse25@its.edu.in', 'admin', 'CSE'),
-                (4, 'YASHVEER', 'yashveerrajpootvks_cse25@its.edu.in', 'admin', 'CSE'),
-                (5, 'Shivam Sharma', 'shivamsharmars_cse25@its.edu.in', 'admin', 'CSE')
-            ]
-            conn.executemany("INSERT INTO users (id, name, email, role, department) VALUES (?, ?, ?, ?, ?)", users)
-
-            # 3. Re-insert RESOURCES
-            resources = [
-                (1, 'Computer Lab B1', 'Lab', 'Available', 0),
-                (2, 'Seminar Hall 1', 'Hall', 'Available', 1),
-                (3, 'Innovation Center', 'Studio', 'Available', 0),
-                (4, 'IOT Lab', 'Lab', 'Available', 0),
-                (5, 'COE LAB 1', 'Lab', 'Occupied', 1)
-            ]
-            conn.executemany("INSERT INTO resources (id, name, type, status, needs_approval) VALUES (?, ?, ?, ?, ?)", resources)
-
-            # 4. Re-insert MARKETPLACE
-            conn.execute('''
-                INSERT INTO marketplace (id, user_id, title, description, type, created_at) 
-                VALUES (1, 1, 'Data Structures Book', 'Standard textbook for 2nd year', 'Sell', '2026-04-10 17:17:17')
-            ''')
-
-            # 5. Re-insert BOOKINGS
-            conn.execute('''
-                INSERT INTO bookings (id, user_id, resource_id, start_time, end_time, status)
-                VALUES (1, 3, 5, '2026-04-11T05:35', '2026-04-22T00:35', 'Confirmed')
-            ''')
-
-            conn.commit()
-        return jsonify({"success": True, "message": "Ecosystem Restored to Demo State!"})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
 
 @app.route("/api/admin/stats", methods=["GET"])
 @admin_required
