@@ -313,11 +313,18 @@ def admin_required(f):
             conn = get_db()
             user = conn.execute("SELECT role FROM users WHERE email = ?", (user_email,)).fetchone()
             conn.close()
-            if not user or user['role'].lower() != 'admin' or user['role'].lower() != 'hod' or user['role'].lower() != 'dean':
-                return jsonify({"error": "Access Denied: Admin clearance required"}), 403
+
+            # --- FIXED LOGIC ---
+            allowed_roles = ['admin', 'hod', 'dean']
+            
+            if not user or user['role'].lower() not in allowed_roles:
+                print(f">>> [DENIED] {user_email} with role {user['role'] if user else 'None'}")
+                return jsonify({"error": "Access Denied: Administrative clearance required"}), 403
+            # -------------------
                 
             return f(*args, **kwargs)
         except Exception as e:
+            print(f"!!! [SECURITY ERROR] {e}")
             return jsonify({"error": "Security Check Failed"}), 500
             
     return decorated_function
