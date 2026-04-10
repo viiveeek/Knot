@@ -276,23 +276,6 @@ def debug_db_viewer():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# --- 5. ADMIN & SYSTEM ---
-
-@app.route("/admin/login", methods=["POST"])
-def admin_login():
-    data = request.json or {}
-    if data.get("username") == "admin" and data.get("password") == "admin":
-        session["admin"] = True
-        return jsonify({"success": True})
-    return jsonify({"error": "Invalid credentials"}), 401
-
-@app.route("/admin/logout", methods=["POST"])
-def admin_logout():
-    session.pop("admin", None)
-    return jsonify({"success": True})
-
-
-
 # --- 5. ADMIN & ANALYTICS ROUTES ---
 def admin_required(f):
     @wraps(f)
@@ -368,6 +351,58 @@ def add_resource():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route("/admin/users/search", methods=["GET"])
+@admin_required
+def search_users():
+    query = request.args.get("q", "")
+    conn = get_db()
+    rows = conn.execute('''
+        SELECT id, name, email, role, department 
+        FROM users 
+        WHERE email LIKE ? OR name LIKE ?
+        LIMIT 20
+    ''', (f'%{query}%', f'%{query}%')).fetchall()
+    conn.close()
+    return jsonify([dict(row) for row in rows])
+
+@app.route("/admin/users/update-role", methods=["POST"])
+@admin_required
+def update_user_role():
+    data = request.json
+    user_id = data.get("user_id")
+    new_role = data.get("role")
+    
+    if new_role not in ['student', 'admin', 'hod', 'dean']:
+        return jsonify({"error": "Invalid role configuration"}), 400
+
+    try:
+        conn = get_db()
+        conn.execute("UPDATE users SET role = ? WHERE id = ?", (new_role, user_id))
+        conn.commit()
+        conn.close()
+        return jsonify({"success": True, "message": f"User role escalated to {new_role}"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/api/admin/stats", methods=["GET"])
+@admin_required
+def get_dashboard_stats():
+    conn = get_db()
+    stats = {
+        "users": conn.execute("SELECT COUNT(*) FROM users").fetchone()[0],
+        "resources": conn.execute("SELECT COUNT(*) FROM resources").fetchone()[0],
+        "bookings": conn.execute("SELECT COUNT(*) FROM bookings WHERE status='Confirmed'").fetchone()[0],
+        "market": conn.execute("SELECT COUNT(*) FROM marketplace").fetchone()[0]
+    }
+    usage = conn.execute('''
+        SELECT r.name, COUNT(b.id) as use_count 
+        FROM resources r 
+        LEFT JOIN bookings b ON r.id = b.resource_id 
+        GROUP BY r.id ORDER BY use_count DESC
+    ''').fetchall()
+    conn.close()
+    return jsonify({"counts": stats, "usage": [dict(r) for r in usage]})
+
 @app.route("/admin/resources/delete/<int:res_id>", methods=["DELETE"])
 @admin_required
 def delete_resource(res_id):
@@ -380,8 +415,6 @@ def delete_resource(res_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
- # --- ADMIN: MARKETPLACE MODERATION ---
 
 @app.route("/admin/marketplace/items", methods=["GET"])
 @admin_required
