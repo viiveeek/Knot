@@ -278,7 +278,7 @@
                 const res = await fetch(`${API_BASE}/auth/verify-otp`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include', // <--- YE COOKIE SAVE KAREGA
+                    credentials: 'include',
                     body: JSON.stringify({ email, otp })
                 });
                 const data = await res.json();
@@ -289,7 +289,16 @@
                         showToast("Identity Verified!", "success");
                     } else {
                         showToast("Access Granted!", "success");
-                        setTimeout(() => window.location.href = DASHBOARD_URL, 500);
+                        const profRes = await fetch(`${API_BASE}/api/user-profile`, { credentials: 'include' });
+                        const profData = await profRes.json();
+
+                        let targetUrl = "/dashboard"; // Default
+                        const role = profData.role.toLowerCase();
+
+                        if (role === 'admin') targetUrl = "/admin";
+                        else if (role === 'hod' || role === 'dean') targetUrl = "/management";
+
+                        setTimeout(() => window.location.href = targetUrl, 500);
                     }
                 } else {
                     showToast(data.error || "Invalid Code", "error");
@@ -301,34 +310,43 @@
         }
 
         async function updateProfile() {
-    const name = document.getElementById('fullname').value;
-    const dept = document.getElementById('dept-select').value;
-    if (!name || !dept) return showToast("Please fill all fields", "error");
+            const name = document.getElementById('fullname').value;
+            const dept = document.getElementById('dept-select').value;
+            if (!name || !dept) return showToast("Please fill all fields", "error");
 
-    toggleLoader(true);
-    try {
-        const res = await fetch(`${API_BASE}/api/update-profile`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify({ name, department: dept })
-        });
-        
-        const data = await res.json();
-        
-        if (res.ok) {
-            showToast("Profile Initialized!", "success");
-            setTimeout(() => {
-                window.location.href = DASHBOARD_URL;
-            }, 1000);
-        } else {
-            showToast(data.error || "Update failed", "error");
+            toggleLoader(true);
+            try {
+                const res = await fetch(`${API_BASE}/api/update-profile`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ name, department: dept })
+                });
+
+                if (res.ok) {
+                    showToast("Profile Initialized!", "success");
+
+                    
+                    const profRes = await fetch(`${API_BASE}/api/user-profile`, { credentials: 'include' });
+                    const profData = await profRes.json();
+
+                    let targetUrl = "/dashboard";
+                    const role = profData.role.toLowerCase();
+
+                    if (role === 'admin') targetUrl = "/admin";
+                    else if (role === 'hod' || role === 'dean') targetUrl = "/management";
+
+                    setTimeout(() => {
+                        window.location.href = targetUrl;
+                    }, 1000);
+                } else {
+                    showToast("Update failed", "error");
+                }
+            } catch (err) {
+                showToast("Sync failed.", "error");
+            }
+            toggleLoader(false);
         }
-    } catch (err) {
-        showToast("Sync failed. Check connection.", "error");
-    }
-    toggleLoader(false);
-}
 
         function startTimer() {
             let s = 59;
