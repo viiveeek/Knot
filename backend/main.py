@@ -279,26 +279,26 @@ def debug_db_viewer():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# # --- EMERGENCY SYSTEM RESET (Demo Purposes Only) ---
-# @app.route("/api/admin/reset-ecosystem-bookings", methods=["GET"])
-# def reset_all_bookings():
-#     try:
-#         with get_db() as conn:
-#             # 1. Saari bookings delete kar do
-#             conn.execute("DELETE FROM bookings")
+# --- EMERGENCY SYSTEM RESET (Demo Purposes Only) ---
+@app.route("/api/admin/reset-ecosystem-bookings", methods=["GET"])
+def reset_all_bookings():
+    try:
+        with get_db() as conn:
+            # 1. Saari bookings delete kar do
+            conn.execute("DELETE FROM bookings")
             
-#             # 2. Saare resources ko wapas 'Available' kar do
-#             conn.execute("UPDATE resources SET status = 'Available'")
+            # 2. Saare resources ko wapas 'Available' kar do
+            conn.execute("UPDATE resources SET status = 'Available'")
             
-#             conn.commit()
+            conn.commit()
             
-#         print(">>> [SYSTEM RESET] All bookings purged. All nodes available.")
-#         return jsonify({
-#             "success": True, 
-#             "message": "Protocol Reset: All bookings purged and resources released."
-#         })
-#     except Exception as e:
-#         return jsonify({"error": str(e)}), 500
+        print(">>> [SYSTEM RESET] All bookings purged. All nodes available.")
+        return jsonify({
+            "success": True, 
+            "message": "Protocol Reset: All bookings purged and resources released."
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # --- 5. ADMIN & ANALYTICS ROUTES ---
 def admin_required(f):
@@ -620,48 +620,6 @@ def manual_release(res_id):
         return jsonify({"success": True, "message": "Node Protocol Reset: Status AVAILABLE"})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
-#------------------------------------------------------------------------------------
-#Main Backend
-@app.route("/api/resource-status/<int:res_id>", methods=["GET"])
-def check_status(res_id):
-    conn = get_db()
-    try:
-        resource = conn.execute(
-            "SELECT name, type, status FROM resources WHERE id = ?", 
-            (res_id,)
-        ).fetchone()
-
-        if not resource:
-            return jsonify({"error": "Resource not found"}), 404
-
-        data = {
-            "name": resource['name'],
-            "type": resource['type'],
-            "status": resource['status'],
-            "occupied_by": None,
-            "ends_at": None
-        }
-        if resource['status'] != 'Available':
-            booking_info = conn.execute('''
-                SELECT u.name, b.end_time 
-                FROM bookings b
-                JOIN users u ON b.user_id = u.id
-                WHERE b.resource_id = ? AND b.status = 'Confirmed'
-                ORDER BY b.start_time DESC LIMIT 1
-            ''', (res_id,)).fetchone()
-
-            if booking_info:
-                data["occupied_by"] = booking_info['name']
-                data["ends_at"] = booking_info['end_time']
-
-        conn.close()
-        return jsonify({"success": True, "data": data})
-
-    except Exception as e:
-        print(f"!!! [SQL ERROR] {e}")
-        return jsonify({"error": "Internal Server Error"}), 500
-
 
 #------------------------------------------------------------------------------------
 @app.route("/")
