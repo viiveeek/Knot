@@ -505,11 +505,9 @@ def book_resource():
 def admin_booking_action():
     data = request.json
     booking_id = data.get("booking_id")
-    action = data.get("action") # 'approve' or 'deny'
-
+    action = data.get("action") 
     try:
         with get_db() as conn:
-            # 1. Pehle booking details nikal lo
             booking = conn.execute("SELECT resource_id FROM bookings WHERE id = ?", (booking_id,)).fetchone()
             if not booking:
                 return jsonify({"error": "Booking record not found"}), 404

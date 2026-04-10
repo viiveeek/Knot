@@ -30,31 +30,13 @@
 
         /* Ambient Orbs Animation */
         @keyframes pulse-slow {
-
-            0%,
-            100% {
-                opacity: 0.15;
-                transform: scale(1);
-            }
-
-            50% {
-                opacity: 0.25;
-                transform: scale(1.05);
-            }
+            0%, 100% { opacity: 0.15; transform: scale(1); }
+            50% { opacity: 0.25; transform: scale(1.05); }
         }
 
         @keyframes pulse-slower {
-
-            0%,
-            100% {
-                opacity: 0.1;
-                transform: scale(1);
-            }
-
-            50% {
-                opacity: 0.2;
-                transform: scale(1.1);
-            }
+            0%, 100% { opacity: 0.1; transform: scale(1); }
+            50% { opacity: 0.2; transform: scale(1.1); }
         }
 
         .animate-pulse-slow {
@@ -163,7 +145,6 @@
                 transform: translateY(20px) scale(0.98);
                 filter: blur(5px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0) scale(1);
@@ -182,29 +163,22 @@
     <!-- Unified Telemetry Background -->
     <div class="fixed inset-0 z-[-10] bg-[#02050f]">
         <!-- Tech Grid System -->
-        <div
-            class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:48px_48px]">
-        </div>
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:48px_48px]"></div>
         <!-- Aura Orbs -->
-        <div
-            class="absolute top-0 left-[10%] w-[50vw] h-[50vw] rounded-full bg-blue-600/10 blur-[150px] animate-pulse-slow mix-blend-screen pointer-events-none">
-        </div>
-        <div
-            class="absolute bottom-0 right-[5%] w-[40vw] h-[40vw] rounded-full bg-indigo-600/10 blur-[140px] animate-pulse-slower mix-blend-screen pointer-events-none">
-        </div>
+        <div class="absolute top-0 left-[10%] w-[50vw] h-[50vw] rounded-full bg-blue-600/10 blur-[150px] animate-pulse-slow mix-blend-screen pointer-events-none"></div>
+        <div class="absolute bottom-0 right-[5%] w-[40vw] h-[40vw] rounded-full bg-indigo-600/10 blur-[140px] animate-pulse-slower mix-blend-screen pointer-events-none"></div>
     </div>
 
     <!-- Edge Sidebar Interface -->
     <aside class="w-72 sidebar-glass flex flex-col sticky top-0 h-screen z-40 relative">
         <!-- Dashboard Identity -->
         <div class="p-8 border-b border-white/5 flex items-center gap-4 relative z-10">
-            <div
-                class="w-11 h-11 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center font-black italic shadow-[0_0_20px_rgba(59,130,246,0.25)] border border-white/10 text-white text-xl">
-                K</div>
+            <div class="w-11 h-11 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center font-black italic shadow-[0_0_20px_rgba(59,130,246,0.25)] border border-white/10 text-white text-xl">
+                K
+            </div>
             <div class="flex flex-col">
                 <span class="text-2xl font-black tracking-tighter uppercase leading-none drop-shadow-md">Admin</span>
-                <span
-                    class="text-[0.6rem] font-bold text-emerald-400 uppercase tracking-[0.2em] mt-1 flex items-center gap-1.5">
+                <span class="text-[0.6rem] font-bold text-emerald-400 uppercase tracking-[0.2em] mt-1 flex items-center gap-1.5">
                     <div class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></div> System Live
                 </span>
             </div>
@@ -212,37 +186,26 @@
 
         <!-- Navigation Routing -->
         <nav class="flex-1 p-5 space-y-2 flex flex-col mt-4 relative z-10">
-            <button onclick="switchTab('analytics', this)"
-                class="sidebar-item active w-full flex items-center justify-between p-4 rounded-xl text-sm font-bold border-l-0 text-left">
-                <div class="flex items-center gap-4"><i class="fas fa-chart-pie w-5 text-center"></i> Ecosystem Stats
-                </div>
+            <button onclick="switchTab('analytics', this)" class="sidebar-item active w-full flex items-center justify-between p-4 rounded-xl text-sm font-bold border-l-0 text-left">
+                <div class="flex items-center gap-4"><i class="fas fa-chart-pie w-5 text-center"></i> Ecosystem Stats</div>
             </button>
-            <button onclick="switchTab('users', this)"
-                class="sidebar-item w-full flex items-center justify-between p-4 rounded-xl text-sm font-bold border-l-0 text-left">
-                <div class="flex items-center gap-4"><i class="fas fa-user-shield w-5 text-center"></i> User Authority
-                </div>
+            <button onclick="switchTab('users', this)" class="sidebar-item w-full flex items-center justify-between p-4 rounded-xl text-sm font-bold border-l-0 text-left">
+                <div class="flex items-center gap-4"><i class="fas fa-user-shield w-5 text-center"></i> User Authority</div>
             </button>
-            <button onclick="switchTab('approvals', this)"
-                class="sidebar-item w-full flex items-center justify-between p-4 rounded-xl text-sm font-bold border-l-0 text-left">
-                <div class="flex items-center gap-4"><i class="fas fa-file-signature w-5 text-center"></i> Approvals
-                    Pending</div>
+            <button onclick="switchTab('approvals', this)" class="sidebar-item w-full flex items-center justify-between p-4 rounded-xl text-sm font-bold border-l-0 text-left">
+                <div class="flex items-center gap-4"><i class="fas fa-file-signature w-5 text-center"></i> Approvals Pending</div>
             </button>
-            <button onclick="switchTab('resources', this)"
-                class="sidebar-item w-full flex items-center justify-between p-4 rounded-xl text-sm font-bold border-l-0 text-left">
-                <div class="flex items-center gap-4"><i class="fas fa-microchip w-5 text-center"></i> Manage Resources
-                </div>
+            <button onclick="switchTab('resources', this)" class="sidebar-item w-full flex items-center justify-between p-4 rounded-xl text-sm font-bold border-l-0 text-left">
+                <div class="flex items-center gap-4"><i class="fas fa-microchip w-5 text-center"></i> Manage Resources</div>
             </button>
-            <button onclick="switchTab('marketplace', this)"
-                class="sidebar-item w-full flex items-center justify-between p-4 rounded-xl text-sm font-bold border-l-0 text-left">
-                <div class="flex items-center gap-4"><i class="fas fa-dumpster-fire w-5 text-center"></i> Marketplace
-                    Mod</div>
+            <button onclick="switchTab('marketplace', this)" class="sidebar-item w-full flex items-center justify-between p-4 rounded-xl text-sm font-bold border-l-0 text-left">
+                <div class="flex items-center gap-4"><i class="fas fa-dumpster-fire w-5 text-center"></i> Marketplace Mod</div>
             </button>
         </nav>
 
         <!-- Breakout Logic -->
         <div class="p-6 border-t border-white/5 relative z-10 mb-2">
-            <button onclick="location.href='/dashboard'"
-                class="w-full flex items-center justify-center gap-3 p-4 bg-white/[0.03] border border-white/10 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-rose-500/10 hover:text-rose-400 hover:border-rose-500/30 transition-all text-slate-400">
+            <button onclick="location.href='/dashboard'" class="w-full flex items-center justify-center gap-3 p-4 bg-white/[0.03] border border-white/10 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-rose-500/10 hover:text-rose-400 hover:border-rose-500/30 transition-all text-slate-400">
                 <i class="fas fa-power-off"></i> KNOT Ecosystem
             </button>
         </div>
@@ -255,15 +218,13 @@
         <section id="tab-analytics" class="tab-view space-y-12">
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
-                    <h2
-                        class="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 drop-shadow-sm pb-2">
-                        Live Analytics</h2>
-                    <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1 ml-1">Real-time
-                        telemetry and resource usage</p>
+                    <h2 class="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 drop-shadow-sm pb-2">
+                        Live Analytics
+                    </h2>
+                    <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1 ml-1">Real-time telemetry and resource usage</p>
                 </div>
                 <!-- Status Badge -->
-                <div
-                    class="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 text-emerald-400 rounded-lg text-[9px] font-black uppercase tracking-[0.2em] border border-emerald-500/20 backdrop-blur-md shadow-[0_0_15px_rgba(16,185,129,0.15)]">
+                <div class="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 text-emerald-400 rounded-lg text-[9px] font-black uppercase tracking-[0.2em] border border-emerald-500/20 backdrop-blur-md shadow-[0_0_15px_rgba(16,185,129,0.15)]">
                     <div class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></div> Network Sync Normal
                 </div>
             </div>
@@ -274,44 +235,36 @@
                     <div class="absolute top-0 right-0 p-6 opacity-[0.05] group-hover:opacity-[0.1] transition-opacity">
                         <i class="fas fa-globe text-6xl text-white"></i>
                     </div>
-                    <p class="text-[9px] text-slate-400 font-black uppercase tracking-[0.2em] relative z-10">Global
-                        Users</p>
+                    <p class="text-[9px] text-slate-400 font-black uppercase tracking-[0.2em] relative z-10">Global Users</p>
                     <p id="count-users" class="text-6xl font-black mt-4 text-white drop-shadow-md relative z-10">0</p>
                 </div>
                 <div class="admin-card p-8 flex flex-col relative overflow-hidden group border-t border-t-blue-500/30">
                     <div class="absolute top-0 right-0 p-6 opacity-[0.05] group-hover:opacity-[0.1] transition-opacity">
                         <i class="fas fa-calendar-check text-6xl text-blue-500"></i>
                     </div>
-                    <p class="text-[9px] text-blue-400 font-black uppercase tracking-[0.2em] relative z-10">Active
-                        Bookings</p>
-                    <p id="count-bookings" class="text-6xl font-black mt-4 text-white drop-shadow-md relative z-10">0
-                    </p>
+                    <p class="text-[9px] text-blue-400 font-black uppercase tracking-[0.2em] relative z-10">Active Bookings</p>
+                    <p id="count-bookings" class="text-6xl font-black mt-4 text-white drop-shadow-md relative z-10">0</p>
                 </div>
-                <div
-                    class="admin-card p-8 flex flex-col relative overflow-hidden group border-t border-t-purple-500/30">
+                <div class="admin-card p-8 flex flex-col relative overflow-hidden group border-t border-t-purple-500/30">
                     <div class="absolute top-0 right-0 p-6 opacity-[0.05] group-hover:opacity-[0.1] transition-opacity">
                         <i class="fas fa-network-wired text-6xl text-purple-500"></i>
                     </div>
-                    <p class="text-[9px] text-purple-400 font-black uppercase tracking-[0.2em] relative z-10">Total
-                        Nodes</p>
-                    <p id="count-resources" class="text-6xl font-black mt-4 text-white drop-shadow-md relative z-10">0
-                    </p>
+                    <p class="text-[9px] text-purple-400 font-black uppercase tracking-[0.2em] relative z-10">Total Nodes</p>
+                    <p id="count-resources" class="text-6xl font-black mt-4 text-white drop-shadow-md relative z-10">0</p>
                 </div>
-                <div
-                    class="admin-card p-8 flex flex-col relative overflow-hidden group border-t border-t-emerald-500/30">
+                <div class="admin-card p-8 flex flex-col relative overflow-hidden group border-t border-t-emerald-500/30">
                     <div class="absolute top-0 right-0 p-6 opacity-[0.05] group-hover:opacity-[0.1] transition-opacity">
                         <i class="fas fa-shopping-basket text-6xl text-emerald-500"></i>
                     </div>
-                    <p class="text-[9px] text-emerald-400 font-black uppercase tracking-[0.2em] relative z-10">Market
-                        Listings</p>
+                    <p class="text-[9px] text-emerald-400 font-black uppercase tracking-[0.2em] relative z-10">Market Listings</p>
                     <p id="count-market" class="text-6xl font-black mt-4 text-white drop-shadow-md relative z-10">0</p>
                 </div>
             </div>
 
             <div class="admin-card p-10 relative">
-                <h3
-                    class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-8 border-b border-white/5 pb-5">
-                    Node Utilization Frequency Matrix</h3>
+                <h3 class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-8 border-b border-white/5 pb-5">
+                    Node Utilization Frequency Matrix
+                </h3>
                 <div id="usage-chart" class="space-y-6"></div>
             </div>
         </section>
@@ -320,17 +273,14 @@
         <section id="tab-users" class="tab-view hidden space-y-10">
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
-                    <h2
-                        class="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 pb-2">
-                        Authority Control</h2>
-                    <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1 ml-1">Manage global
-                        security clearances</p>
+                    <h2 class="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 pb-2">
+                        Authority Control
+                    </h2>
+                    <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1 ml-1">Manage global security clearances</p>
                 </div>
                 <div class="relative w-full max-w-md group">
-                    <i
-                        class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors"></i>
-                    <input type="text" id="user-search" onkeyup="searchUsers()"
-                        placeholder="Search node identity or credential..."
+                    <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors"></i>
+                    <input type="text" id="user-search" onkeyup="searchUsers()" placeholder="Search node identity or credential..."
                         class="input-dark w-full rounded-2xl py-4 pl-14 pr-4 text-sm font-bold shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
                 </div>
             </div>
@@ -338,8 +288,7 @@
             <!-- Safe scroll overflow logic for tables -->
             <div class="admin-card overflow-x-auto">
                 <table class="w-full text-left border-collapse min-w-[700px]">
-                    <thead
-                        class="bg-white/[0.02] text-slate-500 uppercase text-[9px] font-black tracking-[0.25em] border-b border-white/10">
+                    <thead class="bg-white/[0.02] text-slate-500 uppercase text-[9px] font-black tracking-[0.25em] border-b border-white/10">
                         <tr>
                             <th class="p-6">Identity Matrix</th>
                             <th class="p-6">Affiliation Node</th>
@@ -352,31 +301,27 @@
             </div>
         </section>
 
-        <!-- [ VIEW: APPROVALS ] -> FIXED UN-NESTING ERROR HERE! -->
+        <!-- [ VIEW: APPROVALS ] -->
         <section id="tab-approvals" class="tab-view hidden space-y-10">
             <div>
-                <h2
-                    class="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 pb-2">
-                    Pending Approvals</h2>
-                <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1 ml-1">Consent required for
-                    Resource reservations</p>
+                <h2 class="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 pb-2">
+                    Pending Approvals
+                </h2>
+                <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1 ml-1">Consent required for Resource reservations</p>
             </div>
-            <div id="approvals-list" class="grid grid-cols-1 gap-4">
-            </div>
+            <div id="approvals-list" class="grid grid-cols-1 gap-4"></div>
         </section>
 
         <!-- [ VIEW: RESOURCES ] -->
         <section id="tab-resources" class="tab-view hidden space-y-10">
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
-                    <h2
-                        class="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 pb-2">
-                        Resources</h2>
-                    <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1 ml-1">Configure
-                        ecosystem components</p>
+                    <h2 class="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 pb-2">
+                        Resources
+                    </h2>
+                    <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1 ml-1">Configure ecosystem components</p>
                 </div>
-                <button onclick="openResourceModal()"
-                    class="bg-blue-600 hover:bg-blue-500 text-white font-black py-4 px-8 rounded-2xl text-[10px] uppercase tracking-[0.2em] transition-all shadow-[0_10px_30px_rgba(37,99,235,0.3)] hover:shadow-[0_10px_40px_rgba(59,130,246,0.5)] hover:-translate-y-1 flex items-center gap-3">
+                <button onclick="openResourceModal()" class="bg-blue-600 hover:bg-blue-500 text-white font-black py-4 px-8 rounded-2xl text-[10px] uppercase tracking-[0.2em] transition-all shadow-[0_10px_30px_rgba(37,99,235,0.3)] hover:shadow-[0_10px_40px_rgba(59,130,246,0.5)] hover:-translate-y-1 flex items-center gap-3">
                     <i class="fas fa-plus bg-white/20 p-1.5 rounded-md"></i> Deploy New Node
                 </button>
             </div>
@@ -386,25 +331,21 @@
         <!-- [ VIEW: MARKETPLACE ] -->
         <section id="tab-marketplace" class="tab-view hidden space-y-10">
             <div>
-                <h2
-                    class="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 pb-2">
-                    Ecosystem Moderation</h2>
-                <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1 ml-1">Filter peer-to-peer
-                    ledger</p>
+                <h2 class="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 pb-2">
+                    Ecosystem Moderation
+                </h2>
+                <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1 ml-1">Filter peer-to-peer ledger</p>
             </div>
             <div id="market-list" class="grid grid-cols-1 gap-4"></div>
         </section>
 
     </main>
 
-    <!-- [ MODAL FRAMEWORK ] -->
-    <div id="resource-modal"
-        class="fixed inset-0 modal-glass hidden flex items-center justify-center z-[100] p-6 opacity-0 transition-opacity duration-300">
-        <div class="admin-card p-10 w-full max-w-lg shadow-[0_40px_100px_rgba(0,0,0,0.8)] relative border-t-2 border-t-blue-500/50"
-            id="resource-modal-box">
+    <!-- [ MODAL FRAMEWORK - DEPLOY RESOURCE ] -->
+    <div id="resource-modal" class="fixed inset-0 modal-glass hidden flex items-center justify-center z-[100] p-6 opacity-0 transition-opacity duration-300">
+        <div class="admin-card p-10 w-full max-w-lg shadow-[0_40px_100px_rgba(0,0,0,0.8)] relative border-t-2 border-t-blue-500/50" id="resource-modal-box">
             <!-- Close Button -->
-            <button onclick="closeResourceModal()"
-                class="absolute top-6 right-6 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-all">
+            <button onclick="closeResourceModal()" class="absolute top-6 right-6 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-all">
                 <i class="fas fa-times"></i>
             </button>
 
@@ -412,42 +353,53 @@
 
             <div class="space-y-6">
                 <div>
-                    <label class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Node Identifier
-                        Name</label>
-                    <input type="text" id="res-name" placeholder="Ex: Advanced Robotics Lab"
-                        class="input-dark w-full p-4 rounded-xl mt-2 text-sm font-bold placeholder:text-slate-600">
+                    <label class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Node Identifier Name</label>
+                    <input type="text" id="res-name" placeholder="Ex: Advanced Robotics Lab" class="input-dark w-full p-4 rounded-xl mt-2 text-sm font-bold placeholder:text-slate-600">
                 </div>
                 <div>
-                    <label class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Structural
-                        Classification</label>
+                    <label class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Structural Classification</label>
                     <div class="relative">
-                        <select id="res-type"
-                            class="input-dark w-full p-4 rounded-xl mt-2 appearance-none text-sm font-bold text-slate-300 cursor-pointer">
+                        <select id="res-type" class="input-dark w-full p-4 rounded-xl mt-2 appearance-none text-sm font-bold text-slate-300 cursor-pointer">
                             <option value="Lab">Research / Computer Laboratory</option>
                             <option value="Hall">Seminar / Audit Hall Space</option>
                             <option value="Studio">Creative Design Studio</option>
                         </select>
-                        <i
-                            class="fas fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none mt-1"></i>
+                        <i class="fas fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none mt-1"></i>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-4 bg-white/[0.02] p-5 rounded-xl border border-white/5 hover:border-white/10 transition-colors shadow-inner cursor-pointer"
-                    onclick="document.getElementById('res-approval').click()">
-                    <input type="checkbox" id="res-approval"
-                        class="w-5 h-5 rounded accent-blue-500 cursor-pointer flex-shrink-0"
-                        onclick="event.stopPropagation()">
-                    <span class="text-[11px] font-black text-slate-300 uppercase tracking-widest select-none">Require
-                        Admin / HOD Consent Level</span>
+                <div class="flex items-center gap-4 bg-white/[0.02] p-5 rounded-xl border border-white/5 hover:border-white/10 transition-colors shadow-inner cursor-pointer" onclick="document.getElementById('res-approval').click()">
+                    <input type="checkbox" id="res-approval" class="w-5 h-5 rounded accent-blue-500 cursor-pointer flex-shrink-0" onclick="event.stopPropagation()">
+                    <span class="text-[11px] font-black text-slate-300 uppercase tracking-widest select-none">Require Admin / HOD Consent Level</span>
                 </div>
             </div>
 
             <div class="flex gap-4 mt-10">
-                <button onclick="closeResourceModal()"
-                    class="flex-1 py-4 font-black text-[10px] uppercase tracking-widest text-slate-500 hover:text-white hover:bg-white/5 rounded-xl transition-all">Abort</button>
-                <button onclick="saveNewResource()"
-                    class="flex-[2] bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 rounded-xl font-black text-[11px] uppercase tracking-[0.15em] py-4 transition-all shadow-[0_10px_30px_rgba(37,99,235,0.3)] flex items-center justify-center gap-3">
+                <button onclick="closeResourceModal()" class="flex-1 py-4 font-black text-[10px] uppercase tracking-widest text-slate-500 hover:text-white hover:bg-white/5 rounded-xl transition-all">Abort</button>
+                <button onclick="saveNewResource()" class="flex-[2] bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 rounded-xl font-black text-[11px] uppercase tracking-[0.15em] py-4 transition-all shadow-[0_10px_30px_rgba(37,99,235,0.3)] flex items-center justify-center gap-3">
                     <i class="fas fa-satellite-dish"></i> Broadcast Deployment
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- [ NOTIFICATION SYSTEM ] -->
+    <div id="notification-container" class="fixed bottom-6 right-6 z-[200] flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- [ CONFIRMATION MODAL ] -->
+    <div id="confirm-modal" class="fixed inset-0 modal-glass hidden flex items-center justify-center z-[200] p-6 opacity-0 transition-opacity duration-300">
+        <div class="admin-card p-10 w-full max-w-sm shadow-[0_40px_100px_rgba(0,0,0,0.8)] relative border-t-2 border-t-rose-500/50" id="confirm-modal-box" style="transform: translateY(20px) scale(0.95); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);">
+            <div class="absolute -top-8 left-1/2 -translate-x-1/2 w-16 h-16 bg-gradient-to-br from-rose-600 to-red-700 rounded-2xl flex items-center justify-center shadow-[0_10px_30px_rgba(225,29,72,0.4)] border border-rose-400/20">
+                <i class="fas fa-exclamation-triangle text-2xl text-white"></i>
+            </div>
+            
+            <h3 class="text-2xl font-black mb-2 mt-4 text-center tracking-tighter text-white" id="confirm-title">Confirm Action</h3>
+            <p class="text-[12px] font-bold text-center text-slate-400 mb-8" id="confirm-message">Are you sure?</p>
+            
+            <div class="flex gap-4">
+                <button id="confirm-cancel" class="flex-1 py-3.5 font-black text-[10px] uppercase tracking-widest text-slate-500 hover:text-white hover:bg-white/5 rounded-xl transition-all">Abort</button>
+                <button id="confirm-proceed" class="flex-1 bg-rose-500/10 hover:bg-rose-500 border border-rose-500/20 rounded-xl font-black text-[10px] uppercase tracking-widest py-3.5 transition-all text-rose-400 hover:text-white shadow-md hover:shadow-[0_0_20px_rgba(244,63,94,0.4)] flex items-center justify-center gap-2">
+                    Execute
                 </button>
             </div>
         </div>
@@ -456,6 +408,83 @@
     <!-- CORE LOGIC / AJAX CALLS -->
     <script>
         const API_BASE = "https://apiknot.niksoriginals.in";
+
+        // --- NOTIFICATION ENGINE ---
+        function showNotification(message, type = 'info') {
+            const container = document.getElementById('notification-container');
+            const notif = document.createElement('div');
+            
+            let borderStyle = 'border-blue-500/30';
+            let icon = '<i class="fas fa-info-circle text-blue-400 text-lg"></i>';
+            let bgStyle = 'bg-blue-500/10';
+            
+            if (type === 'error') {
+                borderStyle = 'border-rose-500/30';
+                icon = '<i class="fas fa-exclamation-triangle text-rose-400 text-lg"></i>';
+                bgStyle = 'bg-rose-500/10';
+            } else if (type === 'success') {
+                borderStyle = 'border-emerald-500/30';
+                icon = '<i class="fas fa-check-circle text-emerald-400 text-lg"></i>';
+                bgStyle = 'bg-emerald-500/10';
+            }
+            
+            notif.className = `admin-card p-4 pr-6 flex items-center gap-4 ${bgStyle} border ${borderStyle} transform translate-x-[120%] opacity-0 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-auto backdrop-blur-2xl shadow-[0_10px_40px_rgba(0,0,0,0.5)]`;
+            
+            notif.innerHTML = `
+                <div class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-slate-900/50 border border-white/5">${icon}</div>
+                <div class="text-[11px] font-bold tracking-wider text-white">${message}</div>
+                <button onclick="this.parentElement.style.opacity='0'; this.parentElement.style.transform='translateX(120%)'; setTimeout(() => this.parentElement.remove(), 500);" class="ml-2 text-slate-400 hover:text-white transition-colors focus:outline-none">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            container.appendChild(notif);
+            
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    notif.style.transform = 'translateX(0)';
+                    notif.style.opacity = '1';
+                });
+            });
+            
+            setTimeout(() => {
+                if(notif.parentElement) {
+                    notif.style.transform = 'translateX(120%)';
+                    notif.style.opacity = '0';
+                    setTimeout(() => notif.remove(), 500);
+                }
+            }, 5000);
+        }
+
+        // --- CONFIRMATION ENGINE ---
+        function showConfirm(title, message, callback) {
+            const m = document.getElementById('confirm-modal');
+            const box = document.getElementById('confirm-modal-box');
+            
+            document.getElementById('confirm-title').innerText = title;
+            document.getElementById('confirm-message').innerText = message;
+            
+            m.classList.remove('hidden');
+            setTimeout(() => {
+                m.classList.remove('opacity-0');
+                box.style.transform = 'translateY(0) scale(1)';
+            }, 10);
+            
+            const close = () => {
+                m.classList.add('opacity-0');
+                box.style.transform = 'translateY(20px) scale(0.95)';
+                setTimeout(() => m.classList.add('hidden'), 300);
+                
+                document.getElementById('confirm-cancel').onclick = null;
+                document.getElementById('confirm-proceed').onclick = null;
+            };
+            
+            document.getElementById('confirm-cancel').onclick = close;
+            document.getElementById('confirm-proceed').onclick = () => {
+                close();
+                callback();
+            };
+        }
 
         function openResourceModal() {
             const m = document.getElementById('resource-modal');
@@ -489,57 +518,65 @@
 
         // --- 1. ANALYTICS ---
         async function fetchAnalytics() {
-            const res = await fetch(`${API_BASE}/api/admin/stats`, { credentials: 'include' });
-            const data = await res.json();
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/stats`, { credentials: 'include' });
+                const data = await res.json();
 
-            document.getElementById('count-users').innerText = data.counts.users;
-            document.getElementById('count-bookings').innerText = data.counts.bookings;
-            document.getElementById('count-resources').innerText = data.counts.resources;
-            document.getElementById('count-market').innerText = data.counts.market;
+                document.getElementById('count-users').innerText = data.counts.users;
+                document.getElementById('count-bookings').innerText = data.counts.bookings;
+                document.getElementById('count-resources').innerText = data.counts.resources;
+                document.getElementById('count-market').innerText = data.counts.market;
 
-            const chart = document.getElementById('usage-chart');
-            chart.innerHTML = data.usage.map(r => `
-                <div class="group relative">
-                    <div class="flex justify-between text-[10px] font-black uppercase text-slate-500 mb-2 group-hover:text-blue-400 transition-colors">
-                        <span>${r.name}</span><span>${r.use_count} Executions</span>
-                    </div>
-                    <div class="w-full bg-slate-900/60 h-2.5 rounded-full overflow-hidden border border-white/5 shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]">
-                        <div class="bg-gradient-to-r from-blue-600 to-indigo-400 h-full transition-all duration-1000 ease-out relative" style="width: ${Math.min(r.use_count * 5, 100)}%">
-                            <div class="absolute inset-0 bg-white/20 w-full animate-pulse"></div>
+                const chart = document.getElementById('usage-chart');
+                chart.innerHTML = data.usage.map(r => `
+                    <div class="group relative">
+                        <div class="flex justify-between text-[10px] font-black uppercase text-slate-500 mb-2 group-hover:text-blue-400 transition-colors">
+                            <span>${r.name}</span><span>${r.use_count} Executions</span>
+                        </div>
+                        <div class="w-full bg-slate-900/60 h-2.5 rounded-full overflow-hidden border border-white/5 shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]">
+                            <div class="bg-gradient-to-r from-blue-600 to-indigo-400 h-full transition-all duration-1000 ease-out relative" style="width: ${Math.min(r.use_count * 5, 100)}%">
+                                <div class="absolute inset-0 bg-white/20 w-full animate-pulse"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
+            } catch(e) {
+                console.error("Telemetry Sync Failed");
+            }
         }
 
         // --- 2. USERS & ROLES ---
         async function searchUsers() {
-            const q = document.getElementById('user-search').value;
-            const res = await fetch(`${API_BASE}/admin/users/search?q=${q}`, { credentials: 'include' });
-            const users = await res.json();
+            try {
+                const q = document.getElementById('user-search').value;
+                const res = await fetch(`${API_BASE}/admin/users/search?q=${q}`, { credentials: 'include' });
+                const users = await res.json();
 
-            document.getElementById('user-table-body').innerHTML = users.map(u => `
-        <tr class="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
-            <td class="p-6">
-                <div class="font-black text-slate-100 uppercase tracking-wide text-[13px]">${u.name || 'ANONYMOUS NODE'}</div>
-                <div class="text-[10px] text-slate-500 font-bold tracking-widest uppercase mt-1 group-hover:text-blue-400 transition-colors">${u.email}</div>
-            </td>
-            <td class="p-6 font-bold text-[10px] text-slate-400 tracking-[0.2em] uppercase">${u.department || 'ITS-ROOT'}</td>
-            <td class="p-6">
-                <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-500/10 rounded-lg text-[9px] font-black text-blue-400 border border-blue-500/20 uppercase tracking-[0.15em] shadow-[0_0_15px_rgba(59,130,246,0.1)]">
-                    <i class="fas fa-fingerprint text-[8px]"></i> ${u.role}
-                </div>
-            </td>
-            <td class="p-6 text-right">
-                <select onchange="escalateUser(${u.id}, this.value)" class="bg-slate-900/80 border border-white/10 rounded-xl text-[10px] py-2 px-3 outline-none cursor-pointer font-black uppercase tracking-widest text-slate-300 hover:border-blue-500 focus:border-blue-500 transition-colors appearance-none text-right shadow-[0_5px_15px_rgba(0,0,0,0.5)]">
-                    <option value="student" ${u.role === 'student' ? 'selected' : ''}>Student</option>
-                    <option value="hod" ${u.role === 'hod' ? 'selected' : ''}>HOD</option>
-                    <option value="dean" ${u.role === 'dean' ? 'selected' : ''}>Dean</option>
-                    <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>Admin</option>
-                </select>
-            </td>
-        </tr>
-    `).join('');
+                document.getElementById('user-table-body').innerHTML = users.map(u => `
+                    <tr class="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
+                        <td class="p-6">
+                            <div class="font-black text-slate-100 uppercase tracking-wide text-[13px]">${u.name || 'ANONYMOUS NODE'}</div>
+                            <div class="text-[10px] text-slate-500 font-bold tracking-widest uppercase mt-1 group-hover:text-blue-400 transition-colors">${u.email}</div>
+                        </td>
+                        <td class="p-6 font-bold text-[10px] text-slate-400 tracking-[0.2em] uppercase">${u.department || 'ITS-ROOT'}</td>
+                        <td class="p-6">
+                            <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-500/10 rounded-lg text-[9px] font-black text-blue-400 border border-blue-500/20 uppercase tracking-[0.15em] shadow-[0_0_15px_rgba(59,130,246,0.1)]">
+                                <i class="fas fa-fingerprint text-[8px]"></i> ${u.role}
+                            </div>
+                        </td>
+                        <td class="p-6 text-right">
+                            <select onchange="escalateUser(${u.id}, this.value)" class="bg-slate-900/80 border border-white/10 rounded-xl text-[10px] py-2 px-3 outline-none cursor-pointer font-black uppercase tracking-widest text-slate-300 hover:border-blue-500 focus:border-blue-500 transition-colors appearance-none text-right shadow-[0_5px_15px_rgba(0,0,0,0.5)]">
+                                <option value="student" ${u.role === 'student' ? 'selected' : ''}>Student</option>
+                                <option value="hod" ${u.role === 'hod' ? 'selected' : ''}>HOD</option>
+                                <option value="dean" ${u.role === 'dean' ? 'selected' : ''}>Dean</option>
+                                <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>Admin</option>
+                            </select>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch(e) {
+                console.error("Query Search Failed");
+            }
         }
 
         async function escalateUser(userId, role) {
@@ -554,20 +591,17 @@
                 const data = await res.json();
 
                 if (res.ok) {
-                    console.log(data.message);
-                    setTimeout(() => {
-                        searchUsers();
-                    }, 300);
+                    showNotification(data.message, 'success');
+                    setTimeout(() => { searchUsers(); }, 300);
                 } else {
-                    alert("Protocol Error: " + data.error);
+                    showNotification("Protocol Error: " + data.error, 'error');
                 }
             } catch (e) {
-                alert("Critical System Sync Failed");
+                showNotification("Critical System Sync Failed", 'error');
             }
         }
 
         // --- 5. APPROVALS ---
-        // --- 5. APPROVALS LOGIC (FULLY LINKED) ---
         async function fetchApprovals() {
             try {
                 const res = await fetch(`${API_BASE}/admin/bookings/pending`, { credentials: 'include' });
@@ -580,32 +614,31 @@
                 }
 
                 list.innerHTML = bookings.map(b => `
-            <div class="admin-card p-6 flex flex-col sm:flex-row justify-between items-center gap-6 border-l-[3px] border-l-amber-500 group">
-                <div class="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                
-                <div class="flex items-center gap-6 relative z-10 w-full sm:w-auto">
-                    <div class="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center text-amber-500 border border-amber-500/20 shadow-[inset_0_0_15px_rgba(245,158,11,0.1)] shrink-0">
-                        <i class="fas fa-clock text-xl"></i>
+                    <div class="admin-card p-6 flex flex-col sm:flex-row justify-between items-center gap-6 border-l-[3px] border-l-amber-500 group">
+                        <div class="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        
+                        <div class="flex items-center gap-6 relative z-10 w-full sm:w-auto">
+                            <div class="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center text-amber-500 border border-amber-500/20 shadow-[inset_0_0_15px_rgba(245,158,11,0.1)] shrink-0">
+                                <i class="fas fa-clock text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-xl font-black text-white uppercase tracking-tight italic">${b.resource_name}</p>
+                                <p class="text-[10px] text-slate-500 font-black uppercase tracking-widest mt-1">Requested by: <span class="text-amber-400">${b.user_name}</span></p>
+                                <p class="text-[9px] text-slate-400 font-bold mt-1.5 tracking-wider bg-white/5 inline-block px-2 py-0.5 rounded border border-white/10">${b.start_time} <span class="text-amber-500 px-1">→</span> ${b.end_time}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-3 w-full sm:w-auto relative z-10">
+                            <button onclick="handleApproval(${b.id}, 'approve')" class="flex-1 sm:flex-none px-6 py-2.5 bg-emerald-600/10 text-emerald-400 border border-emerald-500/20 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-500 hover:text-white transition-all shadow-md">Authorize</button>
+                            <button onclick="handleApproval(${b.id}, 'deny')" class="flex-1 sm:flex-none px-6 py-2.5 bg-rose-600/10 text-rose-400 border border-rose-500/20 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-rose-500 hover:text-white transition-all shadow-md">Deny</button>
+                        </div>
                     </div>
-                    <div>
-                        <p class="text-xl font-black text-white uppercase tracking-tight italic">${b.resource_name}</p>
-                        <p class="text-[10px] text-slate-500 font-black uppercase tracking-widest mt-1">Requested by: <span class="text-amber-400">${b.user_name}</span></p>
-                        <p class="text-[9px] text-slate-400 font-bold mt-1.5 tracking-wider bg-white/5 inline-block px-2 py-0.5 rounded border border-white/10">${b.start_time} <span class="text-amber-500 px-1">→</span> ${b.end_time}</p>
-                    </div>
-                </div>
-                
-                <div class="flex gap-3 w-full sm:w-auto relative z-10">
-                    <button onclick="handleApproval(${b.id}, 'approve')" class="flex-1 sm:flex-none px-6 py-2.5 bg-emerald-600/10 text-emerald-400 border border-emerald-500/20 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-500 hover:text-white transition-all shadow-md">Authorize</button>
-                    <button onclick="handleApproval(${b.id}, 'deny')" class="flex-1 sm:flex-none px-6 py-2.5 bg-rose-600/10 text-rose-400 border border-rose-500/20 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-rose-500 hover:text-white transition-all shadow-md">Deny</button>
-                </div>
-            </div>
-        `).join('');
+                `).join('');
             } catch (err) {
                 console.error("Approval Sync Failure:", err);
             }
         }
 
-        // Naya function jo backend hit karega
         async function handleApproval(bookingId, action) {
             try {
                 const res = await fetch(`${API_BASE}/admin/bookings/action`, {
@@ -617,37 +650,41 @@
                 const data = await res.json();
 
                 if (res.ok) {
-                    alert(data.message);
-                    fetchApprovals(); // Refresh the list immediately
-                    fetchAnalytics(); // Update stats in background
+                    showNotification(data.message, 'success');
+                    fetchApprovals(); 
+                    fetchAnalytics(); 
                 } else {
-                    alert("Security Alert: " + data.error);
+                    showNotification("Security Alert: " + data.error, 'error');
                 }
             } catch (e) {
-                alert("Ecosystem Link Failure");
+                showNotification("Ecosystem Link Failure", 'error');
             }
         }
 
         // --- 3. RESOURCES ---
         async function fetchResources() {
-            const res = await fetch(`${API_BASE}/admin/resources`, { credentials: 'include' });
-            const data = await res.json();
+            try {
+                const res = await fetch(`${API_BASE}/admin/resources`, { credentials: 'include' });
+                const data = await res.json();
 
-            document.getElementById('resource-list').innerHTML = data.map(r => `
-                <div class="admin-card p-8 flex justify-between items-center group relative overflow-hidden border-l-2 border-l-transparent hover:border-l-blue-500">
-                    <div class="absolute inset-0 bg-gradient-to-r from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="relative z-10">
-                        <p class="text-xl font-black text-white uppercase tracking-tighter">${r.name}</p>
-                        <div class="flex flex-wrap items-center gap-2 mt-3">
-                            <span class="text-[9px] text-slate-300 font-black uppercase tracking-[0.2em] bg-white/5 py-1 px-2.5 rounded-md border border-white/5 shadow-[inset_0_1px_3px_rgba(0,0,0,0.5)]">${r.type}</span>
-                            ${r.needs_approval ? '<span class="text-[9px] text-amber-400 font-black uppercase tracking-widest bg-amber-500/10 py-1 px-2 rounded-md border border-amber-500/20"><i class="fas fa-lock mr-1 text-[8px]"></i> Restricted</span>' : ''}
+                document.getElementById('resource-list').innerHTML = data.map(r => `
+                    <div class="admin-card p-8 flex justify-between items-center group relative overflow-hidden border-l-2 border-l-transparent hover:border-l-blue-500">
+                        <div class="absolute inset-0 bg-gradient-to-r from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <div class="relative z-10">
+                            <p class="text-xl font-black text-white uppercase tracking-tighter">${r.name}</p>
+                            <div class="flex flex-wrap items-center gap-2 mt-3">
+                                <span class="text-[9px] text-slate-300 font-black uppercase tracking-[0.2em] bg-white/5 py-1 px-2.5 rounded-md border border-white/5 shadow-[inset_0_1px_3px_rgba(0,0,0,0.5)]">${r.type}</span>
+                                ${r.needs_approval ? '<span class="text-[9px] text-amber-400 font-black uppercase tracking-widest bg-amber-500/10 py-1 px-2 rounded-md border border-amber-500/20"><i class="fas fa-lock mr-1 text-[8px]"></i> Restricted</span>' : ''}
+                            </div>
                         </div>
+                        <button onclick="decommissionNode(${r.id})" class="w-12 h-12 rounded-xl bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:shadow-[0_0_20px_rgba(244,63,94,0.4)] hover:text-white transition-all flex items-center justify-center border border-rose-500/20 hover:border-transparent relative z-10 group-hover:scale-110">
+                            <i class="fas fa-trash-alt text-sm"></i>
+                        </button>
                     </div>
-                    <button onclick="decommissionNode(${r.id})" class="w-12 h-12 rounded-xl bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:shadow-[0_0_20px_rgba(244,63,94,0.4)] hover:text-white transition-all flex items-center justify-center border border-rose-500/20 hover:border-transparent relative z-10 group-hover:scale-110">
-                        <i class="fas fa-trash-alt text-sm"></i>
-                    </button>
-                </div>
-            `).join('');
+                `).join('');
+            } catch(e) {
+                console.error("Resource Sync Failed");
+            }
         }
 
         async function saveNewResource() {
@@ -655,54 +692,106 @@
             const type = document.getElementById('res-type').value;
             const appr = document.getElementById('res-approval').checked ? 1 : 0;
 
-            await fetch(`${API_BASE}/admin/resources/add`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-                body: JSON.stringify({ name, type, needs_approval: appr })
-            });
-            closeResourceModal();
-            fetchResources();
+            if(!name) {
+                showNotification("Node Identifier Name is required.", "warning");
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE}/admin/resources/add`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ name, type, needs_approval: appr })
+                });
+
+                if(res.ok) {
+                    showNotification("New Resource Node deployed successfully.", "success");
+                    closeResourceModal();
+                    
+                    // Clear inputs for next time
+                    document.getElementById('res-name').value = '';
+                    document.getElementById('res-approval').checked = false;
+                    
+                    fetchResources();
+                } else {
+                    showNotification("Server error rejecting deployment.", "error");
+                }
+            } catch(e) {
+                showNotification("Critical Failure saving resource.", "error");
+            }
         }
 
-        async function decommissionNode(id) {
-            if (!confirm("CRITICAL WARNING: This Node's ledger will be purged permanently! Proceed?")) return;
-            await fetch(`${API_BASE}/admin/resources/delete/${id}`, { method: 'DELETE', credentials: 'include' });
-            fetchResources();
+        function decommissionNode(id) {
+            showConfirm(
+                "Decommission Node",
+                "CRITICAL WARNING: This Node's ledger will be purged permanently! Proceed?",
+                async () => {
+                    try {
+                        const res = await fetch(`${API_BASE}/admin/resources/delete/${id}`, { method: 'DELETE', credentials: 'include' });
+                        if(res.ok) {
+                            showNotification("Node successfully decommissioned.", "success");
+                            fetchResources();
+                        } else {
+                            showNotification("Error: Could not decommission node.", "error");
+                        }
+                    } catch(e) {
+                        showNotification("Network error executing deletion.", "error");
+                    }
+                }
+            );
         }
 
         // --- 4. MARKETPLACE ---
         async function fetchMarketItems() {
-            const res = await fetch(`${API_BASE}/admin/marketplace/items`, { credentials: 'include' });
-            const items = await res.json();
+            try {
+                const res = await fetch(`${API_BASE}/admin/marketplace/items`, { credentials: 'include' });
+                const items = await res.json();
 
-            document.getElementById('market-list').innerHTML = items.map(i => `
-                <div class="admin-card p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 relative overflow-hidden border-l-[3px] border-l-emerald-500 group">
-                    <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="flex items-center gap-5 relative z-10 w-full sm:w-auto">
-                        <div class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center font-black text-emerald-400 border border-emerald-500/20 text-2xl shadow-[inset_0_0_15px_rgba(16,185,129,0.15)] shrink-0 group-hover:bg-emerald-500/20 transition-colors">
-                            ${i.type[0]}
+                document.getElementById('market-list').innerHTML = items.map(i => `
+                    <div class="admin-card p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 relative overflow-hidden border-l-[3px] border-l-emerald-500 group">
+                        <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <div class="flex items-center gap-5 relative z-10 w-full sm:w-auto">
+                            <div class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center font-black text-emerald-400 border border-emerald-500/20 text-2xl shadow-[inset_0_0_15px_rgba(16,185,129,0.15)] shrink-0 group-hover:bg-emerald-500/20 transition-colors">
+                                ${i.type[0]}
+                            </div>
+                            <div class="flex flex-col">
+                                <p class="font-black text-white text-xl tracking-tight">${i.title}</p>
+                                <p class="text-[10px] text-slate-400 font-black uppercase tracking-[0.15em] mt-2 flex items-center gap-2">
+                                    <i class="fas fa-link text-[8px] text-slate-500"></i> Origin: <span class="text-emerald-400">${i.owner_name}</span> 
+                                    <span class="text-slate-600 px-1">|</span> 
+                                    <span class="text-white bg-white/5 px-2 py-0.5 rounded border border-white/5">${i.type}</span>
+                                </p>
+                            </div>
                         </div>
-                        <div class="flex flex-col">
-                            <p class="font-black text-white text-xl tracking-tight">${i.title}</p>
-                            <p class="text-[10px] text-slate-400 font-black uppercase tracking-[0.15em] mt-2 flex items-center gap-2">
-                                <i class="fas fa-link text-[8px] text-slate-500"></i> Origin: <span class="text-emerald-400">${i.owner_name}</span> 
-                                <span class="text-slate-600 px-1">|</span> 
-                                <span class="text-white bg-white/5 px-2 py-0.5 rounded border border-white/5">${i.type}</span>
-                            </p>
-                        </div>
+                        <button onclick="purgeAd(${i.id})" class="w-full sm:w-auto px-6 py-3 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-rose-500 hover:text-white transition-all shadow-md relative z-10 hover:shadow-[0_0_20px_rgba(244,63,94,0.4)]">
+                            Obliterate Data
+                        </button>
                     </div>
-                    <button onclick="purgeAd(${i.id})" class="w-full sm:w-auto px-6 py-3 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-rose-500 hover:text-white transition-all shadow-md relative z-10 hover:shadow-[0_0_20px_rgba(244,63,94,0.4)]">
-                        Obliterate Data
-                    </button>
-                </div>
-            `).join('');
+                `).join('');
+            } catch(e) {
+                console.error("Marketplace Sync Failed");
+            }
         }
 
-        async function purgeAd(id) {
-            if (!confirm("Execute order to terminate this ledger entry?")) return;
-            await fetch(`${API_BASE}/admin/marketplace/delete/${id}`, { method: 'DELETE', credentials: 'include' });
-            fetchMarketItems();
+        function purgeAd(id) {
+            showConfirm(
+                "Purge Ledger Entry",
+                "Execute order to terminate this ledger entry?",
+                async () => {
+                    try {
+                        const res = await fetch(`${API_BASE}/admin/marketplace/delete/${id}`, { method: 'DELETE', credentials: 'include' });
+                        if(res.ok) {
+                            showNotification("Ledger entry terminated successfully.", "success");
+                            fetchMarketItems();
+                        } else {
+                            showNotification("Error: Could not obliterate data.", "error");
+                        }
+                    } catch(e) {
+                        showNotification("Network error executing purge operation.", "error");
+                    }
+                }
+            );
         }
 
         window.onload = () => fetchAnalytics();
