@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KNOT Dashboard | Premium Enterprise Campus OS</title>
+    <title>KNOT Dashboard | Enterprise Node</title>
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome -->
@@ -11,165 +12,185 @@
     
     <style>
         /* Modern Premium Font */
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800;900&display=swap');
         
         :root {
-            --glass-bg: rgba(15, 23, 42, 0.4);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-highlight: rgba(255, 255, 255, 0.15);
+            --glass-bg: rgba(10, 15, 25, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.06);
         }
 
         body { 
             font-family: 'Outfit', sans-serif; 
-            background-color: #030712; /* Deepest Slate Black */
+            background-color: #02040a; /* Ultra Deep Space Black */
             color: #f8fafc; 
-            /* Subtle Ambient Glow Orbs */
-            background-image: 
-                radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 45%),
-                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.08) 0%, transparent 45%);
-            background-attachment: fixed;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
-        
-        /* Modern Invisible Scrollbar overlay */
+
+        /* Ambient Aurora Animations */
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.05); }
+        }
+        @keyframes pulse-slower {
+            0%, 100% { opacity: 0.2; transform: scale(1) translate(0px, 0px); }
+            50% { opacity: 0.4; transform: scale(1.1) translate(-20px, 20px); }
+        }
+        .animate-pulse-slow { animation: pulse-slow 10s ease-in-out infinite; }
+        .animate-pulse-slower { animation: pulse-slower 15s ease-in-out infinite; }
+
+        /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
 
-        /* Premium Blurred Nav */
+        /* Premium Nav */
         .nav-glass { 
-            background: rgba(3, 7, 18, 0.6); 
-            backdrop-filter: blur(24px); 
-            -webkit-backdrop-filter: blur(24px);
-            border-bottom: 1px solid var(--glass-border); 
+            background: linear-gradient(to bottom, rgba(2, 4, 10, 0.8) 0%, rgba(2, 4, 10, 0) 100%);
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03); 
         }
-        
-        /* High-end Elevated Action Card */
-        .action-card {
+
+        /* 3D Glass Cards */
+        .premium-card {
             background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 1.75rem;
             border: 1px solid var(--glass-border);
-            border-radius: 1.5rem;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255,255,255,0.05);
             position: relative;
             overflow: hidden;
-            z-index: 1;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        
-        /* Glass Glare Overlay */
-        .action-card::before {
+
+        /* Glowing Border Overlay */
+        .premium-card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 100%);
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.5s ease;
+            inset: 0;
+            border-radius: 1.75rem;
+            padding: 2px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.05) 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            transition: all 0.6s ease;
         }
 
-        /* Hover Physics */
-        .action-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(59, 130, 246, 0.4);
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 
-                        0 0 30px -5px rgba(59, 130, 246, 0.15);
+        /* Card Hover Physics */
+        .premium-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            background: rgba(15, 22, 38, 0.6);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.9), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
         }
-        .action-card:hover::before { opacity: 1; }
+        .premium-card:hover::before {
+            background: linear-gradient(135deg, rgba(59,130,246,0.8) 0%, transparent 50%, rgba(139,92,246,0.6) 100%);
+        }
 
-        /* Crisp Badges */
+        /* Dynamic Badges */
         .badge { 
             font-size: 0.65rem; 
             font-weight: 800; 
             text-transform: uppercase; 
-            letter-spacing: 0.08em;
+            letter-spacing: 0.1em;
             padding: 0.25rem 0.6rem; 
             border-radius: 9999px;
             box-shadow: inset 0 0 0 1px currentColor; 
         }
-        .badge-admin { background: rgba(153, 27, 27, 0.15); color: #fca5a5; }
-        .badge-dean { background: rgba(88, 28, 135, 0.15); color: #d8b4fe; }
-        .badge-hod { background: rgba(3, 105, 161, 0.15); color: #7dd3fc; }
-        .badge-student { background: rgba(30, 41, 59, 0.3); color: #cbd5e1; }
+        .badge-admin { background: rgba(220, 38, 38, 0.1); color: #fca5a5; }
+        .badge-dean { background: rgba(147, 51, 234, 0.1); color: #d8b4fe; }
+        .badge-hod { background: rgba(2, 132, 199, 0.1); color: #7dd3fc; }
+        .badge-student { background: rgba(71, 85, 105, 0.1); color: #cbd5e1; }
 
-        /* Typography Gradients */
-        .gradient-text {
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-image: linear-gradient(135deg, #60a5fa 0%, #a855f7 100%);
+        /* Staggered Drop-in Animation */
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(50px) scale(0.95); filter: blur(5px); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0px); }
         }
-
-        /* Entrance Animations */
-        .fade-in-up { opacity: 0; transform: translateY(30px); animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
-        
+        .animate-item {
+            opacity: 0;
+            animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
         .delay-100 { animation-delay: 100ms; }
         .delay-200 { animation-delay: 200ms; }
         .delay-300 { animation-delay: 300ms; }
         
-        /* Profile Dropdown Refinement */
         .dropdown {
             transform-origin: top right;
-            transform: scale(0.95);
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: scale(0.95) translateY(10px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .group:hover .dropdown {
-            transform: scale(1);
+            transform: scale(1) translateY(0);
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-blue-500/30 selection:text-white">
 
-    <!-- Top Navigation Bar -->
-    <nav class="nav-glass sticky top-0 z-50 px-6 py-4">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
+    <!-- Cinematic Background Data (Aurora & Noise) -->
+    <div class="fixed inset-0 pointer-events-none z-[-1] overflow-hidden">
+        <div class="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-blue-600/20 blur-[130px] mix-blend-screen animate-pulse-slow"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-purple-600/15 blur-[120px] mix-blend-screen animate-pulse-slower"></div>
+        <div class="absolute top-[40%] left-[50%] w-[30vw] h-[30vw] rounded-full bg-emerald-600/5 blur-[100px] mix-blend-screen"></div>
+    </div>
+    <!-- Grain Overlay -->
+    <div class="fixed inset-0 pointer-events-none z-50 opacity-[0.03]" style="background: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+
+    <!-- Navigation -->
+    <nav class="nav-glass sticky top-0 z-40 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center relative z-10">
             
-            <!-- Logo area -->
             <div class="flex items-center gap-4 cursor-pointer group" onclick="location.reload()">
-                <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:shadow-blue-500/40 transition-all border border-white/10 group-hover:scale-105">
-                    <i class="fas fa-knot text-white text-xl"></i>
+                <div class="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center backdrop-blur-md group-hover:bg-blue-600/20 group-hover:border-blue-500/30 transition-all duration-500 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-blue-600/40 to-purple-600/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <i class="fas fa-knot text-white text-xl relative z-10 group-hover:scale-110 transition-transform duration-500"></i>
                 </div>
                 <div class="flex flex-col">
-                    <span class="text-2xl font-black tracking-tighter text-white uppercase leading-none">KNOT</span>
-                    <span class="text-[0.6rem] font-bold text-slate-400 uppercase tracking-[0.2em] hidden sm:block mt-1">Ecosystem</span>
+                    <span class="text-2xl font-black tracking-tighter text-white uppercase leading-none drop-shadow-md">KNOT</span>
+                    <span class="text-[0.55rem] font-bold text-slate-400 uppercase tracking-[0.25em] hidden sm:block mt-1">Ecosystem</span>
                 </div>
             </div>
 
-            <!-- Profile & Actions -->
             <div class="flex items-center gap-4 sm:gap-6">
-                <!-- Management Button (Dynamic) -->
+                <!-- Management Button -->
                 <div id="special-access" class="hidden">
-                    <a href="/management" class="relative inline-flex items-center justify-center px-5 py-2.5 text-[10px] sm:text-xs font-bold text-white uppercase tracking-widest overflow-hidden rounded-xl bg-slate-800/80 border border-indigo-500/30 hover:border-indigo-400 transition-all group shadow-lg">
-                        <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-indigo-600 rounded-full group-hover:w-56 group-hover:h-56"></span>
-                        <span class="relative flex items-center gap-2"><i class="fas fa-shield-halved"></i> <span class="hidden sm:inline">Management Console</span><span class="sm:hidden">Admin</span></span>
+                    <a href="/management" class="relative group flex items-center justify-center px-5 py-2.5 rounded-full bg-white/[0.02] border border-white/10 hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-all duration-500 overflow-hidden shadow-lg shadow-black/20">
+                        <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"></div>
+                        <span class="relative z-10 flex items-center gap-2 text-[10px] sm:text-xs font-black text-white uppercase tracking-[0.15em]">
+                            <i class="fas fa-shield-halved text-indigo-400 group-hover:text-indigo-300"></i> 
+                            <span class="hidden sm:inline">Management Console</span><span class="sm:hidden">Admin</span>
+                        </span>
                     </a>
                 </div>
 
-                <!-- User Profile Trigger -->
+                <!-- User Profile Menu -->
                 <div class="relative group">
-                    <button class="flex items-center gap-3 bg-white/[0.02] hover:bg-white/[0.05] p-1 pr-4 rounded-full border border-white/5 transition-all outline-none backdrop-blur-md">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-slate-800 to-slate-700 flex items-center justify-center text-slate-300 ring-2 ring-white/10 shrink-0">
-                            <i class="fas fa-user-circle text-lg"></i>
+                    <button class="flex items-center gap-3 bg-white/5 hover:bg-white/10 backdrop-blur-xl p-1 pr-4 rounded-full border border-white/10 transition-all duration-300 outline-none shadow-2xl">
+                        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-white ring-1 ring-white/20 shrink-0">
+                            <i class="fas fa-user-astronaut text-sm"></i>
                         </div>
                         <div class="text-left hidden sm:block">
-                            <p id="userName" class="text-sm font-bold text-white tracking-wide truncate max-w-[120px] leading-tight">Fetching...</p>
+                            <p id="userName" class="text-[13px] font-bold text-white tracking-wide truncate max-w-[120px] leading-tight">Fetching...</p>
                             <span id="userBadge" class="badge badge-student mt-1 block w-max">Role</span>
                         </div>
                     </button>
                     
-                    <!-- Dropdown Menu -->
-                    <div class="dropdown absolute right-0 mt-3 w-56 bg-slate-900/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible z-50 p-2">
-                        <div class="px-4 py-3 border-b border-white/10 mb-2">
-                            <p class="text-[10px] text-slate-400 mb-1 font-bold uppercase tracking-widest">Signed in as</p>
-                            <p id="userEmail" class="text-sm text-white font-medium truncate">...</p>
-                            <!-- Mobile fallback badge -->
+                    <!-- Dropdown Panel -->
+                    <div class="dropdown absolute right-0 mt-3 w-60 bg-slate-950/90 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_0_40px_-10px_rgba(0,0,0,0.8)] opacity-0 invisible group-hover:opacity-100 group-hover:visible z-50 p-2 overflow-hidden">
+                        <div class="absolute inset-0 border-[0.5px] border-white/5 rounded-2xl pointer-events-none"></div>
+                        <div class="px-4 py-4 border-b border-white/5 mb-2 bg-gradient-to-b from-white/5 to-transparent rounded-t-xl">
+                            <p class="text-[9px] text-slate-500 mb-1 font-bold uppercase tracking-[0.2em]">Verified Identity</p>
+                            <p id="userEmail" class="text-sm text-white font-semibold truncate tracking-wide">...</p>
                             <div class="sm:hidden mt-3">
                                 <span id="userBadgeMobile" class="badge badge-student">Role</span>
                             </div>
                         </div>
-                        <button onclick="handleLogout()" class="w-full flex items-center gap-3 px-4 py-3 text-sm text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 rounded-xl transition-all font-bold">
-                            <i class="fas fa-power-off"></i> Secure Sign Out
+                        <button onclick="handleLogout()" class="w-full flex items-center gap-3 px-4 py-3 text-sm text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 rounded-xl transition-all duration-300 font-bold group/btn">
+                            <i class="fas fa-power-off group-hover/btn:scale-110 transition-transform"></i> Secure Sign Out
                         </button>
                     </div>
                 </div>
@@ -177,73 +198,90 @@
         </div>
     </nav>
 
-    <!-- Main Content Area -->
-    <main class="max-w-6xl mx-auto w-full px-6 py-16 md:py-24 flex-1 flex flex-col justify-center">
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto w-full px-6 py-12 md:py-20 flex-1 flex flex-col justify-center relative z-10">
         
-        <header class="mb-16 md:mb-24 text-center max-w-3xl mx-auto fade-in-up">
-            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter mb-4 leading-none">
-                Hello, <span id="greetName" class="gradient-text italic pe-2">User.</span>
+        <header class="mb-16 md:mb-24 text-center max-w-4xl mx-auto animate-item">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[9px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-8 backdrop-blur-sm shadow-xl">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                Secure Session Active
+            </div>
+            
+            <h1 class="text-6xl md:text-[5.5rem] lg:text-[7rem] font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-slate-100 to-slate-400 tracking-tighter mb-4 leading-[1.05] drop-shadow-[0_2px_20px_rgba(255,255,255,0.05)]">
+                Hello, <br class="md:hidden"/>
+                <span id="greetName" class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-300 to-purple-400 italic pr-2 drop-shadow-[0_0_30px_rgba(96,165,250,0.3)]">User.</span>
             </h1>
+            
             <p class="text-slate-400/80 text-lg md:text-xl font-medium tracking-wide">
-                ITS Engineering College <span class="mx-3 text-slate-700">•</span> Connected Campus Node
+                ITS Engineering College <span class="mx-3 text-slate-700/50">|</span> Connected Campus Node
             </p>
         </header>
 
-        <!-- Grid Cards -->
+        <!-- Bento Grid Structure -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             
-            <a href="/resources" class="action-card group p-8 md:p-10 flex flex-col h-full min-h-[320px] fade-in-up delay-100">
-                <div class="relative w-16 h-16 rounded-2xl flex items-center justify-center mb-8 border border-blue-500/30 bg-gradient-to-br from-blue-500/10 to-blue-600/5 group-hover:from-blue-600 group-hover:to-indigo-600 transition-all duration-500 overflow-hidden shadow-lg shadow-black/20">
-                    <div class="absolute inset-0 bg-blue-500 opacity-0 group-hover:opacity-20 blur-xl transition-opacity"></div>
-                    <i class="fas fa-building-circle-check text-3xl text-blue-500 group-hover:text-white transition-colors z-10"></i>
+            <a href="/resources" class="premium-card group p-8 md:p-10 flex flex-col h-full min-h-[320px] animate-item delay-100">
+                <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-8 bg-blue-500/10 border border-blue-500/20 group-hover:bg-blue-600/20 group-hover:border-blue-400/40 transition-all duration-500 group-hover:-translate-y-1 shadow-[inset_0_2px_10px_rgba(255,255,255,0.05)] group-hover:shadow-[0_0_30px_rgba(59,130,246,0.3)] relative">
+                    <i class="fas fa-building-circle-check text-2xl text-blue-400 group-hover:text-blue-300 group-hover:scale-110 transition-all duration-500 relative z-10"></i>
                 </div>
-                <h3 class="text-2xl font-bold text-white mb-3 tracking-tight">Resource Hub</h3>
+                <h3 class="text-3xl font-extrabold text-white mb-3 tracking-tight">Resource Hub</h3>
                 <p class="text-slate-400 text-sm leading-relaxed mb-8 font-medium">Real-time status of labs and halls. Book your academic slots via institutional QR verification.</p>
-                <div class="mt-auto text-blue-500 text-xs font-black uppercase tracking-[0.2em] flex items-center gap-2 group-hover:text-blue-300 transition-colors">
-                    Access Portal 
-                    <i class="fas fa-arrow-right-long transition-transform duration-300 transform group-hover:translate-x-2"></i>
+                <div class="mt-auto pt-6 border-t border-white/[0.04]">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-extrabold uppercase tracking-[0.2em] bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400 opacity-80 group-hover:opacity-100 transition-opacity">Access Portal</span>
+                        <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/5 group-hover:bg-blue-500/20 group-hover:border-blue-500/40 group-hover:translate-x-2 transition-all duration-500">
+                            <i class="fas fa-arrow-right text-[10px] text-white"></i>
+                        </div>
+                    </div>
                 </div>
             </a>
 
-            <a href="/marketplace" class="action-card group p-8 md:p-10 flex flex-col h-full min-h-[320px] fade-in-up delay-200">
-                <div class="relative w-16 h-16 rounded-2xl flex items-center justify-center mb-8 border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 to-teal-600/5 group-hover:from-emerald-500 group-hover:to-teal-600 transition-all duration-500 overflow-hidden shadow-lg shadow-black/20">
-                    <div class="absolute inset-0 bg-emerald-500 opacity-0 group-hover:opacity-20 blur-xl transition-opacity"></div>
-                    <i class="fas fa-tags text-3xl text-emerald-500 group-hover:text-white transition-colors z-10"></i>
+            <a href="/marketplace" class="premium-card group p-8 md:p-10 flex flex-col h-full min-h-[320px] animate-item delay-200">
+                <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-8 bg-emerald-500/10 border border-emerald-500/20 group-hover:bg-emerald-600/20 group-hover:border-emerald-400/40 transition-all duration-500 group-hover:-translate-y-1 shadow-[inset_0_2px_10px_rgba(255,255,255,0.05)] group-hover:shadow-[0_0_30px_rgba(16,185,129,0.3)] relative">
+                    <i class="fas fa-tags text-2xl text-emerald-400 group-hover:text-emerald-300 group-hover:scale-110 transition-all duration-500 relative z-10"></i>
                 </div>
-                <h3 class="text-2xl font-bold text-white mb-3 tracking-tight">Marketplace</h3>
+                <h3 class="text-3xl font-extrabold text-white mb-3 tracking-tight">Marketplace</h3>
                 <p class="text-slate-400 text-sm leading-relaxed mb-8 font-medium">Secure student economy. Trade academic gear and books instantly with verified peers.</p>
-                <div class="mt-auto text-emerald-500 text-xs font-black uppercase tracking-[0.2em] flex items-center gap-2 group-hover:text-emerald-300 transition-colors">
-                    Start Trading 
-                    <i class="fas fa-arrow-right-long transition-transform duration-300 transform group-hover:translate-x-2"></i>
+                <div class="mt-auto pt-6 border-t border-white/[0.04]">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-extrabold uppercase tracking-[0.2em] bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-teal-400 opacity-80 group-hover:opacity-100 transition-opacity">Start Trading</span>
+                        <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/5 group-hover:bg-emerald-500/20 group-hover:border-emerald-500/40 group-hover:translate-x-2 transition-all duration-500">
+                            <i class="fas fa-arrow-right text-[10px] text-white"></i>
+                        </div>
+                    </div>
                 </div>
             </a>
 
-            <a href="/lost-found" class="action-card group p-8 md:p-10 flex flex-col h-full min-h-[320px] fade-in-up delay-300">
-                <div class="relative w-16 h-16 rounded-2xl flex items-center justify-center mb-8 border border-rose-500/30 bg-gradient-to-br from-rose-500/10 to-pink-600/5 group-hover:from-rose-500 group-hover:to-pink-600 transition-all duration-500 overflow-hidden shadow-lg shadow-black/20">
-                    <div class="absolute inset-0 bg-rose-500 opacity-0 group-hover:opacity-20 blur-xl transition-opacity"></div>
-                    <i class="fas fa-search-location text-3xl text-rose-500 group-hover:text-white transition-colors z-10"></i>
+            <a href="/lost-found" class="premium-card group p-8 md:p-10 flex flex-col h-full min-h-[320px] animate-item delay-300">
+                <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-8 bg-rose-500/10 border border-rose-500/20 group-hover:bg-rose-600/20 group-hover:border-rose-400/40 transition-all duration-500 group-hover:-translate-y-1 shadow-[inset_0_2px_10px_rgba(255,255,255,0.05)] group-hover:shadow-[0_0_30px_rgba(244,63,94,0.3)] relative">
+                    <i class="fas fa-search-location text-2xl text-rose-400 group-hover:text-rose-300 group-hover:scale-110 transition-all duration-500 relative z-10"></i>
                 </div>
-                <h3 class="text-2xl font-bold text-white mb-3 tracking-tight">Lost & Found</h3>
-                <p class="text-slate-400 text-sm leading-relaxed mb-8 font-medium">Automated Lost & Found inventory with institutional algorithmic ownership verification.</p>
-                <div class="mt-auto text-rose-500 text-xs font-black uppercase tracking-[0.2em] flex items-center gap-2 group-hover:text-rose-300 transition-colors">
-                    Report Asset 
-                    <i class="fas fa-arrow-right-long transition-transform duration-300 transform group-hover:translate-x-2"></i>
+                <h3 class="text-3xl font-extrabold text-white mb-3 tracking-tight">Lost & Found</h3>
+                <p class="text-slate-400 text-sm leading-relaxed mb-8 font-medium">Automated inventory for lost items with institutional algorithmic ownership verification.</p>
+                <div class="mt-auto pt-6 border-t border-white/[0.04]">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-extrabold uppercase tracking-[0.2em] bg-clip-text text-transparent bg-gradient-to-r from-rose-400 to-pink-400 opacity-80 group-hover:opacity-100 transition-opacity">Report Asset</span>
+                        <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/5 group-hover:bg-rose-500/20 group-hover:border-rose-500/40 group-hover:translate-x-2 transition-all duration-500">
+                            <i class="fas fa-arrow-right text-[10px] text-white"></i>
+                        </div>
+                    </div>
                 </div>
             </a>
 
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="px-6 py-10 border-t border-white/5 mt-auto relative z-10">
-        <div class="max-w-6xl mx-auto flex flex-col items-center justify-center gap-4">
-            <div class="text-slate-700/80 text-[10px] sm:text-xs font-black uppercase tracking-[0.3em] md:tracking-[0.5em] text-center w-full">
-                &copy; 2026 KNOT &bull; I.T.S Engineering College Ecosystem
+    <!-- Footer Area -->
+    <footer class="px-6 py-10 border-t border-white/5 mt-auto relative z-10 bg-black/40 backdrop-blur-lg">
+        <div class="max-w-6xl mx-auto flex flex-col items-center justify-center gap-2">
+            <div class="text-slate-600 text-[10px] sm:text-xs font-black uppercase tracking-[0.3em] md:tracking-[0.5em] text-center w-full">
+                &copy; 2026 KNOT &bull; Enterprise Campus OS
             </div>
+            <p class="text-xs text-slate-800 font-bold uppercase tracking-widest mt-1">I.T.S Engineering College</p>
         </div>
     </footer>
 
-    <!-- Logic Script (Unchanged Integrity) -->
+    <!-- KNOT Core Logic Engine (No Changes Here) -->
     <script>
         const API_BASE = "https://apiknot.niksoriginals.in";
 
@@ -258,12 +296,11 @@
 
                 const profile = await profileRes.json();
                 if (profile && profile.success) {
-                    // Inject Text
+                    // Update DOM Identifiers
                     document.getElementById('userName').innerText = profile.name || "Student";
                     document.getElementById('greetName').innerText = profile.name ? profile.name.split(' ')[0] : "Student";
                     document.getElementById('userEmail').innerText = profile.email;
                     
-                    // Inject Badges
                     const role = profile.role.toLowerCase();
                     const badgeClass = `badge badge-${role}`;
                     
@@ -277,7 +314,7 @@
                         badgeMobileEl.className = badgeClass;
                     }
 
-                    // Reveal Special Access
+                    // Admin Module Reveal
                     if (['admin', 'hod', 'dean'].includes(role)) {
                         document.getElementById('special-access').classList.remove('hidden');
                     }
@@ -295,7 +332,6 @@
             } catch (e) { window.location.href = "/login"; }
         }
 
-        // Initialize Call
         window.onload = fetchDashboard;
     </script>
 </body>
