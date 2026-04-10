@@ -183,6 +183,7 @@
                 const res = await fetch(`${API_BASE}/api/update-profile`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
                     body: JSON.stringify({ name, department: dept })
                 });
                 if (res.ok) {
