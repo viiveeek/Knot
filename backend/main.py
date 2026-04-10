@@ -728,6 +728,202 @@ def manual_release(res_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
+
+#------------------------------------------------------------------------------------
+
+# --- PUBLIC INFO ROUTE ---
+@app.route("/info/resource/<int:res_id>")
+def resource_info(res_id):
+    try:
+        conn = get_db()
+        
+        # Get resource details
+        resource = conn.execute("SELECT * FROM resources WHERE id = ?", (res_id,)).fetchone()
+        if not resource:
+            conn.close()
+            return f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Resource Not Found</title>
+                <script src="https://cdn.tailwindcss.com"></script>
+            </head>
+            <body class="bg-gradient-to-br from-slate-900 to-slate-800 min-h-screen flex items-center justify-center p-4">
+                <div class="bg-slate-800 rounded-2xl p-8 text-center max-w-md w-full shadow-2xl">
+                    <div class="text-5xl mb-4">❌</div>
+                    <h1 class="text-2xl font-bold text-white mb-2">Resource Not Found</h1>
+                    <p class="text-slate-400">Resource ID {res_id} does not exist in our database.</p>
+                </div>
+            </body>
+            </html>
+            """, 404
+        
+        resource_dict = dict(resource)
+        
+        # Get occupancy info if occupied
+        occupancy_info = None
+        if resource_dict['status'].lower() == 'occupied':
+            booking = conn.execute('''
+                SELECT u.name, u.email, b.start_time, b.end_time, b.status
+                FROM bookings b
+                JOIN users u ON b.user_id = u.id
+                WHERE b.resource_id = ? AND b.status = 'Confirmed'
+                ORDER BY b.end_time DESC LIMIT 1
+            ''', (res_id,)).fetchone()
+            
+            if booking:
+                occupancy_info = {
+                    'name': booking['name'],
+                    'email': booking['email'],
+                    'start_time': booking['start_time'],
+                    'end_time': booking['end_time']
+                }
+        
+        conn.close()
+        
+        # Determine status badge color
+        status_color = "bg-green-500/20 text-green-400" if resource_dict['status'].lower() == 'available' else "bg-red-500/20 text-red-400"
+        status_text = "✅ Available Now" if resource_dict['status'].lower() == 'available' else "🔴 Currently Occupied"
+        
+        occupancy_html = ""
+        if occupancy_info:
+            occupancy_html = f"""
+                <div class="mt-8 p-6 bg-red-500/10 border border-red-500/30 rounded-xl">
+                    <h3 class="text-lg font-bold text-red-400 mb-4">🔒 Currently Occupied By</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-slate-400 text-sm">Name</p>
+                            <p class="text-white font-semibold">{occupancy_info['name']}</p>
+                        </div>
+                        <div>
+                            <p class="text-slate-400 text-sm">Email</p>
+                            <p class="text-indigo-400 font-mono text-sm">{occupancy_info['email']}</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 pt-2">
+                            <div>
+                                <p class="text-slate-400 text-sm">Booked From</p>
+                                <p class="text-white font-semibold text-sm">{occupancy_info['start_time']}</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-400 text-sm">Available After</p>
+                                <p class="text-white font-semibold text-sm">{occupancy_info['end_time']}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            """
+        
+        html_response = f"""
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>{resource_dict['name']} - Resource Info</title>
+            <script src="https://cdn.tailwindcss.com"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+            <style>
+                @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+                body {{
+                    font-family: 'Plus Jakarta Sans', sans-serif;
+                }}
+                .pulse-available {{
+                    animation: pulse-glow 2s infinite;
+                }}
+                @keyframes pulse-glow {{
+                    0%, 100% {{ box-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }}
+                    50% {{ box-shadow: 0 0 40px rgba(16, 185, 129, 0.6); }}
+                }}
+            </style>
+        </head>
+        <body class="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 min-h-screen p-4">
+            <div class="max-w-2xl mx-auto">
+                <!-- Header -->
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center justify-center w-12 h-12 bg-indigo-600 rounded-xl shadow-lg mb-4">
+                        <i class="fas fa-cube text-xl text-white"></i>
+                    </div>
+                    <h1 class="text-3xl font-bold text-white">KNOT Resource</h1>
+                    <p class="text-slate-400 text-sm mt-2">Real-time Availability Status</p>
+                </div>
+
+                <!-- Main Card -->
+                <div class="bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-8 shadow-2xl">
+                    
+                    <!-- Resource Name and Type -->
+                    <div class="mb-6">
+                        <h2 class="text-3xl font-bold text-white mb-2">{resource_dict['name']}</h2>
+                        <div class="flex items-center gap-3">
+                            <span class="px-4 py-2 bg-indigo-500/20 text-indigo-300 rounded-lg text-sm font-semibold">
+                                📦 {resource_dict['type']}
+                            </span>
+                            <span class="px-4 py-2 {status_color} rounded-lg text-sm font-bold">
+                                {status_text}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Divider -->
+                    <div class="h-px bg-gradient-to-r from-transparent via-slate-600 to-transparent my-6"></div>
+
+                    <!-- Status Section -->
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="p-4 bg-slate-700/30 rounded-xl border border-slate-600/30">
+                            <p class="text-slate-400 text-xs uppercase tracking-wider mb-2">Current Status</p>
+                            <p class="text-white font-bold text-lg">{resource_dict['status'].upper()}</p>
+                        </div>
+                        <div class="p-4 bg-slate-700/30 rounded-xl border border-slate-600/30">
+                            <p class="text-slate-400 text-xs uppercase tracking-wider mb-2">Resource ID</p>
+                            <p class="text-white font-bold text-lg">#{resource_dict['id']}</p>
+                        </div>
+                    </div>
+
+                    <!-- Approval Info -->
+                    <div class="p-4 bg-slate-700/20 rounded-xl border border-slate-600/20 mb-6">
+                        <p class="text-slate-400 text-xs uppercase tracking-wider mb-2">Approval Required</p>
+                        <p class="text-white font-semibold">
+                            {'🔐 Yes - Admin Approval Required' if resource_dict['needs_approval'] else '✅ No - Instant Booking'}
+                        </p>
+                    </div>
+
+                    {occupancy_html}
+
+                    <!-- Footer Info -->
+                    <div class="mt-8 p-4 bg-slate-700/20 rounded-xl border border-slate-600/20 text-center">
+                        <p class="text-slate-400 text-xs">Last Updated: <span class="text-indigo-400 font-mono">{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</span></p>
+                    </div>
+                </div>
+
+                <!-- Refresh Info -->
+                <div class="text-center mt-6 text-slate-500 text-sm">
+                    <p>🔄 Status updates in real-time • <a href="javascript:location.reload()" class="text-indigo-400 hover:text-indigo-300 underline">Refresh Page</a></p>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+        
+        return html_response
+        
+    except Exception as e:
+        return f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <script src="https://cdn.tailwindcss.com"></script>
+        </head>
+        <body class="bg-gradient-to-br from-slate-900 to-slate-800 min-h-screen flex items-center justify-center p-4">
+            <div class="bg-slate-800 rounded-2xl p-8 text-center max-w-md w-full shadow-2xl">
+                <div class="text-5xl mb-4">⚠️</div>
+                <h1 class="text-2xl font-bold text-white mb-2">Error</h1>
+                <p class="text-slate-400">{str(e)}</p>
+            </div>
+        </body>
+        </html>
+        """, 500
 #------------------------------------------------------------------------------------
 @app.route("/")
 def home():
