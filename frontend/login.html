@@ -296,7 +296,7 @@
                         const role = profData.role.toLowerCase();
 
                         if (role === 'admin') targetUrl = "/admin";
-                        else if (role === 'hod' || role === 'dean') targetUrl = "/management";
+                        else if (role === 'hod' || role === 'dean') targetUrl = "/admin";
 
                         setTimeout(() => window.location.href = targetUrl, 500);
                     }
