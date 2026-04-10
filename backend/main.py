@@ -369,16 +369,23 @@ def update_user_role():
     new_role = str(data.get("role")).strip().lower()
     
     valid_roles = ['student', 'admin', 'hod', 'dean']
-    
     if new_role not in valid_roles:
         return jsonify({"error": f"Invalid role: {new_role}"}), 400
 
     try:
-        conn = get_db()
-        conn.execute("UPDATE users SET role = ? WHERE id = ?", (new_role, user_id))
-        conn.commit()
-        conn.close()
-        return jsonify({"success": True, "message": f"User status updated to {new_role.upper()}"})
+        with get_db() as conn:
+            conn.execute("UPDATE users SET role = ? WHERE id = ?", (new_role, user_id))
+            conn.commit()
+        
+        print(f">>> [ADMIN] User {user_id} role updated to {new_role}")
+        return jsonify({
+            "success": True, 
+            "message": f"Security Clearance Updated: {new_role.upper()}"
+        })
+    except sqlite3.OperationalError as e:
+        if "locked" in str(e).lower():
+            return jsonify({"error": "Database is busy (locked). Please try again in 1 second."}), 503
+        return jsonify({"error": str(e)}), 500
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

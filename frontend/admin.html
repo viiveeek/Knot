@@ -513,7 +513,6 @@
         }
 
         // --- 2. USERS & ROLES ---
-        // --- 2. USERS & ROLES ---
         async function searchUsers() {
             const q = document.getElementById('user-search').value;
             const res = await fetch(`${API_BASE}/admin/users/search?q=${q}`, { credentials: 'include' });
@@ -555,14 +554,15 @@
                 const data = await res.json();
 
                 if (res.ok) {
-                    alert(data.message || "Security Clearance Updated!");
-                    // Refresh details locally to show new badge
-                    searchUsers();
+                    console.log(data.message);
+                    setTimeout(() => {
+                        searchUsers();
+                    }, 300);
                 } else {
-                    alert("Error: " + data.error);
+                    alert("Protocol Error: " + data.error);
                 }
             } catch (e) {
-                alert("System Sync Failed");
+                alert("Critical System Sync Failed");
             }
         }
 
