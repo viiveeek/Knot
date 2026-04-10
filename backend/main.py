@@ -255,6 +255,8 @@ def logout():
     session.clear()
     return jsonify({"success": True})
 
+#This is Demo Routes Which helpfull for me it should be in production init to winit
+
 
 @app.route("/api/debug/db-viewer", methods=["GET"])
 def debug_db_viewer():
@@ -273,6 +275,27 @@ def debug_db_viewer():
             "status": "Debug Mode Active",
             "database_path": DB_PATH,
             "data": db_data
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# --- EMERGENCY SYSTEM RESET (Demo Purposes Only) ---
+@app.route("/api/admin/reset-ecosystem-bookings", methods=["GET"])
+def reset_all_bookings():
+    try:
+        with get_db() as conn:
+            # 1. Saari bookings delete kar do
+            conn.execute("DELETE FROM bookings")
+            
+            # 2. Saare resources ko wapas 'Available' kar do
+            conn.execute("UPDATE resources SET status = 'Available'")
+            
+            conn.commit()
+            
+        print(">>> [SYSTEM RESET] All bookings purged. All nodes available.")
+        return jsonify({
+            "success": True, 
+            "message": "Protocol Reset: All bookings purged and resources released."
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
