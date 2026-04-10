@@ -315,24 +315,6 @@ def get_pending_bookings():
     conn.close()
     return jsonify([dict(row) for row in rows])
 
-@app.route("/admin/analytics", methods=["GET"])
-@admin_required
-def get_analytics():
-    conn = get_db()
-    usage = conn.execute('''
-        SELECT r.name, COUNT(b.id) as count 
-        FROM resources r 
-        LEFT JOIN bookings b ON r.id = b.resource_id 
-        GROUP BY r.id
-    ''').fetchall()
-    total_users = conn.execute("SELECT COUNT(*) FROM users").fetchone()[0]
-    conn.close()
-    
-    return jsonify({
-        "resource_usage": [dict(s) for s in usage],
-        "total_users": total_users,
-        "server_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    })
 
 @app.route("/admin/resources", methods=["GET"])
 @admin_required
@@ -479,18 +461,30 @@ def book_resource():
         conn = get_db()
         user = conn.execute("SELECT id FROM users WHERE email = ?", (email,)).fetchone()
         if not user: return jsonify({"error": "User profile not found"}), 404
-        current_status = conn.execute("SELECT status FROM resources WHERE id = ?", (res_id,)).fetchone()
-        if current_status['status'] != 'Available':
+        
+        res_info = conn.execute("SELECT status, needs_approval FROM resources WHERE id = ?", (res_id,)).fetchone()
+        
+        if res_info['status'] != 'Available':
             return jsonify({"error": "Resource is currently occupied"}), 400
-        conn.execute('''
-            INSERT INTO bookings (user_id, resource_id, start_time, end_time, status)
-            VALUES (?, ?, ?, ?, 'Confirmed')
-        ''', (user['id'], res_id, start_time, end_time))
-        conn.execute("UPDATE resources SET status = 'Occupied' WHERE id = ?", (res_id,))
+        if res_info['needs_approval'] == 1:
+            conn.execute('''
+                INSERT INTO bookings (user_id, resource_id, start_time, end_time, status)
+                VALUES (?, ?, ?, ?, 'Pending')
+            ''', (user['id'], res_id, start_time, end_time))
+            msg = "Request sent to Admin for approval."
+            success_status = True
+        else:
+            conn.execute('''
+                INSERT INTO bookings (user_id, resource_id, start_time, end_time, status)
+                VALUES (?, ?, ?, ?, 'Confirmed')
+            ''', (user['id'], res_id, start_time, end_time))
+            conn.execute("UPDATE resources SET status = 'Occupied' WHERE id = ?", (res_id,))
+            msg = "Booking confirmed instantly!"
+            success_status = True
         
         conn.commit()
         conn.close()
-        return jsonify({"success": True, "message": "Booking confirmed!"})
+        return jsonify({"success": success_status, "message": msg})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
