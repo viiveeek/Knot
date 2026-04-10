@@ -366,19 +366,22 @@ def search_users():
 def update_user_role():
     data = request.json
     user_id = data.get("user_id")
-    new_role = data.get("role")
+    new_role = str(data.get("role")).strip().lower()
     
-    if new_role not in ['student', 'admin', 'hod', 'dean']:
-        return jsonify({"error": "Invalid role configuration"}), 400
+    valid_roles = ['student', 'admin', 'hod', 'dean']
+    
+    if new_role not in valid_roles:
+        return jsonify({"error": f"Invalid role: {new_role}"}), 400
 
     try:
         conn = get_db()
         conn.execute("UPDATE users SET role = ? WHERE id = ?", (new_role, user_id))
         conn.commit()
         conn.close()
-        return jsonify({"success": True, "message": f"User role escalated to {new_role}"})
+        return jsonify({"success": True, "message": f"User status updated to {new_role.upper()}"})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 @app.route("/api/admin/stats", methods=["GET"])
 @admin_required
