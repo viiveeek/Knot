@@ -30,7 +30,7 @@ CORS(app, supports_credentials=True, origins=[
 ])
 
 # Database Path (Using your mounted volume)
-DB_PATH = "/data/nofy.db"
+DB_PATH = "/data/knot.db"
 
 # --- 2. DATABASE HELPERS ---
 def get_db():
@@ -45,7 +45,7 @@ def init_db():
     conn.execute('''CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT, email TEXT UNIQUE NOT NULL,
-        role TEXT CHECK(role IN ('student', 'admin')) DEFAULT 'student',
+        role TEXT CHECK(role IN ('student', 'admin','hod', 'dean')) DEFAULT 'student',
         department TEXT)''')
     
     # OTP Table (For Auth)
@@ -231,21 +231,26 @@ def update_profile():
 @app.route("/api/user-profile", methods=["GET"])
 def get_user_profile():
     email = session.get("user")
-    if not email:
-        return jsonify({"error": "Not logged in"}), 401
+    if not email: return jsonify({"error": "Unauthorized"}), 401
     
     conn = get_db()
-    user = conn.execute("SELECT name, email, department FROM users WHERE email = ?", (email,)).fetchone()
+    user = conn.execute("SELECT name, email, role, department FROM users WHERE email = ?", (email,)).fetchone()
     conn.close()
     
     if user:
         return jsonify({
             "success": True,
-            "name": user['name'] or "Student",
+            "name": user['name'] or "Verified User",
             "email": user['email'],
-            "department": user['department'] or "Not Set"
+            "role": user['role'], 
+            "department": user['department'] or "ITS"
         })
     return jsonify({"error": "User not found"}), 404
+
+@app.route("/auth/logout", methods=["POST"])
+def logout():
+    session.clear()
+    return jsonify({"success": True})
 
 
 # --- 5. ADMIN & SYSTEM ---
