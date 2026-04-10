@@ -195,6 +195,39 @@ def verify_otp():
     
     return jsonify({"error": "Invalid or expired OTP"}), 401
 
+@app.route("/api/update-profile", methods=["POST"])
+def update_profile():
+    email = session.get("user")
+    
+    if not email:
+        return jsonify({"error": "Unauthorized session"}), 401
+
+    data = request.json or {}
+    new_name = data.get("name")
+    new_dept = data.get("department")
+
+    if not new_name:
+        return jsonify({"error": "Name is mandatory"}), 400
+
+    try:
+        conn = get_db()
+        conn.execute('''
+            UPDATE users 
+            SET name = ?, department = ? 
+            WHERE email = ?
+        ''', (new_name, new_dept, email))
+        
+        conn.commit()
+        conn.close()
+        
+        print(f">>> [PROFILE UPDATE] {email} updated their info.")
+        return jsonify({"success": True, "message": "Profile updated successfully"})
+    
+    except Exception as e:
+        print(f"!!! [UPDATE ERROR] {e}")
+        return jsonify({"error": "Internal Server Error"}), 500
+
+
 # --- 5. ADMIN & SYSTEM ---
 
 @app.route("/admin/login", methods=["POST"])
