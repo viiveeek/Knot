@@ -3,72 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KNOT Dashboard | Enterprise Campus OS</title>
+    <title>KNOT Dashboard | Premium Enterprise Campus OS</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; color: #f8fafc; }
+        /* Modern Premium Font */
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
         
-        .nav-glass { background: rgba(2, 6, 23, 0.9); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-        
-        .action-card {
-            background: rgba(15, 23, 42, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 2.5rem;
+        :root {
+            --glass-bg: rgba(15, 23, 42, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-highlight: rgba(255, 255, 255, 0.15);
         }
-        .action-card:hover {
-            background: rgba(15, 23, 42, 0.8);
-            border-color: #3b82f6;
-            transform: scale(1.02);
-            box-shadow: 0 20px 40px -20px rgba(59, 130, 246, 0.3);
-        }
-        
-        .badge { font-size: 10px; font-weight: 800; text-transform: uppercase; padding: 4px 12px; border-radius: 6px; }
-        .badge-admin { background: #450a0a; color: #f87171; }
-        .badge-dean { background: #2e1065; color: #c084fc; }
-        .badge-hod { background: #082f49; color: #38bdf8; }
-        .badge-student { background: #0f172a; color: #94a3b8; }
 
-        .fade-in { animation: fadeIn 0.8s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background-color: #030712; /* Deepest Slate Black */
+            color: #f8fafc; 
+            /* Subtle Ambient Glow Orbs */
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.08) 0%, transparent 45%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Modern Invisible Scrollbar overlay */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+
+        /* Premium Blurred Nav */
+        .nav-glass { 
+            background: rgba(3, 7, 18, 0.6); 
+            backdrop-filter: blur(24px); 
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--glass-border); 
+        }
+        
+        /* High-end Elevated Action Card */
+        .action-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 1.5rem;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        /* Glass Glare Overlay */
+        .action-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 100%);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Hover Physics */
+        .action-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 
+                        0 0 30px -5px rgba(59, 130, 246, 0.15);
+        }
+        .action-card:hover::before { opacity: 1; }
+
+        /* Crisp Badges */
+        .badge { 
+            font-size: 0.65rem; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            letter-spacing: 0.08em;
+            padding: 0.25rem 0.6rem; 
+            border-radius: 9999px;
+            box-shadow: inset 0 0 0 1px currentColor; 
+        }
+        .badge-admin { background: rgba(153, 27, 27, 0.15); color: #fca5a5; }
+        .badge-dean { background: rgba(88, 28, 135, 0.15); color: #d8b4fe; }
+        .badge-hod { background: rgba(3, 105, 161, 0.15); color: #7dd3fc; }
+        .badge-student { background: rgba(30, 41, 59, 0.3); color: #cbd5e1; }
+
+        /* Typography Gradients */
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(135deg, #60a5fa 0%, #a855f7 100%);
+        }
+
+        /* Entrance Animations */
+        .fade-in-up { opacity: 0; transform: translateY(30px); animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+        
+        /* Profile Dropdown Refinement */
+        .dropdown {
+            transform-origin: top right;
+            transform: scale(0.95);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .group:hover .dropdown {
+            transform: scale(1);
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col selection:bg-blue-500/30 selection:text-white">
 
-    <nav class="nav-glass sticky top-0 z-50 px-8 py-4">
+    <!-- Top Navigation Bar -->
+    <nav class="nav-glass sticky top-0 z-50 px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-4 cursor-pointer" onclick="location.reload()">
-                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+            
+            <!-- Logo area -->
+            <div class="flex items-center gap-4 cursor-pointer group" onclick="location.reload()">
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:shadow-blue-500/40 transition-all border border-white/10 group-hover:scale-105">
                     <i class="fas fa-knot text-white text-xl"></i>
                 </div>
-                <span class="text-2xl font-black tracking-tighter text-white uppercase italic">KNOT</span>
+                <div class="flex flex-col">
+                    <span class="text-2xl font-black tracking-tighter text-white uppercase leading-none">KNOT</span>
+                    <span class="text-[0.6rem] font-bold text-slate-400 uppercase tracking-[0.2em] hidden sm:block mt-1">Ecosystem</span>
+                </div>
             </div>
 
-            <div class="flex items-center gap-6">
+            <!-- Profile & Actions -->
+            <div class="flex items-center gap-4 sm:gap-6">
+                <!-- Management Button (Dynamic) -->
                 <div id="special-access" class="hidden">
-                    <a href="/management" class="bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-indigo-600 hover:text-white transition-all">
-                        Management Console
+                    <a href="/management" class="relative inline-flex items-center justify-center px-5 py-2.5 text-[10px] sm:text-xs font-bold text-white uppercase tracking-widest overflow-hidden rounded-xl bg-slate-800/80 border border-indigo-500/30 hover:border-indigo-400 transition-all group shadow-lg">
+                        <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-indigo-600 rounded-full group-hover:w-56 group-hover:h-56"></span>
+                        <span class="relative flex items-center gap-2"><i class="fas fa-shield-halved"></i> <span class="hidden sm:inline">Management Console</span><span class="sm:hidden">Admin</span></span>
                     </a>
                 </div>
 
+                <!-- User Profile Trigger -->
                 <div class="relative group">
-                    <button class="flex items-center gap-4 bg-slate-900/50 p-2 pr-4 rounded-2xl border border-white/5 hover:border-white/10 transition-all outline-none">
-                        <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-slate-400 border border-white/5">
-                            <i class="fas fa-user-circle"></i>
+                    <button class="flex items-center gap-3 bg-white/[0.02] hover:bg-white/[0.05] p-1 pr-4 rounded-full border border-white/5 transition-all outline-none backdrop-blur-md">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-slate-800 to-slate-700 flex items-center justify-center text-slate-300 ring-2 ring-white/10 shrink-0">
+                            <i class="fas fa-user-circle text-lg"></i>
                         </div>
-                        <div class="text-left leading-none">
-                            <p id="userName" class="text-sm font-bold text-slate-100">Fetching...</p>
-                            <span id="userBadge" class="badge badge-student mt-1 inline-block">Role</span>
+                        <div class="text-left hidden sm:block">
+                            <p id="userName" class="text-sm font-bold text-white tracking-wide truncate max-w-[120px] leading-tight">Fetching...</p>
+                            <span id="userBadge" class="badge badge-student mt-1 block w-max">Role</span>
                         </div>
                     </button>
-                    <div class="absolute right-0 mt-3 w-56 bg-slate-900 border border-white/10 rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 p-2">
-                        <div class="px-4 py-3 border-b border-white/5 mb-2">
-                            <p id="userEmail" class="text-[10px] text-slate-500 font-bold uppercase truncate">...</p>
+                    
+                    <!-- Dropdown Menu -->
+                    <div class="dropdown absolute right-0 mt-3 w-56 bg-slate-900/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible z-50 p-2">
+                        <div class="px-4 py-3 border-b border-white/10 mb-2">
+                            <p class="text-[10px] text-slate-400 mb-1 font-bold uppercase tracking-widest">Signed in as</p>
+                            <p id="userEmail" class="text-sm text-white font-medium truncate">...</p>
+                            <!-- Mobile fallback badge -->
+                            <div class="sm:hidden mt-3">
+                                <span id="userBadgeMobile" class="badge badge-student">Role</span>
+                            </div>
                         </div>
-                        <button onclick="handleLogout()" class="w-full flex items-center gap-3 px-4 py-3 text-sm text-rose-400 hover:bg-rose-500/10 rounded-xl transition-all font-bold">
-                            <i class="fas fa-power-off text-xs"></i> Log Out
+                        <button onclick="handleLogout()" class="w-full flex items-center gap-3 px-4 py-3 text-sm text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 rounded-xl transition-all font-bold">
+                            <i class="fas fa-power-off"></i> Secure Sign Out
                         </button>
                     </div>
                 </div>
@@ -76,59 +177,73 @@
         </div>
     </nav>
 
-    <main class="max-w-6xl mx-auto w-full px-8 py-20 flex-1 fade-in">
+    <!-- Main Content Area -->
+    <main class="max-w-6xl mx-auto w-full px-6 py-16 md:py-24 flex-1 flex flex-col justify-center">
         
-        <header class="mb-20 text-center">
-            <h1 class="text-6xl md:text-8xl font-black text-white tracking-tighter mb-6 leading-none">
-                Hello, <span id="greetName" class="text-blue-500 italic">User</span>.
+        <header class="mb-16 md:mb-24 text-center max-w-3xl mx-auto fade-in-up">
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter mb-4 leading-none">
+                Hello, <span id="greetName" class="gradient-text italic pe-2">User.</span>
             </h1>
-            <p class="text-slate-400 text-xl font-medium">ITS Engineering College • Connected Campus Node</p>
+            <p class="text-slate-400/80 text-lg md:text-xl font-medium tracking-wide">
+                ITS Engineering College <span class="mx-3 text-slate-700">•</span> Connected Campus Node
+            </p>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Grid Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             
-            <a href="/resources" class="action-card group p-10 flex flex-col h-[320px]">
-                <div class="w-16 h-16 bg-blue-600/10 text-blue-500 rounded-2xl flex items-center justify-center mb-8 border border-blue-500/20 group-hover:bg-blue-600 group-hover:text-white transition-all">
-                    <i class="fas fa-building-circle-check text-3xl"></i>
+            <a href="/resources" class="action-card group p-8 md:p-10 flex flex-col h-full min-h-[320px] fade-in-up delay-100">
+                <div class="relative w-16 h-16 rounded-2xl flex items-center justify-center mb-8 border border-blue-500/30 bg-gradient-to-br from-blue-500/10 to-blue-600/5 group-hover:from-blue-600 group-hover:to-indigo-600 transition-all duration-500 overflow-hidden shadow-lg shadow-black/20">
+                    <div class="absolute inset-0 bg-blue-500 opacity-0 group-hover:opacity-20 blur-xl transition-opacity"></div>
+                    <i class="fas fa-building-circle-check text-3xl text-blue-500 group-hover:text-white transition-colors z-10"></i>
                 </div>
-                <h3 class="text-2xl font-bold text-white mb-3">Resource Hub</h3>
-                <p class="text-slate-400 text-sm leading-relaxed mb-6 font-medium">Real-time status of labs and halls. Book slots via institutional QR verification.</p>
-                <div class="mt-auto text-blue-500 text-xs font-black uppercase tracking-[0.2em] flex items-center gap-2">
-                    Access Portal <i class="fas fa-arrow-right transition-transform group-hover:translate-x-2"></i>
-                </div>
-            </a>
-
-            <a href="/marketplace" class="action-card group p-10 flex flex-col h-[320px]">
-                <div class="w-16 h-16 bg-emerald-500/10 text-emerald-500 rounded-2xl flex items-center justify-center mb-8 border border-emerald-500/20 group-hover:bg-emerald-500 group-hover:text-white transition-all">
-                    <i class="fas fa-tags text-3xl"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-white mb-3">Marketplace</h3>
-                <p class="text-slate-400 text-sm leading-relaxed mb-6 font-medium">Secure student economy. Trade academic gear and books with verified peers.</p>
-                <div class="mt-auto text-emerald-500 text-xs font-black uppercase tracking-[0.2em] flex items-center gap-2">
-                    Start Trading <i class="fas fa-arrow-right transition-transform group-hover:translate-x-2"></i>
+                <h3 class="text-2xl font-bold text-white mb-3 tracking-tight">Resource Hub</h3>
+                <p class="text-slate-400 text-sm leading-relaxed mb-8 font-medium">Real-time status of labs and halls. Book your academic slots via institutional QR verification.</p>
+                <div class="mt-auto text-blue-500 text-xs font-black uppercase tracking-[0.2em] flex items-center gap-2 group-hover:text-blue-300 transition-colors">
+                    Access Portal 
+                    <i class="fas fa-arrow-right-long transition-transform duration-300 transform group-hover:translate-x-2"></i>
                 </div>
             </a>
 
-            <a href="/lost-found" class="action-card group p-10 flex flex-col h-[320px]">
-                <div class="w-16 h-16 bg-rose-500/10 text-rose-500 rounded-2xl flex items-center justify-center mb-8 border border-rose-500/20 group-hover:bg-rose-500 group-hover:text-white transition-all">
-                    <i class="fas fa-search-location text-3xl"></i>
+            <a href="/marketplace" class="action-card group p-8 md:p-10 flex flex-col h-full min-h-[320px] fade-in-up delay-200">
+                <div class="relative w-16 h-16 rounded-2xl flex items-center justify-center mb-8 border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 to-teal-600/5 group-hover:from-emerald-500 group-hover:to-teal-600 transition-all duration-500 overflow-hidden shadow-lg shadow-black/20">
+                    <div class="absolute inset-0 bg-emerald-500 opacity-0 group-hover:opacity-20 blur-xl transition-opacity"></div>
+                    <i class="fas fa-tags text-3xl text-emerald-500 group-hover:text-white transition-colors z-10"></i>
                 </div>
-                <h3 class="text-2xl font-bold text-white mb-3">Lost And Found</h3>
-                <p class="text-slate-400 text-sm leading-relaxed mb-6 font-medium">Automated Lost & Found inventory with institutional ownership verification.</p>
-                <div class="mt-auto text-rose-500 text-xs font-black uppercase tracking-[0.2em] flex items-center gap-2">
-                    Report Asset <i class="fas fa-arrow-right transition-transform group-hover:translate-x-2"></i>
+                <h3 class="text-2xl font-bold text-white mb-3 tracking-tight">Marketplace</h3>
+                <p class="text-slate-400 text-sm leading-relaxed mb-8 font-medium">Secure student economy. Trade academic gear and books instantly with verified peers.</p>
+                <div class="mt-auto text-emerald-500 text-xs font-black uppercase tracking-[0.2em] flex items-center gap-2 group-hover:text-emerald-300 transition-colors">
+                    Start Trading 
+                    <i class="fas fa-arrow-right-long transition-transform duration-300 transform group-hover:translate-x-2"></i>
+                </div>
+            </a>
+
+            <a href="/lost-found" class="action-card group p-8 md:p-10 flex flex-col h-full min-h-[320px] fade-in-up delay-300">
+                <div class="relative w-16 h-16 rounded-2xl flex items-center justify-center mb-8 border border-rose-500/30 bg-gradient-to-br from-rose-500/10 to-pink-600/5 group-hover:from-rose-500 group-hover:to-pink-600 transition-all duration-500 overflow-hidden shadow-lg shadow-black/20">
+                    <div class="absolute inset-0 bg-rose-500 opacity-0 group-hover:opacity-20 blur-xl transition-opacity"></div>
+                    <i class="fas fa-search-location text-3xl text-rose-500 group-hover:text-white transition-colors z-10"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-3 tracking-tight">Lost & Found</h3>
+                <p class="text-slate-400 text-sm leading-relaxed mb-8 font-medium">Automated Lost & Found inventory with institutional algorithmic ownership verification.</p>
+                <div class="mt-auto text-rose-500 text-xs font-black uppercase tracking-[0.2em] flex items-center gap-2 group-hover:text-rose-300 transition-colors">
+                    Report Asset 
+                    <i class="fas fa-arrow-right-long transition-transform duration-300 transform group-hover:translate-x-2"></i>
                 </div>
             </a>
 
         </div>
     </main>
 
-    <footer class="px-8 py-12 border-t border-white/5 text-center">
-        <p class="text-slate-700 text-[10px] font-black uppercase tracking-[0.5em]">
-            &copy; 2026 KNOT &bull; I.T.S Engineering College Ecosystem
-        </p>
+    <!-- Footer -->
+    <footer class="px-6 py-10 border-t border-white/5 mt-auto relative z-10">
+        <div class="max-w-6xl mx-auto flex flex-col items-center justify-center gap-4">
+            <div class="text-slate-700/80 text-[10px] sm:text-xs font-black uppercase tracking-[0.3em] md:tracking-[0.5em] text-center w-full">
+                &copy; 2026 KNOT &bull; I.T.S Engineering College Ecosystem
+            </div>
+        </div>
     </footer>
 
+    <!-- Logic Script (Unchanged Integrity) -->
     <script>
         const API_BASE = "https://apiknot.niksoriginals.in";
 
@@ -143,15 +258,26 @@
 
                 const profile = await profileRes.json();
                 if (profile && profile.success) {
-                    document.getElementById('userName').innerText = profile.name;
+                    // Inject Text
+                    document.getElementById('userName').innerText = profile.name || "Student";
                     document.getElementById('greetName').innerText = profile.name ? profile.name.split(' ')[0] : "Student";
                     document.getElementById('userEmail').innerText = profile.email;
                     
-                    const badgeEl = document.getElementById('userBadge');
+                    // Inject Badges
                     const role = profile.role.toLowerCase();
+                    const badgeClass = `badge badge-${role}`;
+                    
+                    const badgeEl = document.getElementById('userBadge');
                     badgeEl.innerText = role;
-                    badgeEl.className = `badge badge-${role} mt-1 inline-block`;
+                    badgeEl.className = `${badgeClass} mt-1 block w-max`;
+                    
+                    const badgeMobileEl = document.getElementById('userBadgeMobile');
+                    if(badgeMobileEl) {
+                        badgeMobileEl.innerText = role;
+                        badgeMobileEl.className = badgeClass;
+                    }
 
+                    // Reveal Special Access
                     if (['admin', 'hod', 'dean'].includes(role)) {
                         document.getElementById('special-access').classList.remove('hidden');
                     }
@@ -169,6 +295,7 @@
             } catch (e) { window.location.href = "/login"; }
         }
 
+        // Initialize Call
         window.onload = fetchDashboard;
     </script>
 </body>
