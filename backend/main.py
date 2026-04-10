@@ -471,45 +471,59 @@ def admin_delete_market(item_id):
 
 # --- RESOURCE API: FETCH ALL ---
 
+from datetime import datetime, timedelta
+
 @app.route("/api/resources", methods=["GET"])
 def get_all_resources():
     try:
-        now = datetime.now().strftime('%Y-%m-%dT%H:%M')
+        now_ist = (datetime.utcnow() + timedelta(hours=5, minutes=30)).strftime('%Y-%m-%dT%H:%M')
         
         with get_db() as conn:
-            # 1. Auto-Release Logic (Same as before)
-            occupied_nodes = conn.execute("SELECT id FROM resources WHERE status = 'Occupied'").fetchall()
+            # 2. AUTO-RELEASE: Jo 'Occupied' hain aur unka time nikal chuka hai
+            occupied_nodes = conn.execute("SELECT id FROM resources WHERE LOWER(status) = 'occupied'").fetchall()
+            
             for node in occupied_nodes:
                 res_id = node['id']
+                # Latest confirmed booking uthao
                 latest = conn.execute('''
-                    SELECT end_time FROM bookings WHERE resource_id = ? AND status = 'Confirmed' 
+                    SELECT end_time FROM bookings 
+                    WHERE resource_id = ? AND status = 'Confirmed' 
                     ORDER BY end_time DESC LIMIT 1
                 ''', (res_id,)).fetchone()
-                if latest and now > latest['end_time']:
-                    conn.execute("UPDATE resources SET status = 'Available' WHERE id = ?", (res_id,))
+
+                if latest:
+                    # Debug print (Server logs mein check karne ke liye)
+                    print(f"Checking Node {res_id}: Now IST({now_ist}) vs End({latest['end_time']})")
+                    
+                    # String comparison works perfectly if formats are identical
+                    if now_ist > latest['end_time']:
+                        conn.execute("UPDATE resources SET status = 'Available' WHERE id = ?", (res_id,))
+                        print(f">>> AUTO-RELEASE SUCCESS: Node {res_id} is now Available.")
+            
             conn.commit()
+
+            # 3. FETCH UPDATED LIST with busy_until info
             resources = conn.execute("SELECT * FROM resources").fetchall()
             result = []
             
             for r in resources:
-                res_dict = dict(r)
-                res_dict['busy_until'] = None #
-                
-                if r['status'] == 'Occupied':
-                    # Booking se end_time uthao
-                    booking = conn.execute('''
+                d = dict(r)
+                d['busy_until'] = None
+                # Agar status Occupied hai toh end_time fetch karke busy_until mein daalo
+                if d['status'].lower() == 'occupied':
+                    b = conn.execute('''
                         SELECT end_time FROM bookings 
                         WHERE resource_id = ? AND status = 'Confirmed' 
                         ORDER BY end_time DESC LIMIT 1
-                    ''', (r['id'],)).fetchone()
-                    if booking:
-                        res_dict['busy_until'] = booking['end_time']
-                
-                result.append(res_dict)
+                    ''', (d['id'],)).fetchone()
+                    if b:
+                        d['busy_until'] = b['end_time']
+                result.append(d)
                 
             return jsonify(result)
             
     except Exception as e:
+        print(f"!!! Error in get_all_resources: {e}")
         return jsonify({"error": str(e)}), 500
 
 # --- RESOURCE API: BOOKING ---
