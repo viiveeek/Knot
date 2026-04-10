@@ -363,44 +363,45 @@
                 });
 
                 if (res.ok) {
-                    showToast("Profile Initialized!", "success");
+                    if (data.is_new_user) {
+                        showSection('name-section');
+                        showToast("Identity Verified!", "success");
+                        toggleLoader(false);
+                    } else {
+                        showToast("Access Granted!", "success");
+                        setTimeout(async () => {
+                            const profRes = await fetch(`${API_BASE}/api/user-profile`, {
+                                credentials: 'include',
+                                headers: { 'Accept': 'application/json' }
+                            });
+                            const profData = await profRes.json();
 
-                    // FIX: Role-based redirect logic with proper credentials
-                    const profRes = await fetch(`${API_BASE}/api/user-profile`, {
-                        credentials: 'include',
-                        headers: { 'Accept': 'application/json' }
-                    });
-                    const profData = await profRes.json();
+                            let targetUrl = "/dashboard";
+                            if (profData && profData.role) {
+                                const role = profData.role.toLowerCase();
+                                if (['admin', 'hod', 'dean'].includes(role)) targetUrl = "/admin";
+                            }
 
-                    let targetUrl = "/dashboard";
-                    const role = profData.role.toLowerCase();
-                    if (['admin', 'hod', 'dean'].includes(role)) targetUrl = "/admin";
-
-                    setTimeout(() => { window.location.href = targetUrl; }, 1000);
-                } else {
-                    showToast("Update failed", "error");
-                    toggleLoader(false);
+                            // Final redirection
+                            window.location.href = targetUrl;
+                        }, 500);
+                    }
                 }
-            } catch (err) {
-                showToast("Sync failed.", "error");
-                toggleLoader(false);
-            }
-        }
 
-        function startTimer() {
-            let s = 59;
-            const el = document.getElementById('resend-timer');
-            el.classList.add('pointer-events-none', 'opacity-50');
-            clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-                s--;
-                el.innerText = `Resend 00:${s < 10 ? '0' : ''}${s}`;
-                if (s <= 0) { clearInterval(timerInterval); el.innerText = "Resend Code"; el.classList.remove('pointer-events-none', 'opacity-50'); }
-            }, 1000);
-        }
+                function startTimer() {
+                    let s = 59;
+                    const el = document.getElementById('resend-timer');
+                    el.classList.add('pointer-events-none', 'opacity-50');
+                    clearInterval(timerInterval);
+                    timerInterval = setInterval(() => {
+                        s--;
+                        el.innerText = `Resend 00:${s < 10 ? '0' : ''}${s}`;
+                        if (s <= 0) { clearInterval(timerInterval); el.innerText = "Resend Code"; el.classList.remove('pointer-events-none', 'opacity-50'); }
+                    }, 1000);
+                }
 
-        function toggleLoader(show) { document.getElementById('loader').classList.toggle('hidden', !show); }
-        function resetFlow() { showSection('email-section'); clearInterval(timerInterval); }
+                function toggleLoader(show) { document.getElementById('loader').classList.toggle('hidden', !show); }
+                function resetFlow() { showSection('email-section'); clearInterval(timerInterval); }
     </script>
 </body>
 

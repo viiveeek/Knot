@@ -526,7 +526,6 @@ def add_marketplace_item():
 
 # --- RESOURCE API: FETCH ALL ---
 
-from datetime import datetime, timedelta
 
 @app.route("/api/resources", methods=["GET"])
 def get_all_resources():
