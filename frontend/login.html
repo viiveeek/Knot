@@ -5,99 +5,144 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KNOT | Secure Access</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .section-fade { animation: fadeIn 0.4s ease-out forwards; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #020617; color: #f8fafc; }
+
+        .auth-card {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .input-group {
+            background: rgba(2, 6, 23, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .input-group:focus-within {
+            border-color: #6366f1;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
+            background: rgba(2, 6, 23, 0.8);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Modern Select Reset */
         select {
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236366f1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 1rem center;
-            background-size: 1.5em;
+            background-size: 1.2em;
         }
-        option { background-color: #0f172a; color: white; padding: 10px; }
+
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="bg-[#020617] text-white min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
+<body class="min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
     
-    <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-indigo-600/10 rounded-full blur-[120px]"></div>
-    <div class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-blue-600/10 rounded-full blur-[120px]"></div>
+    <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px]"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[120px]"></div>
 
-    <div class="max-w-md w-full">
-        <div class="text-center mb-10">
-            <div class="inline-flex items-center justify-center w-16 h-16 bg-indigo-600 rounded-2xl shadow-2xl mb-4">
+    <div class="max-w-[420px] w-full relative z-10">
+        <div class="text-center mb-12 fade-in">
+            <div class="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl shadow-xl mb-6">
                 <i class="fas fa-knot text-2xl text-white"></i>
             </div>
-            <h1 class="text-3xl font-black tracking-tighter">KNOT<span class="text-indigo-500">.</span></h1>
-            <p class="text-gray-500 text-sm font-medium">ITS Engineering College Ecosystem</p>
+            <h1 class="text-3xl font-extrabold tracking-tight text-white mb-2 uppercase italic">KNOT</h1>
+            <p class="text-slate-500 text-sm font-medium tracking-wide">Enterprise Campus Ecosystem</p>
         </div>
 
-        <div class="glass p-8 rounded-[2.5rem] shadow-2xl relative">
+        <div class="auth-card p-10 rounded-[2.5rem] fade-in">
             
-            <div id="email-section" class="section-fade space-y-6">
+            <div id="email-section" class="space-y-8">
                 <div class="space-y-2">
-                    <label class="text-xs font-bold text-gray-500 uppercase tracking-widest ml-1">College Email</label>
-                    <div class="flex items-center bg-gray-950/50 rounded-2xl border border-gray-800 px-4 py-4 focus-within:border-indigo-500 transition-all">
-                        <i class="fas fa-envelope text-gray-600 mr-3"></i>
-                        <input type="email" id="email" placeholder="name@its.edu.in" class="bg-transparent w-full outline-none text-white placeholder-gray-700">
-                    </div>
+                    <h2 class="text-2xl font-bold text-white tracking-tight">Access Portal</h2>
+                    <p class="text-slate-400 text-sm font-medium">Please enter your institutional email</p>
                 </div>
-                <button onclick="sendOTP()" id="send-btn" class="w-full bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-indigo-600/20 flex items-center justify-center gap-2">
-                    <span>Get Secure Code</span> <i class="fas fa-paper-plane text-xs"></i>
-                </button>
+
+                <div class="space-y-4">
+                    <div class="input-group flex items-center rounded-2xl p-4">
+                        <i class="far fa-envelope text-slate-500 mr-4"></i>
+                        <input type="email" id="email" placeholder="name@its.edu.in" 
+                            class="bg-transparent w-full outline-none text-white text-base placeholder-slate-600">
+                    </div>
+                    <button onclick="sendOTP()" id="send-btn" class="btn-primary w-full py-4 rounded-2xl text-white font-bold text-base tracking-wide flex items-center justify-center group">
+                        <span>Continue</span>
+                        <i class="fas fa-arrow-right ml-2 text-xs group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                </div>
             </div>
 
-            <div id="otp-section" class="hidden section-fade space-y-6">
-                <div class="text-center">
-                    <p class="text-gray-400 text-sm">Enter code sent to <br><span id="display-email" class="text-indigo-400 font-bold"></span></p>
+            <div id="otp-section" class="hidden space-y-8">
+                <div class="space-y-2 text-center">
+                    <h2 class="text-2xl font-bold text-white">Verify Identity</h2>
+                    <p class="text-slate-400 text-sm">A 6-digit code was sent to <br><span id="display-email" class="text-indigo-400 font-bold"></span></p>
                 </div>
-                <div class="space-y-3">
-                    <input type="text" id="otp" maxlength="6" placeholder="000000" class="bg-gray-950/50 w-full text-center text-4xl tracking-[1rem] font-black py-5 rounded-2xl border border-gray-800 outline-none focus:border-indigo-500 text-indigo-400">
-                    <div class="flex justify-between items-center px-1">
-                        <button onclick="resetFlow()" class="text-xs text-gray-500 hover:text-white underline">Edit Email</button>
-                        <p id="resend-timer" class="text-xs text-indigo-400 font-medium cursor-pointer" onclick="handleResend()">Resend in 00:59</p>
+                
+                <div class="space-y-6">
+                    <div class="input-group rounded-2xl p-4">
+                        <input type="text" id="otp" maxlength="6" placeholder="000000" 
+                            class="bg-transparent w-full text-center text-4xl tracking-[1.2rem] font-black text-indigo-400 outline-none placeholder-slate-800">
+                    </div>
+                    <button onclick="verifyOTP()" class="btn-primary w-full py-4 rounded-2xl text-white font-bold text-base">Verify Access</button>
+                    <div class="flex justify-between items-center text-xs px-2 font-semibold">
+                        <button onclick="resetFlow()" class="text-slate-500 hover:text-white transition-colors">Change email</button>
+                        <p id="resend-timer" class="text-indigo-500 cursor-pointer" onclick="handleResend()">Resend in 00:59</p>
                     </div>
                 </div>
-                <button onclick="verifyOTP()" class="w-full bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold py-4 rounded-2xl transition-all">Verify Identity</button>
             </div>
 
-            <div id="name-section" class="hidden section-fade space-y-6">
-                <div class="text-center">
-                    <h2 class="text-2xl font-bold text-white tracking-tight">One last thing...</h2>
-                    <p class="text-gray-500 text-sm mt-1 font-medium">Create your campus profile</p>
+            <div id="name-section" class="hidden space-y-8">
+                <div class="space-y-2">
+                    <h2 class="text-2xl font-bold text-white">Initialize Profile</h2>
+                    <p class="text-slate-400 text-sm">One-time configuration required</p>
                 </div>
                 <div class="space-y-5">
-                    <div>
-                        <label class="text-xs font-bold text-gray-500 uppercase tracking-widest ml-1">Full Name</label>
-                        <div class="flex items-center bg-gray-950/50 rounded-2xl border border-gray-800 px-4 py-4 focus-within:border-indigo-500 mt-2">
-                            <i class="fas fa-id-card text-gray-600 mr-3"></i>
+                    <div class="space-y-1.5">
+                        <label class="text-[11px] font-bold text-slate-500 uppercase tracking-widest ml-1">Full Name</label>
+                        <div class="input-group flex items-center rounded-2xl p-4">
+                            <i class="far fa-user text-slate-500 mr-4"></i>
                             <input type="text" id="fullname" placeholder="Ex. Nikhil Yadav" class="bg-transparent w-full outline-none text-white">
                         </div>
                     </div>
-                    <div>
-                        <label class="text-xs font-bold text-gray-500 uppercase tracking-widest ml-1">Department</label>
-                        <select id="dept-select" class="w-full bg-gray-950/50 rounded-2xl border border-gray-800 px-5 py-4 outline-none focus:border-indigo-500 text-gray-300 font-medium transition-all mt-2">
+                    <div class="space-y-1.5">
+                        <label class="text-[11px] font-bold text-slate-500 uppercase tracking-widest ml-1">Department</label>
+                        <select id="dept-select" class="input-group w-full rounded-2xl px-5 py-4 outline-none text-slate-300 font-medium transition-all">
                             <option value="" disabled selected>Select Branch</option>
-                            <option value="CSE">Computer Science (CSE)</option>
-                            <option value="IT">Information Technology (IT)</option>
-                            <option value="ECE">Electronics (ECE)</option>
-                            <option value="ME">Mechanical (ME)</option>
-                            <option value="CE">Civil (CE)</option>
+                            <option value="CSE">Computer Science</option>
+                            <option value="IT">Information Technology</option>
+                            <option value="ECE">Electronics</option>
+                            <option value="ME">Mechanical</option>
                         </select>
                     </div>
+                    <button onclick="updateProfile()" class="btn-primary w-full py-4 rounded-2xl text-white font-bold text-base shadow-xl">Complete Setup</button>
                 </div>
-                <button onclick="updateProfile()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-2xl transition-all shadow-xl shadow-indigo-600/20">Enter Dashboard</button>
             </div>
 
-            <div id="loader" class="hidden absolute inset-0 bg-slate-950/80 backdrop-blur-md rounded-[2.5rem] z-50 flex flex-col items-center justify-center">
-                <div class="relative w-12 h-12">
-                    <div class="absolute inset-0 border-4 border-indigo-500/20 rounded-full animate-spin"></div>
-                </div>
-                <p class="text-xs text-indigo-400 mt-4 font-black uppercase tracking-[0.3em] animate-pulse">Processing</p>
+            <div id="loader" class="hidden absolute inset-0 bg-slate-950/80 backdrop-blur-xl rounded-[2.5rem] z-50 flex flex-col items-center justify-center">
+                <div class="w-10 h-10 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin"></div>
+                <p class="text-[10px] text-indigo-400 mt-4 font-black uppercase tracking-[0.3em] animate-pulse">Syncing Session</p>
             </div>
         </div>
+
+        <p class="text-center text-slate-600 text-[11px] font-bold uppercase tracking-[0.3em] mt-12">
+            &copy; 2026 KNOT Hub | ITS Engineering College
+        </p>
     </div>
 
     <script>
@@ -112,7 +157,7 @@
 
         async function sendOTP() {
             const email = document.getElementById('email').value;
-            if (!email.endsWith("@its.edu.in")) return alert("Only @its.edu.in emails allowed.");
+            if (!email.endsWith("@its.edu.in")) return alert("Only institutional emails allowed.");
             toggleLoader(true);
             try {
                 const res = await fetch(`${API_BASE}/auth/send-otp`, {
@@ -124,8 +169,8 @@
                     document.getElementById('display-email').innerText = email;
                     showSection('otp-section');
                     startTimer();
-                } else { alert("Failed to send code."); }
-            } catch (err) { alert("Backend Unreachable."); }
+                } else { alert("Delivery Error."); }
+            } catch (err) { alert("Backend Error."); }
             toggleLoader(false);
         }
 
@@ -137,33 +182,32 @@
                 const res = await fetch(`${API_BASE}/auth/verify-otp`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include', // <--- IMPORTANT: Verify OTP must save the cookie!
+                    credentials: 'include', 
                     body: JSON.stringify({ email, otp })
                 });
                 const data = await res.json();
                 if (res.ok) {
                     if (data.is_new_user) showSection('name-section');
                     else window.location.href = DASHBOARD_URL;
-                } else { alert(data.error || "Verification failed."); }
-            } catch (err) { alert("Network Error."); }
+                } else { alert(data.error); }
+            } catch (err) { alert("Verification Failed."); }
             toggleLoader(false);
         }
 
         async function updateProfile() {
             const name = document.getElementById('fullname').value;
             const dept = document.getElementById('dept-select').value;
-            if (!name || !dept) return alert("Fill all fields.");
+            if (!name || !dept) return alert("All fields are mandatory.");
             toggleLoader(true);
             try {
                 const res = await fetch(`${API_BASE}/api/update-profile`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include', // <--- IMPORTANT: Must send the cookie!
+                    credentials: 'include',
                     body: JSON.stringify({ name, department: dept })
                 });
                 if (res.ok) window.location.href = DASHBOARD_URL;
-                else alert("Unauthorized: " + (await res.json()).error);
-            } catch (err) { alert("Sync Error."); }
+            } catch (err) { alert("Sync Failed."); }
             toggleLoader(false);
         }
 
