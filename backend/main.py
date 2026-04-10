@@ -257,8 +257,6 @@ def logout():
 
 @app.route("/api/debug/db-viewer", methods=["GET"])
 def debug_db_viewer():
-    # Security Check: Sirf local ya debug mode mein chale (Optional)
-    # if not app.debug: return jsonify({"error": "Forbidden"}), 403
     
     tables = ['users', 'otps', 'resources', 'bookings', 'marketplace']
     db_data = {}
