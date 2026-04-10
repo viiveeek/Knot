@@ -248,6 +248,29 @@ def logout():
     return jsonify({"success": True})
 
 
+@app.route("/api/debug/db-viewer", methods=["GET"])
+def debug_db_viewer():
+    # Security Check: Sirf local ya debug mode mein chale (Optional)
+    # if not app.debug: return jsonify({"error": "Forbidden"}), 403
+    
+    tables = ['users', 'otps', 'resources', 'bookings', 'marketplace']
+    db_data = {}
+    
+    try:
+        conn = get_db()
+        for table in tables:
+            rows = conn.execute(f"SELECT * FROM {table}").fetchall()
+            db_data[table] = [dict(row) for row in rows]
+        conn.close()
+        
+        return jsonify({
+            "status": "Debug Mode Active",
+            "database_path": DB_PATH,
+            "data": db_data
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 # --- 5. ADMIN & SYSTEM ---
 
 @app.route("/admin/login", methods=["POST"])
