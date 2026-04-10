@@ -501,7 +501,13 @@ def add_marketplace_item():
     data = request.json
     title = data.get("title")
     description = data.get("description")
-    m_type = data.get("type") # 'Lost', 'Found', 'Sell', etc.
+    
+    # Input clean karo taaki database constraint hit na ho
+    m_type = str(data.get("type")).strip().capitalize() # 'lost' -> 'Lost'
+
+    valid_types = ['Lost', 'Found', 'Sell', 'Trade']
+    if m_type not in valid_types:
+        return jsonify({"error": f"Invalid entry type: {m_type}"}), 400
 
     try:
         with get_db() as conn:
