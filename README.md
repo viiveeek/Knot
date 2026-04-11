@@ -3,7 +3,6 @@
 **KNOT** is a futuristic, decentralized campus management system designed to streamline resource allocation, real-time infrastructure tracking, and peer-to-peer asset management. Built for operability and speed, it bridges the gap between administrative authority and student needs.
 
 🔗 **Live Interface:** [knot.niksoriginals.in](https://knot.niksoriginals.in)  
-🛠 **Admin Node:** [admin.niksoriginals.in](https://admin.niksoriginals.in)
 
 ---
 
