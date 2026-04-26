@@ -81,7 +81,7 @@ def seed_demo_data():
         # --- USERS (Admin + Roles + Students) ---
         conn.execute("""
             INSERT OR IGNORE INTO users (name, email, role, department) VALUES
-            ('Yashveer', 'yashveerrajpootvks_cse25@its.edu.in', 'hod', 'CSE')
+            ('Nikhil', 'nikhilyadavrny_cse25@its.edu.in', 'hod', 'CSE')
         """)
 
         # --- RESOURCES ---
