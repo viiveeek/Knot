@@ -74,6 +74,34 @@ def init_db():
     conn.commit()
     conn.close()
 
+def seed_demo_data():
+    try:
+        conn = get_db()
+
+        # --- USERS (Admin + Roles + Students) ---
+        conn.execute("""
+            INSERT OR IGNORE INTO users (name, email, role, department) VALUES
+            ('Yashveer', 'yashveerrajpootvks_cse25@its.edu.in', 'hod', 'CSE')
+        """)
+
+        # --- RESOURCES ---
+        conn.execute("""
+            INSERT OR IGNORE INTO resources (name, type, status, needs_approval) VALUES
+            ('GPU Lab Node 1', 'Compute', 'Available', 0),
+            ('GPU Lab Node 2', 'Compute', 'Available', 0),
+            ('3D Printer', 'Hardware', 'Available', 1),
+            ('Meeting Room A', 'Room', 'Available', 0)
+        """)
+
+        conn.commit()
+        conn.close()
+
+        print(">>> [SEED] Demo data inserted successfully")
+
+    except Exception as e:
+        print(f"!!! [SEED ERROR] {e}")
+
+
 # Startup par table check
 @app.before_request
 def startup():
@@ -81,6 +109,7 @@ def startup():
         global DB_PATH
         DB_PATH = "nofy.db"
     init_db()
+    seed_demo_data()
 
 # --- 3. AUTH LOGIC (SEND & RESEND) ---
 
